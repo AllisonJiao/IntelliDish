@@ -11,13 +11,13 @@ IntelliDish allows users to give a list of available ingredients to IntelliDish 
 
 For users like busy university students and employees (who often lack the time, energy, cooking expertise, and recipe knowledge to plan meals), IntelliDish simplifies the meal preparation process by providing quick and desirable recipe suggestions using available ingredients. Additionally, for those with restricted ingredient options due to location or budget constraints, IntelliDish can maximize the value of available ingredients, allowing users to create desirable meals with limited access to diverse cooking ingredients.
 
-<div style="display: flex; justify-content: space-between;">
+<div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
 
-<img src="images/IntelliDish_Day.png" alt="Image 1" width="45%" style="margin-right: 10px; border: 1px solid blue; padding: 5px; border-radius: 4px;">
-<img src="images/IntelliDish_Night.png" alt="Image 2" width="45%" style="border: 1px solid blue; padding: 5px; border-radius: 4px;">
+  <img src="images/IntelliDish_Day.png" alt="Day View" style="width: 45%; border: 2px solid blue; padding: 10px; border-radius: 6px;">
+
+  <img src="images/IntelliDish_Night.png" alt="Night View" style="width: 45%; border: 2px solid blue; padding: 10px; border-radius: 6px;">
 
 </div>
-
 
 ## 3. Requirements Specification
 ### **3.1. Use-Case Diagram**
@@ -57,9 +57,9 @@ For users like busy university students and employees (who often lack the time, 
     - **Description**: User logs in to IntelliDish using the authentication service with his/her credentials.
     - **Primary actor(s)**: User, Authentication Service.
     - **Main success scenario**:
-        **1**. The user inputs his/her credentials into the authentication service log-in page.
-        **2**. The authentication service system validates the user's credentials.
-        **3**. The user successfully logs in to IntelliDish and starts using the system.
+        - **1**. The user inputs his/her credentials into the authentication service log-in page.
+        -  **2**. The authentication service system validates the user's credentials.
+        - **3**. The user successfully logs in to IntelliDish and starts using the system.
     - **Failure scenario(s)**:
         - **1a**: Authentication service is unreachable/ unavailable.
             - **1a1**: Display error message the authentication service is unreachable/ unavailable.
