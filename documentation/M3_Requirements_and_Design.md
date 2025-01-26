@@ -18,7 +18,7 @@ For users like busy university students and employees (who often lack the time, 
 
 ## 3. Requirements Specification
 ### **3.1. Use-Case Diagram**
-![UML Use Case Diagram](images/UML%20Use%20Case%20Diagram.png)
+![UML_Use_Case_Diagram.png](images\UML_Use_Case_Diagram.png)
 
 
 
@@ -43,11 +43,12 @@ For users like busy university students and employees (who often lack the time, 
 
 **Overview**:
 1. Login/ Authentication
-2. ...
-3. ...
-4. ...
-5. ...
-6. ...
+2. Full Recipe Recommendation
+3. Partial Recipe Recommendation
+4. PotLuck
+5. Manage Recipes
+6. Manage Friends
+7. Manage Users, Servers, and Data
 
 **Detailed Flow for Each Independent Scenario**:
 1. **Login/ Authentication**:
@@ -55,15 +56,68 @@ For users like busy university students and employees (who often lack the time, 
     - **Primary actor(s)**: User, Authentication Service.
     - **Main success scenario**:
         - **1**. The user inputs his/her credentials into the authentication service log-in page.
-        -  **2**. The authentication service system validates the user's credentials.
+        - **2**. The authentication service system validates the user's credentials.
         - **3**. The user successfully logs in to IntelliDish and starts using the system.
     - **Failure scenario(s)**:
         - **1a**: Authentication service is unreachable/ unavailable.
-            - **1a1**: Display error message the authentication service is unreachable/ unavailable.
+            - **1a1**: Display error message that the authentication service is unreachable/ unavailable.
             - **1a2**: Prompt the user to try again later, or check online whether then authentication service is down/ under maintainence.
         - **2a**: Authentication service determines that user crendentials are invalid.
             - **2a1**: Display error message that credentials are invalid.
             - **2a2**: Prompt the user to try again.
+
+2. **Full Recipe Recommendation**:
+    - **Description**: User provides a list of available ingredients and cuisine preferences, and the AI API returns a list of possible recipes.
+    - **Primary actor(s)**: User, AI API.
+    - **Main success scenario**:
+        - **1**. The user provides a list of available ingredients and cuisine preferences to IntelliDish.
+        - **2**. A query to the AI API is made based on the user's inputs.
+        - **3**. The AI API returns a list of possible ingredients to the user.
+    - **Failure scenario(s)**:
+        - **2a**: The AI API is unreachable/ unavailable.
+            - **2a1**: Display error message that the AI API is unreachable/ unavailable.
+            - **2a2**: Prompt the user to try again later, or check online whether the AI API is down/ under maintainence.
+        - **2b**: No recipes are possible for the provided user inputs.
+            - **2b1**: Suggest the user to use partial recipe recommendations, PotLuck with friends, or try again with different inputs instead.
+
+3. **Full Recipe Recommendation**:
+    - **Description**: Suggest recipes where some ingredients are missing from user input, and provide possible substitutes for missing ingredients as well as possible recipes that doesn't match the user's cuisine preferences.
+    - **Primary actor(s)**: User, AI API.
+    - **Main success scenario**:
+        - **1**. The user provides a list of available ingredients and cuisine preferences to IntelliDish.
+        - **2**. A query to the AI API is made based on the user's inputs.
+        - **3**. The AI API determines that there are no possible recipes based on the user's input.
+        - **4**. The AI API suggests recipes where some ingredients are missing from user input, and provide possible substitutes for missing ingredients as well as possible recipes that doesn't match the user's cuisine preferences.
+    - **Failure scenario(s)**:
+        - **2a**: The AI API is unreachable/ unavailable.
+            - **2a1**: Display error message that the AI API is unreachable/ unavailable.
+            - **2a2**: Prompt the user to try again later, or check online whether the AI API is down/ under maintainence.
+        - **2b**: No recipes are possible for the provided user inputs.
+            - **2b1**: Suggest the user to use partial recipe recommendations, PotLuck with friends, or try again with different inputs instead.
+
+4. **PotLuck**:
+
+5. **Manage Favorite Recipes**:
+    - **Description**: Users can add or remove favorite recipes.
+    - **Primary actor(s)**: User.
+    - **Main success scenario**:
+        - **1**. The user selects a recipe from past queries to add to his/ her list of favorite recipes, or selects an existing recipe from his/ her list of favorite recipes to remove.
+        - **2**. System asks the user for confirmation of action.
+        - **3**. The user's list of favorite recipes is updated with the addition/ removal of a recipe.
+    - **Failure scenario(s)**:
+        - **1a**: The recipe addition fails due to data accesses issues on past queries.
+            - **1a1**: Display error message that the addition failed, and prompt the user to try again. Removal of recipes do not fail.
+
+6. **Manage Friends**:
+    - **Description**: Users can add or remove friends, with whom they can PotLuck and share recipes with.
+    - **Primary actor(s)**: User.
+    - **Main success scenario**:
+        - **1**. The user enters the username of a user to add as a friend, or the user chooses a user from his/ her existing friend list to remove.
+        - **2**. System asks the user for confirmation of action.
+        - **3**. The user's friend list is updated with the addition/ removal of a friend.
+    - **Failure scenario(s)**:
+        - **1a**: The friend addition fails because the entered username is invalid/ cannot be found.
+            - **1a1**: Display error message for the user to double check that the entered username for friend addition is correct, and prompt the user to try again. Removal of friends do not fail.
             
 
 
