@@ -2,7 +2,7 @@
 
 ## 1. Change History
 <!-- Leave blank for M3 -->
-Left empty for this first version.
+Not applicable for this milestone.
 
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
@@ -43,12 +43,17 @@ For users like busy university students and employees (who often lack the time, 
 
 **Overview**:
 1. Login/ Authentication
+    * User logs in to IntelliDish using the authentication service with his/her credentials.
 2. Full Recipe Recommendation
+    * User provides a list of available ingredients and cuisine preferences, and the AI API returns a list of possible recipes.
 3. Partial Recipe Recommendation
+    * Suggest recipes where some ingredients are missing from user input, and provide possible substitutes for missing ingredients as well as possible recipes that doesn't match the user's cuisine preferences.
 4. PotLuck
+    * Users can collaboratively input available ingredients as a group for recipe recommendations.
 5. Manage Recipes
+    * Users can add or remove favorite recipes.
 6. Manage Friends
-7. Manage Users, Servers, and Data
+    * Users can add or remove friends, with whom they can PotLuck and share recipes with.
 
 **Detailed Flow for Each Independent Scenario**:
 1. **Login/ Authentication**:
@@ -96,6 +101,24 @@ For users like busy university students and employees (who often lack the time, 
             - **2b1**: Suggest the user to use partial recipe recommendations, PotLuck with friends, or try again with different inputs instead.
 
 4. **PotLuck**:
+**Manage Favorite Recipes**:
+    - **Description**: Users can collaboratively input available ingredients as a group for recipe recommendations.
+    - **Primary actor(s)**: User (multiple).
+    - **Main success scenario**:
+        - **1**. A user starts a PotLuck and invites his/ her friends to create a group.
+        - **2**. The users collectively provide a list of available ingredients and cuisine preferences to IntelliDish. This could be done asynchronously, and users can continuous add and remove their ingredient contributions.
+        - **3**. A query to the AI API is made based on the user's inputs.
+        - **4**. The AI API returns a list of possible ingredients to the user.
+    - **Failure scenario(s)**:
+        - **1a**: Group creation failed.
+            - **1a1**: Display error message that group creation failed as well as the reason behind the failure (PotLuck name conflicts with another existing Potluck, server is down, friend's account is deleted, etc), the prompt the user to try again.
+        - **2a**: A user attempts to delete another user's contributions.
+            - **2a1**: Display error message that users can only edit their own contributions.
+        - **3a**: The AI API is unreachable/ unavailable.
+            - **3a1**: Display error message that the AI API is unreachable/ unavailable.
+            - **3a2**: Prompt the users to try again later, or check online whether the AI API is down/ under maintainence.
+        - **3b**: No recipes are possible for the provided user inputs.
+            - **3b1**: Suggest the users to use partial recipe recommendations, or try again with different inputs instead.
 
 5. **Manage Favorite Recipes**:
     - **Description**: Users can add or remove favorite recipes.
@@ -123,7 +146,7 @@ For users like busy university students and employees (who often lack the time, 
 
 
 ### **3.4. Screen Mockups**
-
+Not applicable for this milestone.
 
 ### **3.5. Non-Functional Requirements**
 <a name="nfr1"></a>
