@@ -11,13 +11,10 @@ IntelliDish allows users to give a list of available ingredients to IntelliDish 
 
 For users like busy university students and employees (who often lack the time, energy, cooking expertise, and recipe knowledge to plan meals), IntelliDish simplifies the meal preparation process by providing quick and desirable recipe suggestions using available ingredients. Additionally, for those with restricted ingredient options due to location or budget constraints, IntelliDish can maximize the value of available ingredients, allowing users to create desirable meals with limited access to diverse cooking ingredients.
 
-<div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
-
-  <img src="images/IntelliDish_Day.png" alt="Day View" style="width: 45%; border: 2px solid blue; padding: 10px; border-radius: 6px;">
-
-  <img src="images/IntelliDish_Night.png" alt="Night View" style="width: 45%; border: 2px solid blue; padding: 10px; border-radius: 6px;">
-
-</div>
+<p align="center">
+  <img src="images/IntelliDish_Day.png" alt="Day View" width="45%" />
+  <img src="images/IntelliDish_Night.png" alt="Night View" width="45%" />
+</p>
 
 ## 3. Requirements Specification
 ### **3.1. Use-Case Diagram**
