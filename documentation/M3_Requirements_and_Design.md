@@ -146,7 +146,9 @@ For users like busy university students and employees (who often lack the time, 
 
 
 ### **3.4. Screen Mockups**
-Not applicable for this milestone.
+![mockup main screen](./images/mockup_1.png)
+![mockup ingredient screen](./images/mockup_2.png)
+![mockup pot screen](./images/mockup_3.png)
 
 ### **3.5. Non-Functional Requirements**
 <a name="nfr1"></a>
