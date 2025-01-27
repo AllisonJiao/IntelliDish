@@ -42,17 +42,17 @@ For users like busy university students and employees (who often lack the time, 
 <a name="fr1"></a>
 
 **Overview**:
-1. Login/ Authentication
+1. **Login/ Authentication**
     * User logs in to IntelliDish using the authentication service with his/her credentials.
-2. Full Recipe Recommendation
+2. **Full Recipe Recommendation**
     * User provides a list of available ingredients and cuisine preferences, and the AI API returns a list of possible recipes.
-3. Partial Recipe Recommendation
+3. **Partial Recipe Recommendation**
     * Suggest recipes where some ingredients are missing from user input, and provide possible substitutes for missing ingredients as well as possible recipes that doesn't match the user's cuisine preferences.
-4. PotLuck
+4. **PotLuck**
     * Users can collaboratively input available ingredients as a group for recipe recommendations.
-5. Manage Recipes
+5. **Manage Recipes**
     * Users can add or remove favorite recipes.
-6. Manage Friends
+6. **Manage Friends**
     * Users can add or remove friends, with whom they can PotLuck and share recipes with.
 
 **Detailed Flow for Each Independent Scenario**:
