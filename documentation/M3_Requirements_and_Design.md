@@ -146,9 +146,9 @@ For users like busy university students and employees (who often lack the time, 
 
 
 ### **3.4. Screen Mockups**
-![mockup main screen](./images/mockup_1.png)
-![mockup ingredient screen](./images/mockup_2.png)
-![mockup pot screen](./images/mockup_3.png)
+![mockup main screen](documentation/images/mockup_1.jpg)
+![mockup ingredient screen](documentation/images/mockup_2.jpg)
+![mockup pot screen](documentation/images/mockup_3.jpg)
 
 ### **3.5. Non-Functional Requirements**
 <a name="nfr1"></a>
