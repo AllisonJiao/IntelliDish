@@ -146,9 +146,11 @@ For users like busy university students and employees (who often lack the time, 
 
 
 ### **3.4. Screen Mockups**
-<img src="images/mockup_1.jpg" alt="mockup main screen" width="33%"/>
-<img src="images/mockup_2.jpg" alt="mockup ingredient screen" width="33%"/>
-<img src="images/mockup_3.jpg" alt="mockup pot screen" width="33%"/>
+<p align="center">
+  <img src="images/mockup_1.jpg" alt="Mockup Main Screen" width="30%" />
+  <img src="images/mockup_2.jpg" alt="Mockup Ingredient Screen" width="30%" />
+  <img src="images/mockup_3.jpg" alt="Mockup Potluck Screen" width="30%" />
+</p>
 
 ### **3.5. Non-Functional Requirements**
 <a name="nfr1"></a>
