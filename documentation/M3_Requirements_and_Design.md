@@ -76,7 +76,7 @@ For users like busy university students and employees (who often lack the time, 
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
         - **1**. The user provides a list of available ingredients and cuisine preferences to IntelliDish.
-        - **2**. A query to the AI API is made based on the user's inputs.
+        - **2**. A request to the AI API is made based on the user's inputs.
         - **3**. The AI API returns a list of possible ingredients to the user.
     - **Failure scenario(s)**:
         - **2a**: The AI API is unreachable/ unavailable.
@@ -85,12 +85,12 @@ For users like busy university students and employees (who often lack the time, 
         - **2b**: No recipes are possible for the provided user inputs.
             - **2b1**: Suggest the user to use partial recipe recommendations, PotLuck with friends, or try again with different inputs instead.
 
-3. **Full Recipe Recommendation**:
+3. **Partial Recipe Recommendation**:
     - **Description**: Suggest recipes where some ingredients are missing from user input, and provide possible substitutes for missing ingredients as well as possible recipes that doesn't match the user's cuisine preferences.
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
         - **1**. The user provides a list of available ingredients and cuisine preferences to IntelliDish.
-        - **2**. A query to the AI API is made based on the user's inputs.
+        - **2**. A request to the AI API is made based on the user's inputs.
         - **3**. The AI API determines that there are no possible recipes based on the user's input.
         - **4**. The AI API suggests recipes where some ingredients are missing from user input, and provide possible substitutes for missing ingredients as well as possible recipes that doesn't match the user's cuisine preferences.
     - **Failure scenario(s)**:
@@ -107,7 +107,7 @@ For users like busy university students and employees (who often lack the time, 
     - **Main success scenario**:
         - **1**. A user starts a PotLuck and invites his/ her friends to create a group.
         - **2**. The users collectively provide a list of available ingredients and cuisine preferences to IntelliDish. This could be done asynchronously, and users can continuous add and remove their ingredient contributions.
-        - **3**. A query to the AI API is made based on the user's inputs.
+        - **3**. A request to the AI API is made based on the user's inputs.
         - **4**. The AI API returns a list of possible ingredients to the user.
     - **Failure scenario(s)**:
         - **1a**: Group creation failed.
@@ -146,6 +146,8 @@ For users like busy university students and employees (who often lack the time, 
 
 
 ### **3.4. Screen Mockups**
+This is a screen mockup of what a user will see for the "Full Recipe Recommendation", "Partial Recipe Recommendation", and "PotLuck" use cases. The user can either add “ingredient cards” or take a photo of his/ her fridge to add to the “Pot”. Once the user is finished, one click on the “Generate” button will send a request for the AI API to generate and return possible recipes. 
+
 <p align="center">
   <img src="images/mockup_1.jpg" alt="Mockup Main Screen" width="30%" />
   <img src="images/mockup_2.jpg" alt="Mockup Ingredient Screen" width="30%" />
@@ -164,7 +166,7 @@ For users like busy university students and employees (who often lack the time, 
 
 3. **Performance**
     - **Description**: 90% of user recipe queries should receive a response in less than 10 seconds. This accounts for worst case scenarios such as heavy backend loads, API call failures, and/ or extremely long/ complex ingredient lists.
-    - **Justification**: IntelliDish should aim to have fast query response times in order to attract and retain users, as well as maintain user satisfaction and engagement.
+    - **Justification**: IntelliDish should aim to have fast request response times in order to attract and retain users, as well as maintain user satisfaction and engagement.
 
 
 ## 4. Designs Specification
