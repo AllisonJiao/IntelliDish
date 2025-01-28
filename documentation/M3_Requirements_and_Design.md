@@ -37,9 +37,9 @@ For users like busy university students and employees (who often lack the time, 
 <a name="fr1"></a>
 
 **Overview**:
-1. **Login**
+1. **Log in**
     * User logs in to IntelliDish using the authentication service with his/her credentials.
-2. **Logout**
+2. **Log out**
     * User logs out from IntelliDish and the user session is terminated.
 3. **Get Full Recipe Recommendation**
     * User provides a list of available ingredients and cuisine preferences, and the AI API returns a list of possible recipes.
@@ -53,7 +53,7 @@ For users like busy university students and employees (who often lack the time, 
     * Users can add or remove friends, with whom they can PotLuck and share recipes with.
 
 **Detailed Flow for Each Independent Scenario**:
-1. **Login**:
+1. **Log in**:
     - **Description**: User logs in to IntelliDish using the authentication service with his/her credentials.
     - **Primary actor(s)**: User, Authentication Service.
     - **Main success scenario**:
@@ -68,11 +68,11 @@ For users like busy university students and employees (who often lack the time, 
             - **2a1**: Display error message that credentials are invalid.
             - **2a2**: Prompt the user to try again.
 
-2. **Logout**:
+2. **Log out**:
     - **Description**:User logs out from IntelliDish and the user session is terminated.
     - **Primary actor(s)**: User, Authentication Service.
     - **Main success scenario**:
-        - **1**. The user selects the "logout" option from the IntelliDish app.
+        - **1**. The user selects the "log out" option from the IntelliDish app.
         - **2**. The authentication service terminates the user's session.
         - **3**. Clear user session data (tokens, cookies, etc.) for security purposes. 
         - **4**. The user successfully logs out of IntelliDish and is redirected to the login screen.
