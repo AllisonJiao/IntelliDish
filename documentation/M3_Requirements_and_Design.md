@@ -69,7 +69,7 @@ For users like busy university students and employees (who often lack the time, 
             - **2a2**: Prompt the user to try again.
 
 2. **Log out**:
-    - **Description**:User logs out from IntelliDish and the user session is terminated.
+    - **Description**: User logs out from IntelliDish and the user session is terminated.
     - **Primary actor(s)**: User, Authentication Service.
     - **Main success scenario**:
         - **1**. The user selects the "log out" option from the IntelliDish app.
