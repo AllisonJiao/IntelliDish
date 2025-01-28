@@ -137,7 +137,7 @@ For users like busy university students and employees (who often lack the time, 
         - **2**. System asks the user for confirmation of action.
         - **3**. The user's list of favorite recipes is updated with the addition/ removal of a recipe.
     - **Failure scenario(s)**:
-        - **1a**: The recipe addition fails due to data accesses issues on past queries.
+        - **1a**: The addition of a recipe fails due to issues with accessing past query data.
             - **1a1**: Display error message that the addition failed, and prompt the user to try again. Removal of recipes do not fail.
 
 7. **Manage Friends**:
