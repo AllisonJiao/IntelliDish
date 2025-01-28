@@ -97,7 +97,7 @@ For users like busy university students and employees (who often lack the time, 
 
 4. **Participate In PotLuck**:
     - **Description**: Users can collaboratively input available ingredients as a group for recipe recommendations.
-    - **Primary actor(s)**: User (multiple).
+    - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
         - **1**. A user starts a PotLuck and invites his/ her friends to create a group.
         - **2**. The users collectively provide a list of available ingredients and cuisine preferences to IntelliDish. This could be done asynchronously, and users can continuous add and remove their ingredient contributions.
