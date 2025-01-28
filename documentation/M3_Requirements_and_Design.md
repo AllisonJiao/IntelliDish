@@ -165,33 +165,135 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
 
 ## 4. Designs Specification
 ### **4.1. Main Components**
-1. **[WRITE_NAME_HERE]**
-    - **Purpose**: ...
+1. **User Management Component**
+    - **Purpose**: Handles user authentication, registration, and profile management, including adding and removing friends. This ensures secure access to user-specific features and personal data.
+    -  **Rationale**: Centralized handling of authentication and user data simplifies the app's backend structure and enables scalability. Alternatives like third-party services (e.g., Google OAuth) were considered but are unnecessary for initial implementation.
     - **Interfaces**: 
-        1. ...
-            - **Purpose**: ...
-        2. ...
-2. ...
-
+        1. `boolean login(String username, String password);`
+            - **Purpose**: Validates user credentials and initiates a user session. Return true if login is successful; return false otherwise.
+        2. `boolean register(String username, String password, String email);`
+            - **Purpose**: Registers a new user. Return true if registration is successful, false otherwise.
+        3. `boolean logout(String sessionId);`
+            - **Purpose**: Ends a user session. Return true if log out successfully, false otherwise.
+        4. `List<String> getFriends(String userId)`
+           - **Purpose**: Fetches the user's friend list
+        5. `boolean addFriend(String userId, String friendUsername);`
+           - **Purpose**: Adds a friend to the user's friend list.
+        6. `boolean removeFriend(String userId, String friendUsername);`
+           - **Purpose**: Removes a friend from the user's friend list.
+        
+2. **Recipe Recommendation Component**
+   - **Purpose**: Manages communication with the AI API for generating recipes based on user-provided ingredients and preferences. It handles full and partial recipe recommendations, ensuring that missing ingredients are substituted appropriately.
+   - **Rational**:  Centralizing recipe logic allows easy integration with external APIs and simplifies future enhancements, such as adding dietary filters.
+   - **Interfaces**:
+     1. `List<Recipe> getRecipes(List<String> ingredients, String cuisine);`
+        - **Purpose**: Fetches recipes based on all provided ingredients and cuisine preference. Return a list of recipes
+     2. `List<Recipe> getPartialRecipes(List<String> ingredients, String cuisine);`
+        - **Purpose**: Suggests recipes even if some ingredients are missing, with substitutes. Return a list of recipes with substitution suggestions
+    - **HTTP/REST Interfaces interact with OPENAI API**:
+      1. `POST /recipes/generate`
+         - **Purpose**: Generates recipes based on ingredients and cuisine preferences.
+         - **Example Request**:
+         ```
+           {
+              "ingredients": ["chicken", "rice", "carrots"],
+              "cuisine": "Asian"
+            }
+         ```
+         - **Example Response**:
+         ```
+         {
+            "recipes": [
+              {
+                "name": "Chicken Stir-Fry",
+                "ingredients": ["chicken", "rice", "carrots"],
+                "instructions": "Cook chicken, then stir-fry with rice and carrots."
+              },
+              {
+                "name": "Vegetable Fried Rice",
+                "ingredients": ["rice", "carrots"],
+                "instructions": "Fry rice with chopped carrots."
+              }
+            ]
+          }
+          ```
+      2. `POST /ingredients/suggest-substitution`
+         - **Purpose**: Suggests recipes with partially available ingredients, along with guidance on missing ingredients and their replacements.
+         - **Example Request**:
+         ```
+          {
+            "ingredients": ["chicken"],
+            "cuisine": "Italian"
+          }
+         ```
+         - **Example Response**:
+         ```
+          {
+            "partialRecipes": [
+              {
+                "name": "Chicken Salad",
+                "availableIngredients": ["chicken"],
+                "missingIngredients": ["lettuce", "tomatoes"],
+                "instructions": "Mix chicken with chopped vegetables for a quick salad."
+              }
+            ],
+            "suggestions": {
+              "ingredientsToBuy": ["pasta", "cream", "lettuce", "tomatoes"],
+              "substitutions": {
+                "cream": "Greek yogurt",
+                "lettuce": "spinach"
+              }
+            }
+          }
+          ```
+3. **Ingredient Management Component**
+   - **Purpose**: Manages user-provided ingredients, including adding, removing, and editing ingredients for both individual and collaborative use cases.
+   - **Rational**: A dedicated component ensures clear separation of ingredient management logic, which simplifies extending functionality, such as handling alternate ingredient suggestions.
+   - **Interfaces**:
+     1. `boolean addIngredient(String userId, String ingredient);`
+           - **Purpose**: Adds an ingredient to the user's personal ingredient list.
+     2. `boolean removeIngredient(String userId, String ingredient);`
+           - **Purpose**: Removes an ingredient from the user's personal ingredient list.
+     3. `boolean addGroupIngredient(String groupId, String userId, String ingredient);`
+           - **Purpose**: Adds an ingredient to a PotLuck group.
+     4. `boolean removeGroupIngredient(String groupId, String userId, String ingredient);`
+           - **Purpose**: Removes an ingredient added by the user to a PotLuck group.
+4. **PotLuck Collaboration Component**
+   - **Purpose**: Allows multiple users to collaborate by pooling their ingredients and generating group-specific recipe recommendations. Ensures user contributions are tracked and managed efficiently.
+   - **Rational**: Isolating collaboration logic as a separate component improves modularity.
+   - **Interfaces**:
+     1. `boolean createPotluck(String groupName, String ownerId);`
+        - **Purpose**: Creates a new PotLuck group. Return true if the group is successfully created, false otherwise.
+     2. `boolean addMember(String groupId, String newUserId);`
+        - **Purpose**: Adds a member to an existing PotLuck group.
+     3. `boolean removeMember(String groupId, String userId);`
+        - **Purpose**: Removes a member from the PotLuck group.
+     4. `List<String> listGroupIngredients(String groupId);`
+        - **Purpose**: Fetches the list of all ingredients contributed by group members. Return a list of ingredients.
 
 ### **4.2. Databases**
-1. **[WRITE_NAME_HERE]**
-    - **Purpose**: ...
-2. ...
-
+1. **MongoDB Database**
+    - **Purpose**: Stores all user data (credentials, preferences, friend lists), recipes, ingredient lists, and collaborative group information.
+    -  **Rational**: MongoDB’s flexible document-based schema allows handling dynamic and unstructured data, such as recipes and ingredient metadata. It integrates seamlessly with TypeScript via libraries like Mongoose, providing type safety and schema validation.
 
 ### **4.3. External Modules**
-1. **[WRITE_NAME_HERE]** 
-    - **Purpose**: ...
-2. ...
-
+1. **OPENAI API** 
+    - **Purpose**: Processes user-provided inputs such as ingredients and cuisine preferences to generate personalized recipe suggestions using advanced NLP.
+    - **Rational**: OpenAI’s powerful GPT-based models provide high-quality, context-aware recommendations, enabling features like partial recipe suggestions and ingredient substitutions.
+2. **Google Authentication**
+   - **Purpose**: Manages secure user login using Google accounts for authentication.
+   - **Rational**: Google Authentication is widely trusted, simplifies user onboarding, and reduces the need to manage passwords manually. The Google sign-in Process can be directly handled using native libraries in frontend implementation.
 
 ### **4.4. Frameworks**
-1. **[WRITE_NAME_HERE]**
-    - **Purpose**: ...
-    - **Reason**: ...
-2. ...
-
+1. **Frontend Framework: Kotlin (Android)**
+    - **Purpose**: Develop a native Android application to deliver an optimized, responsive, and user-friendly interface for mobile users.
+    - **Reason**: Kotlin is the standard for Android development, offering seamless integration with Android SDK and native performance.
+3. **Backend Framework: Node.js (TypeScript)**
+   - **Purpose**: Implements the server-side logic to handle API requests, manage the database, and integrate external services like OpenAI.
+    - **Reason**: Node.js with TypeScript ensures scalability, maintainability, and type safety.
+4. **Cloud Service: AWS**
+   - **Purpose**: Hosts the backend (Node.js)
+   - **Reason**: AWS offers robust free-tier options, scalability, and integration flexibility for deploying and managing EC2 instances. It complies with the project constraints and ensures reliability and availability.
 
 ### **4.5. Dependencies Diagram**
 
