@@ -139,6 +139,8 @@ For users like busy university students and employees (who often lack the time, 
     - **Failure scenario(s)**:
         - **1a**: The addition of a recipe fails due to issues with accessing past query data.
             - **1a1**: Display error message that the addition failed, and prompt the user to try again. Removal of recipes do not fail.
+        - **1b**: The user attempts to add a duplicate recipe.
+            - **1b1**: Display error message that the recipe is already in the user's favorite recipes list.
 
 7. **Manage Friends**:
     - **Description**: Users can add or remove friends, with whom they can PotLuck and share recipes with.
@@ -150,6 +152,8 @@ For users like busy university students and employees (who often lack the time, 
     - **Failure scenario(s)**:
         - **1a**: The friend addition fails because the entered username is invalid/ cannot be found.
             - **1a1**: Display error message for the user to double check that the entered username for friend addition is correct, and prompt the user to try again. Removal of friends do not fail.
+        - **1b**: The user attempts to add themselves as a friend.
+            - **1b1**: Display error message that the user cannot add himself/ herself as a friend.
 
 ### **3.4. Screen Mockups**
 This is a screen mockup of what a user will see for the "Full Recipe Recommendation", "Partial Recipe Recommendation", and "Participate In PotLuck" use cases. The user can either add “ingredient cards” or take a photo of his/ her fridge to add to the “Pot”. Once the user is finished, one click on the “Generate” button will send a request for the AI API to generate and return possible recipes. 
