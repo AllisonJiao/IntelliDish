@@ -25,7 +25,7 @@ For users like busy university students and employees (who often lack the time, 
 ### **3.2. Actors Description**
 1. **User**  
    - The user provides the IntelliDish app with inputs such as available ingredients and cuisine preferences. The user can also manage their recipes and friends.  
-   - For now, we have made the design choice that all users need to log in or be authenticated to use IntelliDish.  
+   - For now, we have made the design choice that all users need to log in to use IntelliDish.  
 
 2. **AI API**  
    - Provides possible recipes based on user input.  
