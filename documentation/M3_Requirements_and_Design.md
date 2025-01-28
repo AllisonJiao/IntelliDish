@@ -7,7 +7,7 @@ Not applicable for this milestone.
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
 
-IntelliDish allows users to give a list of available ingredients to IntelliDish along with the type of cuisine they wish to cook (such as Chinese food, Italian food, etc.), and IntelliDish will return a number of recipes that are possible to create with the available ingredients. If no recipes can be made with the provided ingredients, IntelliDish will return recipes where ingredients are partially available and give suggestions to the users on additional ingredients to buy or possible ingredient replacements. Additionally, IntelliDish will also provide many useful features such as personalizing, gamifying cooking, and potluck (which allows multiple users to combine their available ingredients and search for recipes).
+IntelliDish allows users to give a list of available ingredients to IntelliDish along with the type of cuisine they wish to cook (such as Chinese food, Italian food, etc.), and IntelliDish will return a number of recipes that are possible to create with the available ingredients. If no recipes can be made with the provided ingredients, IntelliDish will return recipes where ingredients are partially available and give suggestions to the users on additional ingredients to buy or possible ingredient replacements. Additionally, IntelliDish will also provide many useful features such as personalizing friend lists, personalizing favorite recipes, and participating in potluck (which allows multiple users to combine their available ingredients and search for recipes).
 
 For users like busy university students and employees (who often lack the time, energy, cooking expertise, and recipe knowledge to plan meals), IntelliDish simplifies the meal preparation process by providing quick and desirable recipe suggestions using available ingredients. Additionally, for those with restricted ingredient options due to location or budget constraints, IntelliDish can maximize the value of available ingredients, allowing users to create desirable meals with limited access to diverse cooking ingredients.
 
@@ -33,22 +33,17 @@ For users like busy university students and employees (who often lack the time, 
 3. **Authentication Service**  
    - Manages user login and authentication.  
 
-4. **Admin**  
-   - Manages users, backend server(s), and database(s).  
-
-
-
 ### **3.3. Functional Requirements**
 <a name="fr1"></a>
 
 **Overview**:
-1. **Login/ Authentication**
+1. **Login/ Logout**
     * User logs in to IntelliDish using the authentication service with his/her credentials.
-2. **Full Recipe Recommendation**
+2. **Get Full Recipe Recommendation**
     * User provides a list of available ingredients and cuisine preferences, and the AI API returns a list of possible recipes.
-3. **Partial Recipe Recommendation**
+3. **Get Partial Recipe Recommendation**
     * Suggest recipes where some ingredients are missing from user input, and provide possible substitutes for missing ingredients as well as possible recipes that doesn't match the user's cuisine preferences.
-4. **PotLuck**
+4. **Participate In PotLuck**
     * Users can collaboratively input available ingredients as a group for recipe recommendations.
 5. **Manage Recipes**
     * Users can add or remove favorite recipes.
@@ -56,7 +51,7 @@ For users like busy university students and employees (who often lack the time, 
     * Users can add or remove friends, with whom they can PotLuck and share recipes with.
 
 **Detailed Flow for Each Independent Scenario**:
-1. **Login/ Authentication**:
+1. **Login/ Logout**:
     - **Description**: User logs in to IntelliDish using the authentication service with his/her credentials.
     - **Primary actor(s)**: User, Authentication Service.
     - **Main success scenario**:
@@ -71,7 +66,7 @@ For users like busy university students and employees (who often lack the time, 
             - **2a1**: Display error message that credentials are invalid.
             - **2a2**: Prompt the user to try again.
 
-2. **Full Recipe Recommendation**:
+2. **Get Full Recipe Recommendation**:
     - **Description**: User provides a list of available ingredients and cuisine preferences, and the AI API returns a list of possible recipes.
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
@@ -85,7 +80,7 @@ For users like busy university students and employees (who often lack the time, 
         - **2b**: No recipes are possible for the provided user inputs.
             - **2b1**: Suggest the user to use partial recipe recommendations, PotLuck with friends, or try again with different inputs instead.
 
-3. **Partial Recipe Recommendation**:
+3. **Get Partial Recipe Recommendation**:
     - **Description**: Suggest recipes where some ingredients are missing from user input, and provide possible substitutes for missing ingredients as well as possible recipes that doesn't match the user's cuisine preferences.
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
@@ -100,8 +95,7 @@ For users like busy university students and employees (who often lack the time, 
         - **2b**: No recipes are possible for the provided user inputs.
             - **2b1**: Suggest the user to use partial recipe recommendations, PotLuck with friends, or try again with different inputs instead.
 
-4. **PotLuck**:
-**Manage Favorite Recipes**:
+4. **Participate In PotLuck**:
     - **Description**: Users can collaboratively input available ingredients as a group for recipe recommendations.
     - **Primary actor(s)**: User (multiple).
     - **Main success scenario**:
@@ -146,7 +140,7 @@ For users like busy university students and employees (who often lack the time, 
 
 
 ### **3.4. Screen Mockups**
-This is a screen mockup of what a user will see for the "Full Recipe Recommendation", "Partial Recipe Recommendation", and "PotLuck" use cases. The user can either add “ingredient cards” or take a photo of his/ her fridge to add to the “Pot”. Once the user is finished, one click on the “Generate” button will send a request for the AI API to generate and return possible recipes. 
+This is a screen mockup of what a user will see for the "Full Recipe Recommendation", "Partial Recipe Recommendation", and "Participate In PotLuck" use cases. The user can either add “ingredient cards” or take a photo of his/ her fridge to add to the “Pot”. Once the user is finished, one click on the “Generate” button will send a request for the AI API to generate and return possible recipes. 
 
 <p align="center">
   <img src="images/mockup_1.jpg" alt="Mockup Main Screen" width="30%" />
