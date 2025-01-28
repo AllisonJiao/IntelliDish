@@ -31,27 +31,29 @@ For users like busy university students and employees (who often lack the time, 
    - Provides possible recipes based on user input.  
 
 3. **Authentication Service**  
-   - Manages user login and authentication.  
+   - Manages user login and logout.  
 
 ### **3.3. Functional Requirements**
 <a name="fr1"></a>
 
 **Overview**:
-1. **Login/ Logout**
+1. **Login**
     * User logs in to IntelliDish using the authentication service with his/her credentials.
-2. **Get Full Recipe Recommendation**
+2. **Logout**
+    * User logs out from IntelliDish and the user session is terminated.
+3. **Get Full Recipe Recommendation**
     * User provides a list of available ingredients and cuisine preferences, and the AI API returns a list of possible recipes.
-3. **Get Partial Recipe Recommendation**
+4. **Get Partial Recipe Recommendation**
     * Suggest recipes where some ingredients are missing from user input, and provide possible substitutes for missing ingredients as well as possible recipes that doesn't match the user's cuisine preferences.
-4. **Participate In PotLuck**
+5. **Participate In PotLuck**
     * Users can collaboratively input available ingredients as a group for recipe recommendations.
-5. **Manage Recipes**
+6. **Manage Recipes**
     * Users can add or remove favorite recipes.
-6. **Manage Friends**
+7. **Manage Friends**
     * Users can add or remove friends, with whom they can PotLuck and share recipes with.
 
 **Detailed Flow for Each Independent Scenario**:
-1. **Login/ Logout**:
+1. **Login**:
     - **Description**: User logs in to IntelliDish using the authentication service with his/her credentials.
     - **Primary actor(s)**: User, Authentication Service.
     - **Main success scenario**:
@@ -66,7 +68,20 @@ For users like busy university students and employees (who often lack the time, 
             - **2a1**: Display error message that credentials are invalid.
             - **2a2**: Prompt the user to try again.
 
-2. **Get Full Recipe Recommendation**:
+2. **Logout**:
+    - **Description**:User logs out from IntelliDish and the user session is terminated.
+    - **Primary actor(s)**: User, Authentication Service.
+    - **Main success scenario**:
+        - **1**. The user selects the "logout" option from the IntelliDish app.
+        - **2**. The authentication service terminates the user's session.
+        - **3**. Clear user session data (tokens, cookies, etc.) for security purposes. 
+        - **4**. The user successfully logs out of IntelliDish and is redirected to the login screen.
+    - **Failure scenario(s)**:
+        - **2a**: Authentication service is unreachable/ unavailable, and session termination fails.
+            - **2a1**: Display error message that the authentication service is unreachable/ unavailable.
+            - **2a2**: Prompt the user to try again later, or check online whether then authentication service is down/ under maintainence.
+
+3. **Get Full Recipe Recommendation**:
     - **Description**: User provides a list of available ingredients and cuisine preferences, and the AI API returns a list of possible recipes.
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
@@ -80,7 +95,7 @@ For users like busy university students and employees (who often lack the time, 
         - **2b**: No recipes are possible for the provided user inputs.
             - **2b1**: Suggest the user to use partial recipe recommendations, PotLuck with friends, or try again with different inputs instead.
 
-3. **Get Partial Recipe Recommendation**:
+4. **Get Partial Recipe Recommendation**:
     - **Description**: Suggest recipes where some ingredients are missing from user input, and provide possible substitutes for missing ingredients as well as possible recipes that doesn't match the user's cuisine preferences.
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
@@ -95,7 +110,7 @@ For users like busy university students and employees (who often lack the time, 
         - **2b**: No recipes are possible for the provided user inputs.
             - **2b1**: Suggest the user to use partial recipe recommendations, PotLuck with friends, or try again with different inputs instead.
 
-4. **Participate In PotLuck**:
+5. **Participate In PotLuck**:
     - **Description**: Users can collaboratively input available ingredients as a group for recipe recommendations.
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
@@ -114,7 +129,7 @@ For users like busy university students and employees (who often lack the time, 
         - **3b**: No recipes are possible for the provided user inputs.
             - **3b1**: Suggest the users to use partial recipe recommendations, or try again with different inputs instead.
 
-5. **Manage Favorite Recipes**:
+6. **Manage Favorite Recipes**:
     - **Description**: Users can add or remove favorite recipes.
     - **Primary actor(s)**: User.
     - **Main success scenario**:
@@ -125,7 +140,7 @@ For users like busy university students and employees (who often lack the time, 
         - **1a**: The recipe addition fails due to data accesses issues on past queries.
             - **1a1**: Display error message that the addition failed, and prompt the user to try again. Removal of recipes do not fail.
 
-6. **Manage Friends**:
+7. **Manage Friends**:
     - **Description**: Users can add or remove friends, with whom they can PotLuck and share recipes with.
     - **Primary actor(s)**: User.
     - **Main success scenario**:
@@ -135,9 +150,6 @@ For users like busy university students and employees (who often lack the time, 
     - **Failure scenario(s)**:
         - **1a**: The friend addition fails because the entered username is invalid/ cannot be found.
             - **1a1**: Display error message for the user to double check that the entered username for friend addition is correct, and prompt the user to try again. Removal of friends do not fail.
-            
-
-
 
 ### **3.4. Screen Mockups**
 This is a screen mockup of what a user will see for the "Full Recipe Recommendation", "Partial Recipe Recommendation", and "Participate In PotLuck" use cases. The user can either add “ingredient cards” or take a photo of his/ her fridge to add to the “Pot”. Once the user is finished, one click on the “Generate” button will send a request for the AI API to generate and return possible recipes. 
@@ -152,7 +164,7 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
 <a name="nfr1"></a>
 
 1. **Data Security**
-    - **Description**: All user data (including login credentials, friend lists, query history, and saved recipes) should be processes using trusted libraries and APIs, and/ or properly encrypted using AES (Advanced Encryption Standard) or RSA (Rivest-Shamir-Adleman) protocols.
+    - **Description**: All user data (including login credentials, friend lists, query history, and saved recipes) should be processes using trusted libraries and APIs, and/ or properly encrypted using AES (Advanced Encryption Standard) or RSA (Rivest-Shamir-Adleman) protocols. Additionally, all user session data (tokens, cookies, etc.) should be cleared upon user logout.
     - **Justification**: IntelliDish should ensure data security in order to ensure user privacy and make users feel safe giving  information such as login credentials, personal preferences, and location to IntelliDish.
 2. **Usability/ Ease of Use**
     - **Description**: All user actions (such as inviting friends to PotLuck, adding/ removing friends, adding ingredients, etc.) should not take more than 4 clicks to complete.
