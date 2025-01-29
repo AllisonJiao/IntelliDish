@@ -312,7 +312,7 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
    - **Reason**: AWS offers robust free-tier options, scalability, and integration flexibility for deploying and managing EC2 instances. It complies with the project constraints and ensures reliability and availability.
 
 ### **4.5. Dependencies Diagram**
-
+![dependency_diagram.png](images/dependency_diagram.png)
 
 ### **4.6. Functional Requirements Sequence Diagram**
 1. [**[WRITE_NAME_HERE]**](#fr1)\
