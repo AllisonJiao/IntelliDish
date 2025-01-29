@@ -315,10 +315,20 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
 
 
 ### **4.6. Functional Requirements Sequence Diagram**
-1. [**[WRITE_NAME_HERE]**](#fr1)\
+1. [**Log In**](#fr1)\
+![UML_Use_Case_Diagram.png](images/sequence_log_in.png)
+2. [**Log Out**](#fr1)\
 [SEQUENCE_DIAGRAM_HERE]
-2. ...
-
+3. [**Get Full Recipe Recommendation**](#fr1)\
+[SEQUENCE_DIAGRAM_HERE]
+4. [**Get Partial Recipe Recommendation**](#fr1)\
+[SEQUENCE_DIAGRAM_HERE]
+5. [**Participate In PotLuck**](#fr1)\
+[SEQUENCE_DIAGRAM_HERE]
+6. [**Manage Recipes**](#fr1)\
+[SEQUENCE_DIAGRAM_HERE]
+7. [**Manage Friends**](#fr1)\
+[SEQUENCE_DIAGRAM_HERE]
 
 ### **4.7. Non-Functional Requirements Design**
 1. [**[WRITE_NAME_HERE]**](#nfr1)
