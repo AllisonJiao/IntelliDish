@@ -291,7 +291,42 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
 1. **MongoDB Database**
     - **Purpose**: Stores all user data (credentials, preferences, friend lists), recipes, ingredient lists, and collaborative group information.
     -  **Rational**: MongoDB’s flexible document-based schema allows handling dynamic and unstructured data, such as recipes and ingredient metadata. It integrates seamlessly with TypeScript via libraries like Mongoose, providing type safety and schema validation.
+    ##### **Database Collections**
 
+    ###### **Users (`/users`)**
+    ```
+    [
+        {
+        "_id": 
+        "name": 
+        "friends":
+        }
+    ]
+    ```
+
+    ##### **Recipes (`/recipes`)**
+    ```
+    [
+        {
+        "_id": 
+        "name": 
+        "ingredients":
+        "procedure": 
+        }
+    ]
+    ```
+
+    ##### **Ingredients (`/ingredients`)**
+    ```
+    [
+        {
+        "_id": 
+        "name": 
+        "category": 
+        "quantity": 
+        }
+    ]
+    ```
 ### **4.3. External Modules**
 1. **OPENAI API** 
     - **Purpose**: Processes user-provided inputs such as ingredients and cuisine preferences to generate personalized recipe suggestions using advanced NLP.
