@@ -315,10 +315,19 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
 ![dependency_diagram.png](images/dependency_diagram.png)
 
 ### **4.6. Functional Requirements Sequence Diagram**
-1. [**[WRITE_NAME_HERE]**](#fr1)\
-[SEQUENCE_DIAGRAM_HERE]
-2. ...
+1. **Log in**
 
+2. **Log out**
+
+3. **Get Full Recipe Recommendation**
+
+4. **Get Partial Recipe Recommendation**
+
+5. **Participate In PotLuck**
+
+6. **Manage Recipes**
+
+7. **Manage Friends**
 
 ### **4.7. Non-Functional Requirements Design**
 1. **Data Security**
