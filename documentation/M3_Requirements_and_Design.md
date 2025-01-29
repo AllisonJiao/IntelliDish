@@ -291,7 +291,42 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
 1. **MongoDB Database**
     - **Purpose**: Stores all user data (credentials, preferences, friend lists), recipes, ingredient lists, and collaborative group information.
     -  **Rational**: MongoDB’s flexible document-based schema allows handling dynamic and unstructured data, such as recipes and ingredient metadata. It integrates seamlessly with TypeScript via libraries like Mongoose, providing type safety and schema validation.
+    ##### **Database Collections**
 
+    ##### **Users (`/users`)**
+    ```
+    [
+        {
+        "_id": 
+        "name": 
+        "friends":
+        }
+    ]
+    ```
+
+    ##### **Recipes (`/recipes`)**
+    ```
+    [
+        {
+        "_id": 
+        "name": 
+        "ingredients":
+        "procedure": 
+        }
+    ]
+    ```
+
+    ##### **Ingredients (`/ingredients`)**
+    ```
+    [
+        {
+        "_id": 
+        "name": 
+        "category": 
+        "quantity": 
+        }
+    ]
+    ```
 ### **4.3. External Modules**
 1. **OPENAI API** 
     - **Purpose**: Processes user-provided inputs such as ingredients and cuisine preferences to generate personalized recipe suggestions using advanced NLP.
@@ -312,7 +347,7 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
    - **Reason**: AWS offers robust free-tier options, scalability, and integration flexibility for deploying and managing EC2 instances. It complies with the project constraints and ensures reliability and availability.
 
 ### **4.5. Dependencies Diagram**
-
+![dependency_diagram.png](images/dependency_diagram.png)
 
 ### **4.6. Functional Requirements Sequence Diagram**
 1. [**Log In**](#fr1)\
@@ -331,9 +366,12 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
 [SEQUENCE_DIAGRAM_HERE]
 
 ### **4.7. Non-Functional Requirements Design**
-1. [**[WRITE_NAME_HERE]**](#nfr1)
-    - **Validation**: ...
-2. ...
+1. **Data Security**
+    - **Validation**: Use Advanced Encryption Standard (AES) encryption for user data at rest and Transport Layer Security (TLS) for data in transit. Verify the implementation through penetration testing and static code analysis to ensure compliance with security standards.
+2. **Usability/Ease of Use**
+    - **Validation**: Conduct usability tests with diverse user groups, ensuring key actions like recipe searching or PotLuck creation require no more than 4 clicks. Provide contextual tooltips and real-time error handling to guide users effectively and enhance ease of use.
+3. **Performance**
+    - **Validation**: Use stress testing tools like JMeter or Locust to simulate real-world usage. Optimize performance through caching and query tuning to ensure 90% of API requests complete within 10 seconds under load.
 
 
 ### **4.8. Main Project Complexity Design**
