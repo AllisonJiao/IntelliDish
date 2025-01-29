@@ -21,6 +21,22 @@ export const RecipesRoutes = [
        ]
    },
    {
+       method: "get",
+       route: "/recipes/:id",
+       action: controller.getRecipeById,
+       validation: [
+           param("id").isMongoId()
+       ]
+   },
+   {
+        method: "get",
+        route: "/recipes/:id/getIngredientDetails",
+        action: controller.getIngredientsFromRecipeId,
+        validation: [
+            param("id").isMongoId()
+        ]
+   },
+   {
        method: "post",
        route: "/recipes",
        action: controller.postNewRecipe,

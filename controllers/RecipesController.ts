@@ -17,6 +17,34 @@ export class RecipesController {
        res.status(200).send(recipe_by_id);
    };
 
+   async getIngredientsFromRecipeId (req: Request, res: Response, nextFunction: NextFunction) {
+        // Return a list of ingredients (object) from the recipe by id
+        const recipeId = req.params.id;
+        const pipeline = 
+        [
+            {
+              '$match': {
+                    '_id': new ObjectId(recipeId)
+              }
+            },
+            {
+              '$lookup' : {
+                  'from' : 'Ingredients',
+                  'localField' : 'ingredients',
+                  'foreignField' : 'name',
+                  'as' : 'ingredientDetails'
+              }
+            }
+        ];
+        const recipeWithIngredients = await client.db("IntelliDish").collection("Recipes").aggregate(pipeline).toArray();
+
+        if (recipeWithIngredients.length === 0) {
+            return res.status(404).json({ error: "Recipe not found" });
+        }
+
+        return res.status(200).json(recipeWithIngredients[0].ingredientDetails);
+   }
+
 
    async postNewRecipe (req: Request, res: Response, nextFunction: NextFunction) {
        // Create a new ingredient
