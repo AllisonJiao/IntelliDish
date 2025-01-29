@@ -61,20 +61,25 @@ const openai = new OpenAI({
 async function ingredientsRecognition() {
   try {
       // Read the image file and convert it to base64
-      const imagePath = path.resolve(__dirname, "./testImages/image1.png"); // Replace with your local image
+      const imagePath = path.resolve(__dirname, "./testImages/image1.png");
       const imageBase64 = fs.readFileSync(imagePath).toString("base64");
 
-      // Send request to OpenAI
+      // Send request to OpenAI with JSON mode
       const response = await openai.chat.completions.create({
           model: "gpt-4o",
+          response_format: { type: "json_object" }, // Ensure structured output
           messages: [
+              {
+                  role: "system",
+                  content: "You are an AI assistant that extracts ingredients from images and categorizes them into structured data. Always return a valid JSON response with ingredients, categories, and quantities."
+              },
               {
                   role: "user",
                   content: [
-                      { type: "text", text: "Identify the ingredients in this picture." },
-                      { 
+                      { type: "text", text: "Identify the ingredients in this picture and return a structured response." },
+                      {
                           type: "image_url",
-                          image_url: { 
+                          image_url: {
                               "url": `data:image/jpeg;base64,${imageBase64}`
                           }
                       }
@@ -83,11 +88,12 @@ async function ingredientsRecognition() {
           ]
       });
 
-      console.log(response.choices[0].message);
+      // Log the structured response
+      console.log(JSON.stringify(response.choices[0].message.content, null, 2));
   } catch (error) {
       console.error("Error:", error);
   }
-};
+}
 
 
 client.connect().then(() => {
