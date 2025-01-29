@@ -293,7 +293,7 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
     -  **Rational**: MongoDB’s flexible document-based schema allows handling dynamic and unstructured data, such as recipes and ingredient metadata. It integrates seamlessly with TypeScript via libraries like Mongoose, providing type safety and schema validation.
     ##### **Database Collections**
 
-    ###### **Users (`/users`)**
+    ##### **Users (`/users`)**
     ```
     [
         {
