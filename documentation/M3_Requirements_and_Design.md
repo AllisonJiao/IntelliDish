@@ -297,7 +297,8 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
     ```
     [
         {
-        "_id": 
+        "_id":
+        "email":
         "name": 
         "friends":
         }
@@ -311,7 +312,11 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
         "_id": 
         "name": 
         "ingredients":
-        "procedure": 
+        "procedure":
+        "cuisine type":
+        "preparation time":
+        "recipe complexity":
+        "price":
         }
     ]
     ```
