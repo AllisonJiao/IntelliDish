@@ -426,11 +426,11 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
             - Spice level (1-10, or "don't care")
         - A list of recipes returned by the AI API each containing the following metadata:
             - Recipe name
-            - Preparation time (scaled 1-10)
-            - Recipe complexity (scaled 1-10)
-            - Nutritional value (scaled 1-10)
-            - Calories (scaled 1-10)
-            - Spice level (scaled 1-10)
+            - Preparation time (1-10)
+            - Recipe complexity (1-10)
+            - Nutritional value (1-10)
+            - Calories (1-10)
+            - Spice level (1-10)
     - **Output**: 
         - A ranked list of the input recipes based on user preferences input (from slidebars).
     - **Main computational logic**: ...
