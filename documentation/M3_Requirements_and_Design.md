@@ -441,6 +441,7 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
 
 
 ## 5. Contributions
+**TLDR**: Work was distributed evenly among team members, and all members are satisfied.
 - Allison Jiao
     - section 2
     - section 3.2
@@ -451,12 +452,11 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
     - section 3.1
     - section 3.2
     - section 3.3
-    - section 4.6 (minor)
     - section 4.8
 
 - Angela Gao
     - section 4.5 
-    - section 4.6 (main)
+    - section 4.6
     - section 4.7 
     - section 4.8
 
