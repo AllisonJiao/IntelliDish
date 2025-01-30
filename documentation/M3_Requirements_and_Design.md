@@ -441,7 +441,27 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
 
 
 ## 5. Contributions
-- ...
-- ...
-- ...
-- ...
+- Allison Jiao
+    - section 2
+    - section 3.2
+    - section 3.4
+    - section 4.2
+- Edward Han
+    - section 2
+    - section 3.1
+    - section 3.2
+    - section 3.3
+    - section 4.6 (minor)
+    - section 4.8
+
+- Angela Gao
+    - section 4.5 
+    - section 4.6 (main)
+    - section 4.7 
+    - section 4.8
+
+- Yixi Lu
+    - section 4.1
+    - section 4.2
+    - section 4.3
+    - section 4.4
