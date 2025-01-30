@@ -381,21 +381,21 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
 
 ### **4.8. Main Project Complexity Design**
 **Recipe Ranking Algorithm**
-- **Description**: When the user asks for recipe recommendations, he/ she will have the option to adjust a series of slidebars for the following:
+- **Description**: When the user asks for recipe recommendations, he/ she will have the option to adjust a series of slidebars for the following attributes:
     - Preparation time 
     - Recipe complexity
     - Nutritional value
     - Number of calories
     - Spice level
 
-    The user can either choose a value from the slidebars, or choose a "don't care" option. For example, a busy student or employee might enter values like:
+    The user can either choose a value from 1 to 10 from the slidebars, or choose a "don't care" option. For example, a busy student or employee might enter values like:
     - Preparation time = 3/10 (fast preparation)
     - Recipe complexity = 3/10 (easy preparation)
     - Nutritional value = don't care
     - Number of calories = don't care
     - Spice level = don't care
 
-    This will result in a ranking of recipes (returned by the AI API) that ranks fast and easy recipes higher than others. For each recipe returned by the AI API, metatdata ratings corresponding to the slidebar fields will also be returned by the AI API. For example, for a **Beef Wellington** the metadata would look like:
+    This will result in a ranking of recipes that prioritizes ranking fast and easy recipes higher than others. For each recipe returned by the AI API, metatdata ratings corresponding to the slidebar fields will also be returned by the AI API. For example, for a **Beef Wellington** the metadata would look like:
     - Preparation time: 9/10 (It is a time-intensive dish, requiring multiple steps such as searing, wrapping, chilling, and baking)
     - Recipe complexity: 10/10 (One of the most complex recipes, requiring precise technique, temperature control, and multiple cooking steps)
     - Nutritional value: 6/10 (Contains high protein from beef and some nutrients from mushrooms, but also high in saturated fat and butter)
@@ -409,7 +409,7 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
     - Number of calories: 5/10 (Moderate calorie content; can be lower if made with light dressing but higher with extra cheese and croutons)
     - Spice level: 2/10 (Not a spicy dish; seasoning mostly comes from garlic, lemon, and anchovies)
 
-- **Why complex?**: The ranking of recipes (returned by the AI API) based on user preferences is a non-trivial, complex process due to the following reasons:
+- **Why complex?**: The ranking of recipes based on user preferences is a non-trivial, complex process due to the following reasons:
     - Requires adaptive/ dynamic weighted optimization on multiple attributes:
     The ranking system must optimize the ranking based on multiple user defined attributes (such as spice level, etc.) adaptively/ dynamically. Depending on the user's slidebars input, different attributes have varying degrees of importance and weighing when computing rankings.
     - Must handle "don't care" user inputs:
@@ -432,7 +432,7 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
             - Calories (scaled 1-10)
             - Spice level (scaled 1-10)
     - **Output**: 
-        - A ranked list of recipes (returned by the AI API) based on user preferences.
+        - A ranked list of the input recipes based on user preferences input (from slidebars).
     - **Main computational logic**: ...
     - **Pseudo-code**: ...
         ```
