@@ -1,4 +1,4 @@
-import express, {NextFunction, Request, Response} from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import { client } from "./services";
 import { IngredientsRoutes } from "./routes/IngredientsRoutes";
@@ -58,10 +58,12 @@ const openai = new OpenAI({
 //    ],
 // });
 
-async function ingredientsRecognition() {
+const imageDirname = "./testImages/image1.png";
+
+export async function ingredientsRecognition(imgDirname: string) {
   try {
       // Read the image file and convert it to base64
-      const imagePath = path.resolve(__dirname, "./testImages/image1.png");
+      const imagePath = path.resolve(__dirname, imgDirname);
       const imageBase64 = fs.readFileSync(imagePath).toString("base64");
 
       // Send request to OpenAI with JSON mode

@@ -12,10 +12,18 @@ export const IngredientsRoutes = [
     }, 
     {
         method: "get",
-        route: "/ingredients/:id",
+        route: "/ingredients/id/:id",
         action: controller.getIngredientById,
         validation: [
             param("id").isMongoId()
+        ]
+    }, 
+    {
+        method: "get",
+        route: "/ingredients/name/:name",
+        action: controller.getIngredientByName,
+        validation: [
+            param("name").isString()
         ]
     }, 
     {
@@ -26,6 +34,14 @@ export const IngredientsRoutes = [
             body("name").isString(),
             body("category").isString(),
             // body("amount").isInt() --> is a non-negative integer, check for function later
+        ]
+    },
+    {
+        method: "put",
+        route: "/ingredients",
+        action: controller.updateIngredientQuantity,
+        validation: [
+            body("name").isString()
         ]
     }, 
     {
