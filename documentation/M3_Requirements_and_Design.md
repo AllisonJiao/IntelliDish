@@ -403,13 +403,13 @@ This means the ranking will prioritize fast and easy recipes while ignoring the 
 Each recipe returned by the AI API will come with corresponding metadata ratings. Examples:
 
 Beef Wellington
-  - Preparation time: 9/10 (Time-intensive, multiple steps)\
+  - Preparation time: 9/10 (Time-intensive, multiple steps)
   - Recipe complexity: 10/10 (Very complex, requires precise technique)
   - Nutritional value: 6/10 (High protein but also high saturated fat)
   - Number of calories: 8/10 (High due to puff pastry and butter)
   - Spice level: 2/10 (Mild, seasoned with salt, pepper, and mustard)
   - Price: 9/10 (Expensive, premium ingredients)
-  - Cuisine type: French\
+  - Cuisine type: French
 
 Caesar Salad
   - Preparation time: 3/10 (Quick to prepare)
