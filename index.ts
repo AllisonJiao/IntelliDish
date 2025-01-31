@@ -48,15 +48,45 @@ const openai = new OpenAI({
    apiKey: process.env.REDACTED,
  });
 
- // TODO:
- // Integrate messages prompt with the recipe generation feature
-//  const completion = openai.chat.completions.create({
-//    model: "gpt-4o-mini",
-//    store: true,
-//    messages: [
-//      {"role": "user", "content": "write a haiku about ai"},
-//    ],
-// });
+interface RecipeRequest {
+  ingredients: string[];
+}
+
+export async function recipesGeneration(jsonData: RecipeRequest) {
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      response_format: { type: "json_object" }, // Ensure structured output
+      messages: [
+        {
+          role: "system",
+          content: "You are an AI assistant that generates recipes from given ingredients and categorizes them into structured data. Always return a valid JSON response with recipes, list of ingredients, procedure, cuisine type, preparation time, recipe complexity, and price."
+        },
+        {
+          role: "user",
+          content: [
+            { 
+              type: "text", 
+              text: `Use the ingredients to generate a recipe and return a structured response:\n\n${JSON.stringify(jsonData)}`
+            }
+          ]
+        }
+      ]
+    });
+
+    // Log the structured response
+    const json = response.choices[0].message.content;
+    let obj;
+    if (json) {
+      obj = JSON.parse(json);
+      // console.log(obj);
+    }
+
+    return obj;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
 
 export async function ingredientsRecognition(imgDirname: string) {
   try {
@@ -102,6 +132,19 @@ export async function ingredientsRecognition(imgDirname: string) {
   }
 }
 
+const testIngredients = {
+  "ingredients": [
+    "Tomato",
+    "Chicken Breast",
+    "Olive Oil",
+    "Garlic",
+    "Parmesan Cheese",
+    "Basil",
+    "Salt",
+    "Black Pepper"
+  ]
+};
+
 
 client.connect().then(() => {
    console.log("MongoDB Client Connected");
@@ -109,6 +152,7 @@ client.connect().then(() => {
 
    app.listen(3001, () => {
        console.log("Listening on port " + 3001);
+      //  recipesGeneration(testIngredients).then(response => console.log(response));
       //  completion.then((result) => console.log(result.choices[0].message));
    });
 }).catch(err => {

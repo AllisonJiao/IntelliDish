@@ -1,7 +1,7 @@
 import { NextFunction, Response, Request } from "express";
 import { client } from "../services";
 import { MongoClient, ObjectId } from "mongodb";
-
+import { recipesGeneration } from "../index";
 
 export class RecipesController {
    async getAllRecipes (req: Request, res: Response, nextFunction: NextFunction) {
@@ -47,11 +47,25 @@ export class RecipesController {
 
 
    async postNewRecipe (req: Request, res: Response, nextFunction: NextFunction) {
-       // Create a new ingredient
+       // Create a new recipe
        const new_recipe = await client.db("IntelliDish").collection("Recipes").insertOne(req.body);
        res.status(200).send(`Created ingredient with id: ${new_recipe.insertedId}`);
    };
 
+   async postNewRecipeFromAI (req: Request, res: Response, nextFunction: NextFunction) {
+        // Create a new recipe by given ingredients using AI
+        const obj = await recipesGeneration(req.body.ingredients);
+
+        // Extract the recipe
+        if (!obj || !obj.recipe) {
+            return res.status(400).send("No recipes found.");
+        }
+        const recipe = obj.recipe;
+
+        await client.db("IntelliDish").collection("Recipes").insertOne(recipe);
+
+        res.status(200).send(`An AI-generated recipe is posted!`);
+   }
 
    async putRecipeById (req: Request, res: Response, nextFunction: NextFunction) {
        // Update an recipe by id
