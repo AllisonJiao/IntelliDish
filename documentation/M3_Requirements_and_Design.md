@@ -371,74 +371,144 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
 [SEQUENCE_DIAGRAM_HERE]
 
 ### **4.7. Non-Functional Requirements Design**
-1. **Data Security**
+1. [**Data Security**](#nfr1)
     - **Validation**: Use Advanced Encryption Standard (AES) encryption for user data at rest and Transport Layer Security (TLS) for data in transit. Verify the implementation through penetration testing and static code analysis to ensure compliance with security standards.
-2. **Usability/Ease of Use**
+2. [**Usability/Ease of Use**](#nfr1)
     - **Validation**: Conduct usability tests with diverse user groups, ensuring key actions like recipe searching or PotLuck creation require no more than 4 clicks. Provide contextual tooltips and real-time error handling to guide users effectively and enhance ease of use.
-3. **Performance**
+3. [**Performance**](nfr1)
     - **Validation**: Use stress testing tools like JMeter or Locust to simulate real-world usage. Optimize performance through caching and query tuning to ensure 90% of API requests complete within 10 seconds under load.
 
 
-### **4.8. Main Project Complexity Design**
-**Recipe Ranking Algorithm**
-- **Description**: When the user asks for recipe recommendations, he/ she will have the option to adjust a series of slidebars for the following attributes:
-    - Preparation time 
-    - Recipe complexity
-    - Nutritional value
-    - Number of calories
-    - Spice level
+### **4.8. Main Project Complexity Design - Recipe Ranking Algorithm**
+**Description:**
 
-    The user can either choose a value from 1 to 10 from the slidebars, or choose a "don't care" option. For example, a busy student or employee might enter values like:
-    - Preparation time = 3/10 (fast preparation)
-    - Recipe complexity = 3/10 (easy preparation)
-    - Nutritional value = don't care
-    - Number of calories = don't care
-    - Spice level = don't care
+When the user requests recipe recommendations, they will have the option to adjust a series of slide bars corresponding to key attributes of a recipe:
+  - Preparation time
+  - Recipe complexity
+  - Nutritional value
+  - Number of calories
+  - Spice level
+  - Price
+  - Cuisine type (optional filtering criterion)
 
-    This will result in a ranking of recipes that prioritizes ranking fast and easy recipes higher than others. For each recipe returned by the AI API, metatdata ratings corresponding to the slidebar fields will also be returned by the AI API. For example, for a **Beef Wellington** the metadata would look like:
-    - Preparation time: 9/10 (It is a time-intensive dish, requiring multiple steps such as searing, wrapping, chilling, and baking)
-    - Recipe complexity: 10/10 (One of the most complex recipes, requiring precise technique, temperature control, and multiple cooking steps)
-    - Nutritional value: 6/10 (Contains high protein from beef and some nutrients from mushrooms, but also high in saturated fat and butter)
-    - Number of calories: 8/10 (Typically high in calories due to puff pastry, butter, and rich fillings)
-    - Spice level: 2/10 (Not a spicy dish, typically seasoned with salt, pepper, and sometimes mustard)
+Each slide bar allows the user to select a value from 1 to 10, or choose “don’t care”, which means the attribute will not be considered in the ranking process. For example, a busy student or employee might input:
+  - Preparation time = 3/10 (prefers quick recipes)
+  - Recipe complexity = 3/10 (wants easy recipes)
+  - Nutritional value = "don't care"
+  - Number of calories = "don't care"
+  - Spice level = "don't care"
 
-    and for a **Caesar Salad** the metadata would look like:
-    - Preparation time: 3/10 (Relatively quick to prepare, especially if using pre-made dressing and croutons)
-    - Recipe complexity: 3/10 (Simple to make, but making the dressing from scratch requires emulsification skills)
-    - Nutritional value: 7/10 (Contains healthy fats from olive oil, protein from cheese and anchovies, and fiber from romaine lettuce, but can be high in sodium and fat)
-    - Number of calories: 5/10 (Moderate calorie content; can be lower if made with light dressing but higher with extra cheese and croutons)
-    - Spice level: 2/10 (Not a spicy dish; seasoning mostly comes from garlic, lemon, and anchovies)
+This means the ranking will prioritize fast and easy recipes while ignoring the other attributes.
 
-- **Why complex?**: The ranking of recipes based on user preferences is a non-trivial, complex process due to the following reasons:
-    - Requires adaptive/ dynamic weighted optimization on multiple attributes:
-    The ranking system must optimize the ranking based on multiple user defined attributes (such as spice level, etc.) adaptively/ dynamically. Depending on the user's slidebars input, different attributes have varying degrees of importance and weighing when computing rankings.
-    - Must handle "don't care" user inputs:
-    If a user selects “don’t care” for certain attributes, those attributes should be excluded from the ranking calculations, and should not affect the quality of the ranking.
-    - Requires our own judgement for design optimization:
-    We need to make difficult options like choosing which ranking algorithm to use, and comparing the pros and cons of each algorithm. For example, if most use cases requires ranking a small number of recipes, then we should prioritize ranking quality over time complexity.
-- **Design**:
-    - **Input**: 
-        - User Preferences (from slidebars):
-            - Preparation time (1-10, or "don't care")
-            - Recipe complexity (1-10, or "don't care")
-            - Nutritional value (1-10, or "don't care")
-            - Number of calories (1-10, or "don't care")
-            - Spice level (1-10, or "don't care")
-        - A list of recipes returned by the AI API each containing the following metadata:
-            - Recipe name
-            - Preparation time (1-10)
-            - Recipe complexity (1-10)
-            - Nutritional value (1-10)
-            - Calories (1-10)
-            - Spice level (1-10)
-    - **Output**: 
-        - A ranked list of the input recipes based on user preferences input (from slidebars).
-    - **Main computational logic**: ...
-    - **Pseudo-code**: ...
-        ```
-        
-        ```
+Each recipe returned by the AI API will come with corresponding metadata ratings. Examples:
 
+Beef Wellington
+  - Preparation time: 9/10 (Time-intensive, multiple steps)\
+  - Recipe complexity: 10/10 (Very complex, requires precise technique)
+  - Nutritional value: 6/10 (High protein but also high saturated fat)
+  - Number of calories: 8/10 (High due to puff pastry and butter)
+  - Spice level: 2/10 (Mild, seasoned with salt, pepper, and mustard)
+  - Price: 9/10 (Expensive, premium ingredients)
+  - Cuisine type: French\
+
+Caesar Salad
+  - Preparation time: 3/10 (Quick to prepare)
+  - Recipe complexity: 3/10 (Simple, but making dressing from scratch requires emulsification)
+  - Nutritional value: 7/10 (Healthy fats, protein, fiber, but can be high in sodium)
+  - Number of calories: 5/10 (Moderate, varies with dressing and toppings)
+  - Spice level: 2/10 (Mild, seasoned with garlic, lemon, and anchovies)
+  - Price: 3/10 (Inexpensive, common ingredients)
+  - Cuisine type: Italian
+
+**Why complex?:**
+1. Adaptive Multi-Attribute Optimization
+  - The system must dynamically adjust rankings based on multiple user-defined attributes.
+  - Each user may prioritize different aspects (e.g., one may focus on nutritional value, while another may care more about speed and simplicity).
+2. Handling “Don’t Care” Inputs
+  - If a user selects “don’t care” for an attribute, it should be excluded from ranking calculations.
+  - The ranking algorithm must adapt dynamically based on which attributes are relevant.
+3. Choosing the Best Ranking Algorithm
+  - The system must determine which ranking approach to use based on:
+  - The number of recipes being ranked.
+  - The trade-off between accuracy and computational efficiency.
+  - The distribution of user preferences, as different weight distributions can impact ranking behavior.
+
+**Design**:
+
+Input:
+1. User Preferences (from Slide Bars):
+  - Preparation time (1-10, or "don't care")
+  - Recipe complexity (1-10, or "don't care")
+  - Nutritional value (1-10, or "don't care")
+  - Number of calories (1-10, or "don't care")
+  - Spice level (1-10, or "don't care")
+  - Price (1-10, or "don't care")
+  - Cuisine type (optional filtering criterion)
+2. List of Recipes Returned by AI API:
+  - Recipe name
+  - Metadata attributes (Preparation time, Recipe complexity, Nutritional value, Calories, Spice level, Price, Cuisine type)
+
+Output:
+  - A ranked list of recipes, sorted based on user preferences.
+
+**Main computational logic**:
+
+1. Weight Assignment:
+  - Convert user preferences into weights for each attribute.
+  - Normalize weights so that only selected attributes contribute to ranking.
+2. Exclude "Don't Care" Attributes:
+  - Ignore attributes that the user marked as “don’t care” in ranking calculations.
+3. Compute Recipe Scores:
+  - Use a weighted similarity function to compare each recipe’s metadata against user preferences.
+  - The function should prioritize matches while allowing some flexibility.
+4. Sort Recipes by Score:
+  - Rank recipes in descending order based on their computed similarity scores.
+
+**Pseudo-code**:
+
+```
+FUNCTION rank_recipes(user_preferences, recipe_list)
+    // Step 1: Assign Weights Based on User Preferences
+    weights ← Normalize user preferences so that important attributes have more influence
+
+    ranked_recipes ← Empty list
+
+    // Step 2: Calculate Score for Each Recipe
+    FOR each recipe IN recipe_list DO
+        score ← 0
+        total_weight ← 0
+
+        // Step 3: Evaluate Each Attribute
+        FOR each attribute IN recipe.metadata DO
+            user_value ← user_preferences[attribute]
+
+            IF user_value is NOT "don't care" THEN
+                attribute_weight ← weights[attribute]
+                
+                // Calculate how well the recipe matches the user’s preference
+                match_score ← (10 - ABS(recipe.metadata[attribute] - user_value)) * attribute_weight
+                
+                score ← score + match_score
+                total_weight ← total_weight + attribute_weight
+
+        // Normalize score if applicable
+        IF total_weight > 0 THEN
+            score ← score / total_weight
+
+        // Store the recipe and its final score
+        ADD (recipe.name, score) TO ranked_recipes
+
+    // Step 4: Sort Recipes by Score (Descending Order)
+    SORT ranked_recipes BY score IN descending order
+
+    // Step 5: Return the Ranked List
+    RETURN ranked_recipes
+```
+
+**Additional Considerations**
+
+1. Cuisine Type Filtering: If the user selects a specific cuisine type, recipes outside of that cuisine should be filtered out before ranking.
+2. Real-Time UI Updates: The system should instantly re-rank recipes when users adjust sliders, ensuring a seamless experience.
 
 ## 5. Contributions
 **TLDR**: Work was distributed evenly among team members, and all members are satisfied.
