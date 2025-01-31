@@ -368,9 +368,9 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
 5. [**Participate In PotLuck**](#fr1)\
 ![UML_Use_Case_Diagram.png](images/seq-dia_5.png)
 6. [**Manage Recipes**](#fr1)\
-[SEQUENCE_DIAGRAM_HERE]
+![UML_Use_Case_Diagram.png](images/sequence6.png)
 7. [**Manage Friends**](#fr1)\
-[SEQUENCE_DIAGRAM_HERE]
+![UML_Use_Case_Diagram.png](images/sequence7.png)
 
 ### **4.7. Non-Functional Requirements Design**
 1. [**Data Security**](#nfr1)
