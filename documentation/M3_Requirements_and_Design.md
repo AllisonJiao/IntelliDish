@@ -530,7 +530,8 @@ FUNCTION rank_recipes(user_preferences, recipe_list)
     - section 4.8
 
 - Angela Gao
-    - section 4.5 
+    - section 4.1
+    - section 4.5
     - section 4.6
     - section 4.7 
     - section 4.8
