@@ -46,7 +46,7 @@ export class IngredientsController {
         // ?? TODO: Merge the duplicated objects
         
         res.status(200).send(`Updated ingredients from the image successfully.`);
-    }
+    };
 
     async updateIngredientQuantity (req: Request, res: Response, nextFunction: NextFunction) {
         // Merge duplicated objects witn the same name

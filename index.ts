@@ -60,7 +60,22 @@ export async function recipesGeneration(jsonData: RecipeRequest) {
       messages: [
         {
           role: "system",
-          content: "You are an AI assistant that generates recipes from given ingredients and categorizes them into structured data. Always return a valid JSON response with recipes, list of ingredients, procedure, cuisine type, preparation time, recipe complexity, and price."
+          content: `
+          You are an AI assistant that generates recipes from given ingredients.
+          Return a **valid JSON object** where all fields **match this exact database format**:
+          
+          {
+            "name": "Recipe Name",
+            "ingredients": ["ingredient1", "ingredient2", "ingredient3"],
+            "procedure": ["Step 1", "Step 2", "Step 3"],
+            "cuisine type": "Cuisine",
+            "preparation time": "Time in minutes",
+            "recipe complexity": "Low | Moderate | High",
+            "price": "Estimated price (numeric)"
+          }
+
+          Always return the response in **this exact structure**.
+          `
         },
         {
           role: "user",
@@ -132,28 +147,12 @@ export async function ingredientsRecognition(imgDirname: string) {
   }
 }
 
-const testIngredients = {
-  "ingredients": [
-    "Tomato",
-    "Chicken Breast",
-    "Olive Oil",
-    "Garlic",
-    "Parmesan Cheese",
-    "Basil",
-    "Salt",
-    "Black Pepper"
-  ]
-};
-
-
 client.connect().then(() => {
    console.log("MongoDB Client Connected");
 
 
    app.listen(3001, () => {
        console.log("Listening on port " + 3001);
-      //  recipesGeneration(testIngredients).then(response => console.log(response));
-      //  completion.then((result) => console.log(result.choices[0].message));
    });
 }).catch(err => {
    console.error(err);

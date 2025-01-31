@@ -45,6 +45,12 @@ export const RecipesRoutes = [
        ]
    },
    {
+       method: "post",
+       route: "/recipes/AI",
+       action: controller.postNewRecipeFromAI,
+       validation: []
+   },
+   {
        method: "put",
        route: "/recipes/:id",
        action: controller.putRecipeById,

@@ -57,15 +57,16 @@ export class RecipesController {
         const obj = await recipesGeneration(req.body.ingredients);
 
         // Extract the recipe
-        if (!obj || !obj.recipe) {
+        if (!obj || !obj.recipes) {
             return res.status(400).send("No recipes found.");
         }
-        const recipe = obj.recipe;
+        const recipe = obj.recipes;
+        console.log(recipe);
 
-        await client.db("IntelliDish").collection("Recipes").insertOne(recipe);
+        await client.db("IntelliDish").collection("Recipes").insertMany(recipe);
 
         res.status(200).send(`An AI-generated recipe is posted!`);
-   }
+   };
 
    async putRecipeById (req: Request, res: Response, nextFunction: NextFunction) {
        // Update an recipe by id
