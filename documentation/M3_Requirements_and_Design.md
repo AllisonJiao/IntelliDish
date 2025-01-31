@@ -360,11 +360,11 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
 2. [**Log Out**](#fr1)\
 ![UML_Use_Case_Diagram.png](images/sequence_log_out.png)
 3. [**Get Full Recipe Recommendation**](#fr1)\
-[SEQUENCE_DIAGRAM_HERE]
+![UML_Use_Case_Diagram.png](images/seq-dia_3.png)
 4. [**Get Partial Recipe Recommendation**](#fr1)\
-[SEQUENCE_DIAGRAM_HERE]
+![UML_Use_Case_Diagram.png](images/seq-dia_4.png)
 5. [**Participate In PotLuck**](#fr1)\
-[SEQUENCE_DIAGRAM_HERE]
+![UML_Use_Case_Diagram.png](images/seq-dia_5.png)
 6. [**Manage Recipes**](#fr1)\
 [SEQUENCE_DIAGRAM_HERE]
 7. [**Manage Friends**](#fr1)\
@@ -536,3 +536,4 @@ FUNCTION rank_recipes(user_preferences, recipe_list)
     - section 4.2
     - section 4.3
     - section 4.4
+    - section 4.6
