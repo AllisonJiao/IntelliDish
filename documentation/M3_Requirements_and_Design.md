@@ -198,7 +198,7 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
         6. `boolean removeFriend(String userId, String friendUsername);`
            - **Purpose**: Removes a friend from the user's friend list.
         
-2. **Recipe Recommendation Component**
+2. **Recipe Management Component**
    - **Purpose**: Manages communication with the AI API for generating recipes based on user-provided ingredients and preferences. It handles full and partial recipe recommendations, ensuring that missing ingredients are substituted appropriately.
    - **Rational**:  Centralizing recipe logic allows easy integration with external APIs and simplifies future enhancements, such as adding dietary filters.
    - **Interfaces**:
@@ -208,6 +208,8 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
         - **Purpose**: Suggests recipes even if some ingredients are missing, with substitutes. Return a list of recipes with substitution suggestions
      3. `boolean saveRecipe(Recipe recipe);`
         - **Purpose**: Saves a newly generated recipe to the database if it does not already exist, preventing duplicate entries and enabling recipe history tracking. Returns `true` if successful, `false` otherwise.
+     4. `boolean removeRecipe(String recipeId);`
+        - **Purpose**: Removes a saved recipe from the database based on the recipe ID. Returns `true` if successful, `false` otherwise.
     - **HTTP/REST Interfaces interact with OPENAI API**:
       1. `POST /recipes/generate`
          - **Purpose**: Generates recipes based on ingredients and cuisine preferences.
