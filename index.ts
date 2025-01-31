@@ -58,8 +58,6 @@ const openai = new OpenAI({
 //    ],
 // });
 
-const imageDirname = "./testImages/image1.png";
-
 export async function ingredientsRecognition(imgDirname: string) {
   try {
       // Read the image file and convert it to base64
@@ -91,7 +89,14 @@ export async function ingredientsRecognition(imgDirname: string) {
       });
 
       // Log the structured response
-      console.log(JSON.stringify(response.choices[0].message.content, null, 2));
+      const json = response.choices[0].message.content;
+      let obj;
+      if (json !== null) {
+        obj = JSON.parse(json);
+        // console.log(obj);
+      }
+
+      return obj;
   } catch (error) {
       console.error("Error:", error);
   }
@@ -104,7 +109,6 @@ client.connect().then(() => {
 
    app.listen(3001, () => {
        console.log("Listening on port " + 3001);
-      //  ingredientsRecognition();
       //  completion.then((result) => console.log(result.choices[0].message));
    });
 }).catch(err => {

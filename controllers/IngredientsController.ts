@@ -25,7 +25,7 @@ export class IngredientsController {
         } else {
             res.status(200).send(ingredient_by_name);
         }
-    }
+    };
 
     async postNewIngredient (req: Request, res: Response, nextFunction: NextFunction) {
         // Create a new ingredient
@@ -33,12 +33,27 @@ export class IngredientsController {
         res.status(200).send(`Created ingredient with id: ${new_ingredient.insertedId}`);
     };
 
+    async postIngredientsFromAI (req: Request, res: Response, nextFunction: NextFunction) {
+        const obj = await ingredientsRecognition(req.body.imgPath);
+
+        // Extract ingredients
+        if (!obj || !obj.ingredients) {
+            return res.status(400).send("No ingredients found.");
+        }
+        const ingredients = obj.ingredients;
+
+        await client.db("IntelliDish").collection("Ingredients").insertMany(ingredients);
+        // ?? TODO: Merge the duplicated objects
+        
+        res.status(200).send(`Updated ingredients from the image successfully.`);
+    }
+
     async updateIngredientQuantity (req: Request, res: Response, nextFunction: NextFunction) {
-        const db = client.db("IntelliDish");
-        const ingredientsCollection = db.collection("Ingredients");
+        // Merge duplicated objects witn the same name
 
         // Step 1: Aggregate ingredients by name (case insensitive) and sum quantities
-        const aggregatedIngredients = await ingredientsCollection.aggregate([
+        const pipeline =
+        [
             {
                 $group: {
                     _id: { $toLower: "$name" },  // Case-insensitive grouping
@@ -61,7 +76,9 @@ export class IngredientsController {
                     originalIds: 1
                 }
             }
-        ]).toArray();
+        ];
+
+        const aggregatedIngredients = await client.db("IntelliDish").collection("Ingredients").aggregate(pipeline).toArray();
 
         if (aggregatedIngredients.length === 0) {
             return res.status(404).json({ error: "No ingredients found to merge." });
@@ -69,7 +86,7 @@ export class IngredientsController {
 
         // Step 2: Remove old duplicate ingredients
         const allOldIds = aggregatedIngredients.flatMap(doc => doc.originalIds);
-        await ingredientsCollection.deleteMany({ _id: { $in: allOldIds } });
+        await client.db("IntelliDish").collection("Ingredients").deleteMany({ _id: { $in: allOldIds } });
 
         // Step 3: Insert merged records with a new MongoDB _id
         const mergedData = aggregatedIngredients.map(doc => ({
@@ -79,10 +96,10 @@ export class IngredientsController {
             quantity: doc.totalQuantity  // Store merged quantity
         }));
 
-        await ingredientsCollection.insertMany(mergedData);
+        await client.db("IntelliDish").collection("Ingredients").insertMany(mergedData);
 
         res.status(200).send("Ingredients merged successfully");
-    }
+    };
 
     async putIngredientById (req: Request, res: Response, nextFunction: NextFunction) {
         // Update an ingredient by id

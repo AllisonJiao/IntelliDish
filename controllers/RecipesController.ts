@@ -43,7 +43,7 @@ export class RecipesController {
         }
 
         return res.status(200).json(recipeWithIngredients[0].ingredientDetails);
-   }
+   };
 
 
    async postNewRecipe (req: Request, res: Response, nextFunction: NextFunction) {

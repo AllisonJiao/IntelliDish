@@ -37,6 +37,15 @@ export const IngredientsRoutes = [
         ]
     },
     {
+        method: "post",
+        route: "/ingredients/AI",
+        action: controller.postIngredientsFromAI,
+        validation: [
+            // TODO: 
+            // Add validation conditions
+        ]
+    },
+    {
         method: "put",
         route: "/ingredients",
         action: controller.updateIngredientQuantity,
