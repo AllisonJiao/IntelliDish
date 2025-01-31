@@ -516,6 +516,7 @@ FUNCTION rank_recipes(user_preferences, recipe_list)
     - section 2
     - section 3.2
     - section 3.4
+    - section 3.5
     - section 4.2
 - Edward Han
     - section 2
