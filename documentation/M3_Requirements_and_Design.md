@@ -206,6 +206,8 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
         - **Purpose**: Fetches recipes based on all provided ingredients and cuisine preference. Return a list of recipes
      2. `List<Recipe> getPartialRecipes(List<String> ingredients, String cuisine);`
         - **Purpose**: Suggests recipes even if some ingredients are missing, with substitutes. Return a list of recipes with substitution suggestions
+     3. `boolean saveRecipe(Recipe recipe);`
+        - **Purpose**: Saves a newly generated recipe to the database if it does not already exist, preventing duplicate entries and enabling recipe history tracking. Returns `true` if successful, `false` otherwise.
     - **HTTP/REST Interfaces interact with OPENAI API**:
       1. `POST /recipes/generate`
          - **Purpose**: Generates recipes based on ingredients and cuisine preferences.
