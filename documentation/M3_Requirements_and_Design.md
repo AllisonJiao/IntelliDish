@@ -87,7 +87,7 @@ For users like busy university students and employees (who often lack the time, 
     - **Main success scenario**:
         - **1**. The user provides a list of available ingredients and cuisine preferences to IntelliDish.
         - **2**. A request to the AI API is made based on the user's inputs.
-        - **3**. The AI API returns a list of possible ingredients to the user.
+        - **3**. The AI API returns a list of possible recipes to the user.
     - **Failure scenario(s)**:
         - **2a**: The AI API is unreachable/ unavailable.
             - **2a1**: Display error message that the AI API is unreachable/ unavailable.
