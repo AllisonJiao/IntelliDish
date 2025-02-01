@@ -364,9 +364,9 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
 2. [**Log Out**](#fr1)\
 ![UML_Use_Case_Diagram.png](images/sequence_log_out.png)
 3. [**Get Full Recipe Recommendation**](#fr1)\
-![UML_Use_Case_Diagram.png](images/sequence3.png)
+![UML_Use_Case_Diagram.png](images/seq3.png)
 4. [**Get Partial Recipe Recommendation**](#fr1)\
-![UML_Use_Case_Diagram.png](images/sequence4.png)
+![UML_Use_Case_Diagram.png](images/seq4.png)
 5. [**Participate In PotLuck**](#fr1)\
 ![UML_Use_Case_Diagram.png](images/seq-dia_5.png)
 6. [**Manage Recipes**](#fr1)\
