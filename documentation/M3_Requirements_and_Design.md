@@ -108,7 +108,7 @@ For users like busy university students and employees (who often lack the time, 
             - **2a1**: Display error message that the AI API is unreachable/ unavailable.
             - **2a2**: Prompt the user to try again later, or check online whether the AI API is down/ under maintainence.
         - **2b**: No recipes are possible for the provided user inputs.
-            - **2b1**: Suggest the user to use partial recipe recommendations, PotLuck with friends, or try again with different inputs instead.
+            - **2b1**: Suggest the user to use PotLuck with friends, or try again with different inputs instead.
 
 5. **Participate In PotLuck**:
     - **Description**: Users can collaboratively input available ingredients as a group for recipe recommendations.
