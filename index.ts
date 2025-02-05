@@ -50,7 +50,7 @@ const openai = new OpenAI({
 
 interface RecipeRequest {
   ingredients: string[];
-}
+};
 
 export async function recipesGeneration(jsonData: RecipeRequest) {
   try {
@@ -101,7 +101,7 @@ export async function recipesGeneration(jsonData: RecipeRequest) {
   } catch (error) {
     console.error("Error:", error);
   }
-}
+};
 
 export async function ingredientsRecognition(imgDirname: string) {
   try {
@@ -145,7 +145,7 @@ export async function ingredientsRecognition(imgDirname: string) {
   } catch (error) {
       console.error("Error:", error);
   }
-}
+};
 
 client.connect().then(() => {
    console.log("MongoDB Client Connected");

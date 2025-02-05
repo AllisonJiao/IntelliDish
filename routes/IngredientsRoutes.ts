@@ -71,4 +71,4 @@ export const IngredientsRoutes = [
             param("id").isMongoId()
         ]
     },
-]
+];
