@@ -4,6 +4,7 @@ import { MongoClient, ObjectId } from "mongodb";
 import { recipesGeneration } from "../index";
 
 export class RecipesController {
+
    async getAllRecipes (req: Request, res: Response, nextFunction: NextFunction) {
        // Return ALL recipes
        const all_recipes = await client.db("IntelliDish").collection("Recipes").find().toArray();
@@ -57,40 +58,41 @@ export class RecipesController {
         const obj = await recipesGeneration(req.body.ingredients);
 
         // Extract the recipe
-        if (!obj || !obj.recipes) {
+        if (!obj) {
             return res.status(400).send("No recipes found.");
         }
-        const recipe = obj.recipes;
-        console.log(recipe);
 
-        await client.db("IntelliDish").collection("Recipes").insertMany(recipe);
+        // Ensure obj is an array before inserting
+        const recipesArray = Array.isArray(obj) ? obj : [obj];
+
+        await client.db("IntelliDish").collection("Recipes").insertMany(recipesArray);
 
         res.status(200).send(`An AI-generated recipe is posted!`);
    };
 
    async putRecipeById (req: Request, res: Response, nextFunction: NextFunction) {
-       // Update an recipe by id
-       const updatedRecipe = await client.db("IntelliDish").collection("Recipes").replaceOne({_id: new ObjectId(req.params.id)}, req.body);
+        // Update an recipe by id
+        const updatedRecipe = await client.db("IntelliDish").collection("Recipes").replaceOne({_id: new ObjectId(req.params.id)}, req.body);
 
 
-       if (! updatedRecipe.acknowledged || updatedRecipe.modifiedCount == 0) {
-           res.status(400).send("Recipe with given Id does not exist");
-       } else {
-           res.status(200).send("Recipe updated");
-       }
-   };
+        if (! updatedRecipe.acknowledged || updatedRecipe.modifiedCount == 0) {
+            res.status(400).send("Recipe with given Id does not exist");
+        } else {
+            res.status(200).send("Recipe updated");
+        }
+    };
 
 
-   async deleteRecipeById (req: Request, res: Response, nextFunction: NextFunction) {
-       // Delete an recipe by Id
-       const deleteRecipe = await client.db("IntelliDish").collection("Recipes").deleteOne({_id: new ObjectId(req.params.id)});
+    async deleteRecipeById (req: Request, res: Response, nextFunction: NextFunction) {
+        // Delete an recipe by Id
+        const deleteRecipe = await client.db("IntelliDish").collection("Recipes").deleteOne({_id: new ObjectId(req.params.id)});
 
 
-       if (! deleteRecipe.acknowledged || deleteRecipe.deletedCount == 0) {
-           res.status(400).send("Recipe with given Id does not exist");
-       } else {
-           res.status(200).send("Recipe deleted");
-       }
-   };
+        if (! deleteRecipe.acknowledged || deleteRecipe.deletedCount == 0) {
+            res.status(400).send("Recipe with given Id does not exist");
+        } else {
+            res.status(200).send("Recipe deleted");
+        }
+    };
 }
 

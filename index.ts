@@ -94,7 +94,7 @@ export async function recipesGeneration(jsonData: RecipeRequest) {
     let obj;
     if (json) {
       obj = JSON.parse(json);
-      // console.log(obj);
+      console.log(obj);
     }
 
     return obj;
