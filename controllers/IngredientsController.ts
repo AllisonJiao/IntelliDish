@@ -123,8 +123,9 @@ export class IngredientsController {
 
         // Step 2: Remove old duplicate ingredients
         const allOldIds: ObjectId[] = aggregatedIngredients.flatMap(doc =>
-            doc.originalIds.map(id => new ObjectId(id))
+            doc.originalIds.map((id: string | ObjectId) => new ObjectId(id))
         );
+
 
         await client.db("IntelliDish").collection("Ingredients").deleteMany({
             _id: { $in: allOldIds }
