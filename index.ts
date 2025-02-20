@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
-import { client } from "./services";
+import connectDB from "./services";
 import { IngredientsRoutes } from "./routes/IngredientsRoutes";
 import { RecipesRoutes } from "./routes/RecipesRoutes";
 import {UsersRoutes} from "./routes/UsersRoutes";
@@ -148,14 +148,10 @@ export async function ingredientsRecognition(imgDirname: string) {
   }
 };
 
-client.connect().then(() => {
-   console.log("MongoDB Client Connected");
-
-
+connectDB().then(() => {
    app.listen(3001, () => {
        console.log("Listening on port " + 3001);
    });
 }).catch(err => {
    console.error(err);
-   client.close();
 });
