@@ -41,8 +41,8 @@ export const IngredientsRoutes = [
         route: "/ingredients/AI",
         action: controller.postIngredientsFromAI,
         validation: [
-            // TODO: 
-            // Add validation conditions
+            body("imgPath").isString().withMessage("Image path must be a string"),
+            body("imgPath").matches(/\.(jpg|jpeg|png)$/i).withMessage("File must be an image (.jpg, .jpeg, .png)")
         ]
     },
     {

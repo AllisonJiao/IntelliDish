@@ -46,7 +46,7 @@ Routes.forEach((route) => {
 
 
 const openai = new OpenAI({
-   apiKey: process.env.REDACTED,
+   apiKey: process.env.OPENAI_API_KEY,
  });
 
 interface RecipeRequest {

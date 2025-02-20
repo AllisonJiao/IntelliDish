@@ -12,37 +12,123 @@ export const UsersRoutes = [
     },
     {
         method: "get",
-        route: "/users/email/:email",
-        action: controller.getUserByEmail,
-        validation: []
+        route: "/users/id/:id",
+        action: controller.getUserById,
+        validation: [
+            param("id").isMongoId().withMessage("Invalid MongoDB ID format")
+        ]
     },
     {
         method: "get",
-        route: "/users/id/:id",
-        action: controller.getUserById,
-        validation: []
+        route: "/users/email/:email",
+        action: controller.getUserByEmail,
+        validation: [
+            param("email").isEmail()
+        ]
     },
     {
         method: "post",
         route: "/users",
         action: controller.createNewUser,
-        validation: []
+        validation: [
+            body("name").isString(),
+            body("email").isEmail(),
+            body("friends").optional().isArray()
+        ]
     },
     {
         method: "put",
-        route: "/users/addFriend/:id",
-        action: controller.addNewFriend,
-        validation: []
-    },
-    {
-        method: "put",
-        route: "/users/:id",
+        route: "/users/:id/name",
         action: controller.updateUserName,
         validation: [
-            body("name")
-                .trim()
-                .notEmpty().withMessage("Name is required")
-                .isString().withMessage("Name must be a string")
+            param("id").isMongoId(),
+            body("name").isString()
         ]
-    }
+    },
+    {
+        method: "put",
+        route: "/users/:id/addFriend",
+        action: controller.addNewFriend,
+        validation: [
+            param("id").isMongoId(),
+            body("friendId").isMongoId()
+        ]
+    },
+    {
+        method: "delete",
+        route: "/users/:id",
+        action: controller.deleteUserAccount,
+        validation: [
+            param("id").isMongoId()
+        ]
+    },
+    {
+        method: "post",
+        route: "/users/:id/recipe",
+        action: controller.addRecipeToUser,
+        validation: [
+            param("id").isMongoId().withMessage("Invalid MongoDB ID format"),
+            body("recipeId").isMongoId().withMessage("Invalid Recipe ID format")
+        ]
+    },
+    {
+        method: "delete",
+        route: "/users/:id/recipe",
+        action: controller.deleteRecipeFromUser,
+        validation: [
+            param("id").isMongoId(),
+            body("recipeId").isMongoId() // Ensure valid ObjectId
+        ]
+    },
+    {
+        method: "post",
+        route: "/users/:id/ingredient",
+        action: controller.addIngredientToUser,
+        validation: [
+            param("id").isMongoId().withMessage("Invalid MongoDB ID format"),
+            body("ingredientId").isMongoId().withMessage("Invalid ingredient ID format")
+        ]
+    },
+    {
+        method: "delete",
+        route: "/users/:id/ingredient",
+        action: controller.deleteIngredientFromUser,
+        validation: [
+            param("id").isMongoId().withMessage("Invalid MongoDB ID format"),
+            body("ingredientId").isMongoId().withMessage("Invalid ingredient ID format")
+        ]
+    },
+    // // === Potluck Routes ===
+    // {
+    //     method: "get",
+    //     route: "/potluck",
+    //     action: controller.getPotluckSessions,
+    //     validation: []
+    // },
+    // {
+    //     method: "post",
+    //     route: "/potluck",
+    //     action: controller.createPotluckSession,
+    //     validation: [
+    //         body("participants").isArray(),
+    //         body("ingredients").isArray()
+    //     ]
+    // },
+    // {
+    //     method: "put",
+    //     route: "/potluck/:id/participants",
+    //     action: controller.updatePotluckParticipants,
+    //     validation: [
+    //         param("id").isMongoId(),
+    //         body("participants").isArray()
+    //     ]
+    // },
+    // {
+    //     method: "delete",
+    //     route: "/potluck/:id",
+    //     action: controller.endPotluckSession,
+    //     validation: [
+    //         param("id").isMongoId()
+    //     ]
+    // }
 ];
