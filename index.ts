@@ -3,7 +3,7 @@ import { validationResult } from "express-validator";
 import { client } from "./services";
 import { IngredientsRoutes } from "./routes/IngredientsRoutes";
 import { RecipesRoutes } from "./routes/RecipesRoutes";
-import { UsersRoutes } from "./routes/UsersRoutes";
+import {UsersRoutes} from "./routes/UsersRoutes";
 import morgan from "morgan";
 import OpenAI from "openai";
 import dotenv from "dotenv";

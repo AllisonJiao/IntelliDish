@@ -1,6 +1,8 @@
 import { NextFunction, Response, Request } from "express";
 import { client } from "../services";
 import { MongoClient, ObjectId } from "mongodb";
+import mongoose from "mongoose";
+import UserModel from "../models/UserModel";
 
 export class UsersController {
     async getUsers(req: Request, res: Response, next: NextFunction) {
@@ -84,7 +86,7 @@ export class UsersController {
     async addNewFriend(req: Request, res: Response, next: NextFunction) {
         try {
             const userId = req.params.id;
-            const { friendId } = req.body;
+            const { friendId } = req.body.id;
 
             if (!friendId) {
                 return res.status(400).json({ error: "Friend ID is required." });
@@ -117,6 +119,29 @@ export class UsersController {
             console.error("Error adding friend:", error);
             res.status(500).json({ error: "Failed to add friend." });
         }
+    }
+
+    async deleteFriend (req: Request, res: Response, next: NextFunction) {
+        const userId = req.params.id;
+        const friendId = req.body.id;
+
+        const userObjectId = new ObjectId(userId);
+        const friendObjectId = new ObjectId(friendId);
+
+        const user_delete = await UserModel.updateOne(
+            { _id: userId },
+            { $pull: { friends: new mongoose.Types.ObjectId(friendId) } }
+        );
+        const friend_delete = await UserModel.updateOne(
+            { _id: friendId },
+            { $pull: { friends: new mongoose.Types.ObjectId(userId) } }
+        );
+
+        if (user_delete.matchedCount === 0 || friend_delete.matchedCount === 0) {
+            return res.status(404).send("User not found or not friends");
+        }
+
+        res.status(200).send("Delete friend successfully");
     }
 
     async deleteUserAccount(req: Request, res: Response, next: NextFunction) {
@@ -273,33 +298,33 @@ export class UsersController {
     // Potluck related functions
     async getPotluckSessions() {
 
-    // }
+    }
 
     async getPotluckSessionsById() {
 
-    // }
+    }
 
     async getPotluckSessionByUserId() {
 
-    // }
+    }
 
     async createPotluckSession() {
 
-    // }
+    }
 
     async updatePotluckIngredients() {
 
-    // }
+    }
 
     async updatePotluckParticipants() {
 
-    // }
+    }
 
     async updatePotluckRecipesByAI() {
 
-    // }
+    }
 
     async endPotluckSession() {
 
-    // }
+    }
 }
