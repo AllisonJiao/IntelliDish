@@ -3,6 +3,7 @@ import { validationResult } from "express-validator";
 import { client } from "./services";
 import { IngredientsRoutes } from "./routes/IngredientsRoutes";
 import { RecipesRoutes } from "./routes/RecipesRoutes";
+import { UsersRoutes } from "./routes/UsersRoutes";
 import morgan from "morgan";
 import OpenAI from "openai";
 import dotenv from "dotenv";
@@ -17,7 +18,7 @@ const app = express();
 app.use(express.json());
 app.use(morgan('tiny'));
 
-const Routes = [...IngredientsRoutes, ...RecipesRoutes];
+const Routes = [...IngredientsRoutes, ...RecipesRoutes, ...UsersRoutes];
 
 Routes.forEach((route) => {
    (app as any)[route.method](
