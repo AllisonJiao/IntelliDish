@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import connectDB from "./services";
 import { IngredientsRoutes } from "./routes/IngredientsRoutes";
-import { RecipesRoutes } from "./routes/RecipesRoutes";
+// import { RecipesRoutes } from "./routes/RecipesRoutes";
 import {UsersRoutes} from "./routes/UsersRoutes";
 import morgan from "morgan";
 import OpenAI from "openai";
@@ -18,7 +18,10 @@ const app = express();
 app.use(express.json());
 app.use(morgan('tiny'));
 
-const Routes = [...IngredientsRoutes, ...RecipesRoutes, ...UsersRoutes];
+const Routes = [
+  ...IngredientsRoutes, 
+  // ...RecipesRoutes, 
+  ...UsersRoutes];
 
 Routes.forEach((route) => {
    (app as any)[route.method](
@@ -115,23 +118,23 @@ export async function ingredientsRecognition(imgDirname: string) {
           model: "gpt-4o",
           response_format: { type: "json_object" }, // Ensure structured output
           messages: [
-              {
-                  role: "system",
-                  content: "You are an AI assistant that extracts ingredients from images and categorizes them into structured data. Always return a valid JSON response with ingredients, categories, and quantities."
-              },
-              {
-                  role: "user",
-                  content: [
-                      { type: "text", text: "Identify the ingredients in this picture and return a structured response." },
-                      {
-                          type: "image_url",
-                          image_url: {
-                              "url": `data:image/jpeg;base64,${imageBase64}`
-                          }
-                      }
-                  ]
-              }
-          ]
+            {
+                "role": "system",
+                "content": "You are an AI assistant specializing in extracting ingredients from images and categorizing them into structured data. Your task is to analyze an image and return a valid JSON response containing a list of identified ingredients. Each ingredient should follow this structured format:\n\n{\n  \"name\": \"ingredient_name\",\n  \"category\": \"one_of_the_following_categories\"\n}\n\nThe available categories are:\n- Vegetables\n- Fruit\n- Whole Grains\n- Meats\n- Eggs\n- Dairy\n- Condiments\n- Others\n\nAlways ensure that the JSON response is properly formatted and contains only relevant ingredients."
+            },
+            {
+                "role": "user",
+                "content": [
+                    { "type": "text", "text": "Identify the ingredients in this picture and return a structured response." },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": `data:image/jpeg;base64,${imageBase64}`
+                        }
+                    }
+                ]
+            }
+        ]        
       });
 
       // Log the structured response

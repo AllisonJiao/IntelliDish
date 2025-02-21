@@ -22,9 +22,7 @@ export const IngredientsRoutes = [
         method: "get",
         route: "/ingredients/name/:name",
         action: controller.getIngredientByName,
-        validation: [
-            param("name").isString()
-        ]
+        validation: []
     }, 
     {
         method: "post",
@@ -33,7 +31,6 @@ export const IngredientsRoutes = [
         validation: [
             body("name").isString(),
             body("category").isString(),
-            // body("amount").isInt() --> is a non-negative integer, check for function later
         ]
     },
     {
@@ -45,22 +42,20 @@ export const IngredientsRoutes = [
             body("imgPath").matches(/\.(jpg|jpeg|png)$/i).withMessage("File must be an image (.jpg, .jpeg, .png)")
         ]
     },
-    {
-        method: "put",
-        route: "/ingredients",
-        action: controller.updateIngredientQuantity,
-        validation: [
-            body("name").isString()
-        ]
-    }, 
+    // {
+    //     method: "put",
+    //     route: "/ingredients",
+    //     action: controller.updateIngredientQuantity,
+    //     validation: [
+    //         body("name").isString()
+    //     ]
+    // }, 
     {
         method: "put",
         route: "/ingredients/:id",
         action: controller.putIngredientById,
         validation: [
-            param("id").isMongoId(),
-            body("name").isString(),
-            body("category").isString()
+            param("id").isMongoId()
         ]
     }, 
     {
