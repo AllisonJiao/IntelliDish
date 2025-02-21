@@ -37,12 +37,15 @@ export async function parseIngredients(ingredient: { name: string, category?: st
     const ingredientsController = new IngredientsController();
     console.log("Parsing ingredient: ", ingredient);
 
-    const existingIngredient = await IngredientModel.findOne(
-        { name: { $regex: `^${ingredient.name}$`, $options: "i" } }
-    );
+    const query: any = {
+        name: { $regex: `^${ingredient.name}$`, $options: "i" },
+        unit: ingredient.unit ?? null, // Ensures we only compare within the same unit
+    };
+    
+    const existingIngredient = await IngredientModel.findOne(query);
 
     if (!existingIngredient) {
-        console.log("Current ingredient does not exist, add new ingredient");
+        console.log("Current ingredient does not exist, or the unit is different, add new ingredient");
         return await addIngredient(ingredient);
     } else {
         console.log(`Ingredient '${ingredient.name}' already exists. Consider updating instead.`);
@@ -52,7 +55,7 @@ export async function parseIngredients(ingredient: { name: string, category?: st
 
 // Update ingredient quantities =>
 // If the unit is the same, add quantity
-// If the unit is different, 1: convert the unit, 2: keep different unit storage
+// If the unit is different, 1: convert the unit, 2: keep different unit storage => merge when necessary
 export const conversionTable: Record<string, Record<string, number>> = {
     "kg": { "g": 1000 },
     "g": { "kg": 1 / 1000 },
@@ -243,8 +246,7 @@ export class IngredientsController {
             console.error("Error updating ingredient:", error);
             res.status(500).json({ error: "Failed to update ingredient." });
         }
-    }
-    
+    }   
 
     async deleteIngredientById(req: Request, res: Response, nextFunction: NextFunction) {
         try {
@@ -266,5 +268,5 @@ export class IngredientsController {
             res.status(500).json({ error: "Failed to delete ingredient." });
         }
     }
-    
+
 }
