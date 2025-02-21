@@ -1,8 +1,12 @@
 import { NextFunction, Response, Request } from "express";
 import mongoose, { ObjectId } from "mongoose";
-import IngredientModel from "../models/IngredientModel";
+import { Document } from "mongoose";
+import IngredientModel, {IIngredient} from "../models/IngredientModel";
 import { ingredientsRecognition } from "../index";
 
+// Helper functions for post new ingredients =>
+// If the ingredient exists, update it
+// If the ingredient does not exist, add it
 export async function addIngredient(ingredientData: { 
     name: string; 
     category?: string; 
@@ -17,7 +21,7 @@ export async function addIngredient(ingredientData: {
         const newIngredient = new IngredientModel({
             name: ingredientData.name.trim(),
             category: ingredientData.category || "Unknown",
-            quantity: ingredientData.quantity || 0,
+            quantity: ingredientData.quantity ?? (ingredientData.unit ? 0 : -1),
             unit: ingredientData.unit ? ingredientData.unit.trim().toLowerCase() : undefined,
         });
 
@@ -31,17 +35,100 @@ export async function addIngredient(ingredientData: {
 
 export async function parseIngredients(ingredient: { name: string, category?: string, quantity?: number, unit?:string }) {
     const ingredientsController = new IngredientsController();
+    console.log("Parsing ingredient: ", ingredient);
 
-    const existingIngredient = await ingredientsController.getIngredientByNameAI(ingredient.name);
+    const existingIngredient = await IngredientModel.findOne(
+        { name: { $regex: `^${ingredient.name}$`, $options: "i" } }
+    );
 
     if (!existingIngredient) {
         console.log("Current ingredient does not exist, add new ingredient");
         return await addIngredient(ingredient);
     } else {
         console.log(`Ingredient '${ingredient.name}' already exists. Consider updating instead.`);
-        return existingIngredient;
+        return await updateIngredientQuantity(existingIngredient, ingredient);
     }
 }
+
+// Update ingredient quantities =>
+// If the unit is the same, add quantity
+// If the unit is different, 1: convert the unit, 2: keep different unit storage
+export const conversionTable: Record<string, Record<string, number>> = {
+    "kg": { "g": 1000 },
+    "g": { "kg": 1 / 1000 },
+    "L": { "mL": 1000 },
+    "mL": { "L": 1 / 1000 },
+    "tbsp": { "mL": 15 },
+    "tsp": { "mL": 5 },
+};
+
+export function convertUnit(quantity: number, fromUnit: string, toUnit: string): number | null {
+    if (conversionTable[fromUnit] && conversionTable[fromUnit][toUnit]) {
+        return quantity * conversionTable[fromUnit][toUnit];
+    }
+    return null; // Not convertible
+}
+
+export async function updateIngredientQuantity (
+    existingIngredient: IIngredient & Document,
+    incomingIngredient: { name: string, category?: string, quantity?: number, unit?:string }
+) {
+    try {   
+        console.log("Existing ingredient: ", existingIngredient);
+        console.log("Incoming ingredient: ", incomingIngredient);
+        // Check if the previous and current save have unit
+        existingIngredient.quantity = existingIngredient.quantity ?? (existingIngredient.unit ? 0 : -1);
+        incomingIngredient.quantity = incomingIngredient.quantity ?? (incomingIngredient.unit ? 0 : -1);
+
+        // If both of the previous or current save don't have a unit, ignore
+        if (!existingIngredient.unit && !incomingIngredient.unit) {
+            return existingIngredient;
+        }
+        // If any of the previous or current save doesn't have a unit, save separately
+        if (!existingIngredient.unit || !incomingIngredient.unit) {
+            const newIngredient = new IngredientModel(incomingIngredient);
+            await newIngredient.save();
+            return [existingIngredient, incomingIngredient]; // Store as separate entries
+        }
+        // If both of the previous or current save have a unit, calculate new quantity when the unit is the same
+        if (existingIngredient.unit === incomingIngredient.unit) {
+            existingIngredient.quantity += incomingIngredient.quantity;
+            await IngredientModel.updateOne(
+                { _id: existingIngredient._id }, 
+                { $set: { quantity: existingIngredient.quantity } }
+            );
+            return existingIngredient;
+        }
+        // If the unit is not the same, try unit conversion
+        const convertedQuantity = convertUnit(incomingIngredient.quantity, incomingIngredient.unit, existingIngredient.unit);
+        if (convertedQuantity !== null) {
+            existingIngredient.quantity += convertedQuantity;
+            await IngredientModel.updateOne(
+                { _id: existingIngredient._id }, 
+                { $set: { quantity: existingIngredient.quantity } }
+            );
+            return existingIngredient;
+        }
+        
+        // If unit conversion failed, keep separate saves for different units
+        
+        try {
+            // Ensure _id is not passed to avoid Mongoose conflict
+            const newIngredientData = { ...incomingIngredient, _id: undefined };
+        
+            const newIngredient = new IngredientModel(newIngredientData);
+            await newIngredient.save();  // Now safely saving the new ingredient
+        
+            return [existingIngredient, newIngredient]; // Store separately
+        } catch (error) {
+            console.error("Error saving new ingredient:", error);
+            throw new Error("Failed to save new ingredient.");
+        }
+    } catch {
+        console.error("Error updating ingredient quantity:", Error);
+        throw new Error("Failed to update ingredient quantity.");
+    }
+};
 
 export class IngredientsController {
     async getAllIngredients(req: Request, res: Response, next: NextFunction) {
@@ -76,15 +163,6 @@ export class IngredientsController {
         }
     };
 
-    async getIngredientByNameAI (ingredientName: string) {
-        try {
-            return await IngredientModel.findOne({ name: { $regex: `^${ingredientName}$`, $options: "i" } });
-        } catch (error) {
-            console.error(`Error finding ingredient '${ingredientName}':`, error);
-            return null;
-        }
-    }
-
     async getIngredientByName (req: Request, res: Response, nextFunction: NextFunction) {
         // Return an ingredient/ingredients by name 
         try {
@@ -112,7 +190,7 @@ export class IngredientsController {
     async postNewIngredient (req: Request, res: Response, nextFunction: NextFunction) {
         try {
             const ingredient = req.body;
-            const newIngredient = await addIngredient(ingredient);
+            const newIngredient = await parseIngredients(ingredient);
             res.status(201).json(newIngredient);
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
@@ -140,65 +218,6 @@ export class IngredientsController {
             res.status(500).send("Internal Server Error");
         }
     }
-
-    // async updateIngredientQuantity (req: Request, res: Response, nextFunction: NextFunction) {
-    //     // Merge duplicated objects witn the same name
-
-    //     // Step 1: Aggregate ingredients by name (case insensitive) and sum quantities
-    //     const pipeline =
-    //     [
-    //         {
-    //             $group: {
-    //                 _id: { $toLower: "$name" },  // Case-insensitive grouping
-    //                 totalQuantity: { $sum: "$quantity" },  // Sum up quantities
-    //                 categories: { $addToSet: "$category" }, // Collect all unique categories
-    //                 originalIds: { $push: "$_id" }  // Store original IDs for deletion
-    //             }
-    //         },
-    //         {
-    //             $project: {
-    //                 name: "$_id",
-    //                 totalQuantity: 1,
-    //                 category: {
-    //                     $cond: {
-    //                         if: { $eq: [{ $size: "$categories" }, 1] }, // If only one unique category
-    //                         then: { $arrayElemAt: ["$categories", 0] }, // Keep that category
-    //                         else: "Mixed" // If multiple categories exist, set to "Mixed"
-    //                     }
-    //                 },
-    //                 originalIds: 1
-    //             }
-    //         }
-    //     ];
-
-    //     const aggregatedIngredients = await client.db("IntelliDish").collection("Ingredients").aggregate(pipeline).toArray();
-
-    //     if (aggregatedIngredients.length === 0) {
-    //         return res.status(404).json({ error: "No ingredients found to merge." });
-    //     }
-
-    //     // Step 2: Remove old duplicate ingredients
-    //     const allOldIds: ObjectId[] = aggregatedIngredients.flatMap(doc =>
-    //         doc.originalIds.map((id: string | ObjectId) => new ObjectId(id))
-    //     );
-
-
-    //     await client.db("IntelliDish").collection("Ingredients").deleteMany({
-    //         _id: { $in: allOldIds }
-    //     });
-
-    //     // Step 3: Insert merged records with a new MongoDB _id
-    //     const mergedData = aggregatedIngredients.map(doc => ({
-    //         _id: new ObjectId(),
-    //         name: doc.name,  // Keep the merged lowercase name
-    //         category: doc.category,  // Keep or resolve category
-    //         quantity: doc.totalQuantity  // Store merged quantity
-    //     }));
-
-    //     await client.db("IntelliDish").collection("Ingredients").insertMany(mergedData);
-
-    //     res.status(200).send("Ingredients merged successfully");
-    // };
 
     async putIngredientById(req: Request, res: Response, nextFunction: NextFunction) {
         try {

@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, ObjectId } from "mongoose";
 
-interface IIngredient extends Document {
+export interface IIngredient extends Document {
     name: string;
     category: "Vegetables" | "Fruit" | "Whole Grains" | "Meats" | "Eggs" | "Dairy" | "Condiments" | "Others";
     quantity: number;

@@ -42,14 +42,6 @@ export const IngredientsRoutes = [
             body("imgPath").matches(/\.(jpg|jpeg|png)$/i).withMessage("File must be an image (.jpg, .jpeg, .png)")
         ]
     },
-    // {
-    //     method: "put",
-    //     route: "/ingredients",
-    //     action: controller.updateIngredientQuantity,
-    //     validation: [
-    //         body("name").isString()
-    //     ]
-    // }, 
     {
         method: "put",
         route: "/ingredients/:id",
