@@ -114,15 +114,15 @@ export const UsersRoutes = [
     //     action: controller.getPotluckSessions,
     //     validation: []
     // },
-    // {
-    //     method: "post",
-    //     route: "/potluck",
-    //     action: controller.createPotluckSession,
-    //     validation: [
-    //         body("participants").isArray(),
-    //         body("ingredients").isArray()
-    //     ]
-    // },
+    {
+        method: "post",
+        route: "/potluck",
+        action: controller.createPotluckSession,
+        validation: [
+            body("participants").isArray(),
+            body("ingredients").isArray()
+        ]
+    },
     // {
     //     method: "put",
     //     route: "/potluck/:id/participants",

@@ -3,6 +3,7 @@ import mongoose, { ObjectId } from "mongoose";
 import UserModel from "../models/UserModel";
 import RecipeModel from "../models/RecipeModel";
 import IngredientModel from "../models/IngredientModel";
+import PotluckModel from "../models/PotluckModel";
 
 export class UsersController {
     async getUsers(req: Request, res: Response, next: NextFunction) {
@@ -334,35 +335,99 @@ export class UsersController {
     }
 
     // Potluck related functions
-    async getPotluckSessions() {
+    async getPotluckSessions(req: Request, res: Response, next: NextFunction) {
 
     }
 
-    async getPotluckSessionsById() {
+    async getPotluckSessionsById(req: Request, res: Response, next: NextFunction) {
 
     }
 
-    async getPotluckSessionByUserId() {
+    async getPotluckSessionByUserId(req: Request, res: Response, next: NextFunction) {
 
     }
 
-    async createPotluckSession() {
+    async createPotluckSession(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { host, participants, ingredients, recipes } = req.body;
+    
+            // Validate required fields
+            if (!host) {
+                return res.status(400).json({ error: "Host is required for a potluck session." });
+            }
+    
+            // Check if the user exists
+            const user = await UserModel.findById(host);
+            if (!user) {
+                return res.status(404).json({ error: "Host user not found." });
+            }
+    
+            // Check if the host already has a potluck session
+            if (user.potluck) {
+                return res.status(400).json({ error: "This user already has a potluck session." });
+            }
+    
+            // Create the new Potluck session
+            const newPotluck = new PotluckModel({
+                host,
+                participants: participants || [],
+                ingredients: ingredients || [],
+                recipes: recipes || [],
+            });
+    
+            await newPotluck.save();
+    
+            // Update the User model with the potluck session ID
+            user.potluck = newPotluck._id as ObjectId;
+            await user.save();
+    
+            res.status(201).json({ message: "Potluck session created successfully.", potluck: newPotluck });
+        } catch (error) {
+            console.error("Error creating potluck session:", error);
+            res.status(500).json({ error: "Failed to create potluck session." });
+        }
+    }
+
+    async updatePotluckIngredients(req: Request, res: Response, next: NextFunction) {
 
     }
 
-    async updatePotluckIngredients() {
+    async updatePotluckParticipants(req: Request, res: Response, next: NextFunction) {
 
     }
 
-    async updatePotluckParticipants() {
+    async updatePotluckRecipesByAI(req: Request, res: Response, next: NextFunction) {
 
     }
 
-    async updatePotluckRecipesByAI() {
+    // async endPotluckSession(req: Request, res: Response, next: NextFunction) {
+    //     try {
+    //         const potluckId = req.params.id; // Potluck ID from request params
 
-    }
+    //         // Validate Potluck ID properly
+    //         if (!mongoose.Types.ObjectId.isValid(potluckId)) {
+    //             return res.status(400).json({ error: "Invalid Potluck ID format." });
+    //         }
 
-    async endPotluckSession() {
+    //         // Find the potluck session
+    //         const potluck = await PotluckModel.findById(potluckId);
+    //         if (!potluck) {
+    //             return res.status(404).json({ error: "Potluck session not found." });
+    //         }
 
-    }
+    //         // Remove potluck session reference from the host user
+    //         await UserModel.updateOne(
+    //             { _id: potluck.host },
+    //             { $unset: { potluck: "" } } 
+    //         );
+
+    //         // Delete the potluck session
+    //         // await PotluckModel.deleteOne({ _id: potluckId });
+
+    //         res.status(200).json({ message: "Potluck session deleted successfully." });
+    //     } catch (error) {
+    //         console.error("Error deleting potluck session:", error);
+    //         res.status(500).json({ error: "Failed to delete potluck session." });
+    //     }
+    // }
 }

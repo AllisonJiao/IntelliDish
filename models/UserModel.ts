@@ -6,14 +6,15 @@ interface IUser extends Document {
     friends: ObjectId[];
     recipes: ObjectId[];
     ingredients: ObjectId[];
+    potluck?: ObjectId;
 }
 
 const UserSchema = new Schema<IUser>({
-    email: { type: String, required: true, unique: true },
     name: { type: String, required: true },
-    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    recipes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    ingredients: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    email: { type: String, required: true, unique: true },
+    recipes: [{ type: Schema.Types.ObjectId, ref: "Recipe" }],
+    ingredients: [{ type: Schema.Types.ObjectId, ref: "Ingredient" }],
+    potluck: { type: Schema.Types.ObjectId, ref: "Potluck", unique: true }, // A user can host only one potluck
 });
 
 const UserModel = mongoose.model<IUser>("User", UserSchema);
