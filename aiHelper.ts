@@ -80,7 +80,23 @@ export async function ingredientsRecognition(imgDirname: string) {
             messages: [
                 {
                     "role": "system",
-                    "content": "You are an AI assistant specializing in extracting ingredients from images and categorizing them into structured data. Your task is to analyze an image and return a valid JSON response containing a list of identified ingredients. Each ingredient should follow this structured format:\n\n{\n  \"name\": \"ingredient_name\",\n  \"category\": \"one_of_the_following_categories\"\n}\n\nThe available categories are:\n- Vegetables\n- Fruit\n- Whole Grains\n- Meats\n- Eggs\n- Dairy\n- Condiments\n- Others\n\nAlways ensure that the JSON response is properly formatted and contains only relevant ingredients."
+                    "content": `You are an AI assistant specializing in extracting ingredients from images and categorizing them into structured data. 
+                                Your task is to analyze an image and return a valid JSON response containing a list of identified ingredients. 
+                                Each ingredient should follow this structured format:
+                                { 
+                                    "name": "ingredient_name",  
+                                    "category": "one_of_the_following_categories"
+                                } 
+                                The available categories are:
+                                    - Vegetables
+                                    - Fruit
+                                    - Whole Grains
+                                    - Meats
+                                    - Eggs
+                                    - Dairy
+                                    - Condiments
+                                    - Others
+                                Always ensure that the JSON response is properly formatted and contains only relevant ingredients.`
                 },
                 {
                     "role": "user",

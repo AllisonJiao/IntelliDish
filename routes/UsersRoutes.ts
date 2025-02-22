@@ -71,42 +71,42 @@ export const UsersRoutes = [
             param("id").isMongoId()
         ]
     },
-    // {
-    //     method: "post",
-    //     route: "/users/:id/recipe",
-    //     action: controller.addRecipeToUser,
-    //     validation: [
-    //         param("id").isMongoId().withMessage("Invalid MongoDB ID format"),
-    //         body("recipeId").isMongoId().withMessage("Invalid Recipe ID format")
-    //     ]
-    // },
-    // {
-    //     method: "delete",
-    //     route: "/users/:id/recipe",
-    //     action: controller.deleteRecipeFromUser,
-    //     validation: [
-    //         param("id").isMongoId(),
-    //         body("recipeId").isMongoId() // Ensure valid ObjectId
-    //     ]
-    // },
-    // {
-    //     method: "post",
-    //     route: "/users/:id/ingredient",
-    //     action: controller.addIngredientToUser,
-    //     validation: [
-    //         param("id").isMongoId().withMessage("Invalid MongoDB ID format"),
-    //         body("ingredientId").isMongoId().withMessage("Invalid ingredient ID format")
-    //     ]
-    // },
-    // {
-    //     method: "delete",
-    //     route: "/users/:id/ingredient",
-    //     action: controller.deleteIngredientFromUser,
-    //     validation: [
-    //         param("id").isMongoId().withMessage("Invalid MongoDB ID format"),
-    //         body("ingredientId").isMongoId().withMessage("Invalid ingredient ID format")
-    //     ]
-    // },
+    {
+        method: "post",
+        route: "/users/:id/recipe",
+        action: controller.addRecipeToUser,
+        validation: [
+            param("id").isMongoId().withMessage("Invalid MongoDB ID format"),
+            body("_id").isMongoId().withMessage("Invalid Recipe ID format")
+        ]
+    },
+    {
+        method: "delete",
+        route: "/users/:id/recipe",
+        action: controller.deleteRecipeFromUser,
+        validation: [
+            param("id").isMongoId(),
+            body("_id").isMongoId() // Ensure valid ObjectId
+        ]
+    },
+    {
+        method: "post",
+        route: "/users/:id/ingredient",
+        action: controller.addIngredientToUser,
+        validation: [
+            param("id").isMongoId().withMessage("Invalid MongoDB ID format"),
+            body("_id").isMongoId().withMessage("Invalid ingredient ID format")
+        ]
+    },
+    {
+        method: "delete",
+        route: "/users/:id/ingredient",
+        action: controller.deleteIngredientFromUser,
+        validation: [
+            param("id").isMongoId().withMessage("Invalid MongoDB ID format"),
+            body("_id").isMongoId().withMessage("Invalid ingredient ID format")
+        ]
+    },
     // // === Potluck Routes ===
     // {
     //     method: "get",

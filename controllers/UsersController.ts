@@ -1,6 +1,8 @@
 import { NextFunction, Response, Request } from "express";
 import mongoose, { ObjectId } from "mongoose";
 import UserModel from "../models/UserModel";
+import RecipeModel from "../models/RecipeModel";
+import IngredientModel from "../models/IngredientModel";
 
 export class UsersController {
     async getUsers(req: Request, res: Response, next: NextFunction) {
@@ -187,140 +189,149 @@ export class UsersController {
         }
     }
 
-    // async addRecipeToUser(req: Request, res: Response, next: NextFunction) {
-    //     try {
-    //         const userId = req.params.id;
-    //         const { recipeId } = req.body;
+    async addRecipeToUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req.params.id;
+            const recipeId = req.body._id;
+    
+            if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(recipeId)) {
+                return res.status(400).json({ error: "Invalid user ID or recipe ID format." });
+            }
+    
+            if (!recipeId) {
+                return res.status(400).json({ error: "Recipe ID is required." });
+            }
+    
+            // Check if the recipe exists
+            const recipe = await RecipeModel.findById(recipeId);
+            if (!recipe) {
+                return res.status(404).json({ error: "Recipe not found in the database." });
+            }
+    
+            // Add recipe reference to user's savedRecipes
+            const updatedUser = await UserModel.findByIdAndUpdate(
+                userId,
+                { $addToSet: { recipes: recipe._id } }, // Store only the recipe ID
+                { new: true }
+            );
+    
+            if (!updatedUser) {
+                return res.status(404).json({ error: "User not found or recipe already added." });
+            }
+    
+            res.status(200).json({ message: "Recipe added to user successfully.", user: updatedUser });
+        } catch (error) {
+            console.error("Error adding recipe to user:", error);
+            res.status(500).json({ error: "Failed to add recipe to user." });
+        }
+    }
 
-    //         if (!recipeId) {
-    //             return res.status(400).json({ error: "Recipe ID is required." });
-    //         }
+    async deleteRecipeFromUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req.params.id;
+            const recipeId = req.body._id;
+    
+            if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(recipeId)) {
+                return res.status(400).json({ error: "Invalid user ID or recipe ID format." });
+            }
+    
+            if (!recipeId) {
+                return res.status(400).json({ error: "Recipe ID is required." });
+            }
+    
+            // Check if user exists
+            const user = await UserModel.findById(userId);
+            if (!user) {
+                return res.status(404).json({ error: "User not found." });
+            }
+    
+            // Remove the recipe from the user's savedRecipes array
+            const updatedUser = await UserModel.findByIdAndUpdate(
+                userId,
+                { $pull: { recipes: recipeId } }, // Remove only the recipe ID reference
+                { new: true }
+            );
+    
+            if (!updatedUser) {
+                return res.status(404).json({ error: "Recipe not found in saved list." });
+            }
+    
+            res.status(200).json({ message: "Recipe removed from user successfully.", user: updatedUser });
+        } catch (error) {
+            console.error("Error removing recipe from user:", error);
+            res.status(500).json({ error: "Failed to remove recipe from user." });
+        }
+    }
 
-    //         // Check if the recipe exists
-    //         const recipe = await client.db("IntelliDish").collection("Recipes").findOne({ _id: new ObjectId(recipeId) });
+    async addIngredientToUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req.params.id;
+            const ingredientId = req.body._id;
+    
+            // Validate ObjectId format
+            if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(ingredientId)) {
+                return res.status(400).json({ error: "Invalid user ID or ingredient ID format." });
+            }
+    
+            if (!ingredientId) {
+                return res.status(400).json({ error: "Ingredient ID is required." });
+            }
+    
+            // Fetch ingredient from the database
+            const ingredient = await IngredientModel.findById(ingredientId);
+            if (!ingredient) {
+                return res.status(404).json({ error: "Ingredient not found in the database." });
+            }
+    
+            // Add the ingredient ID to the user's ingredients list (prevents duplicates)
+            const updatedUser = await UserModel.findByIdAndUpdate(
+                userId,
+                { $addToSet: { ingredients: ingredient._id } }, // Store only the ingredient ID
+                { new: true }
+            );
+    
+            if (!updatedUser) {
+                return res.status(404).json({ error: "User not found or ingredient already added." });
+            }
+    
+            res.status(200).json({ message: "Ingredient added to user successfully.", user: updatedUser });
+        } catch (error) {
+            console.error("Error adding ingredient to user:", error);
+            res.status(500).json({ error: "Failed to add ingredient to user." });
+        }
+    }
 
-    //         if (!recipe) {
-    //             return res.status(404).json({ error: "Recipe not found in the database." });
-    //         }
-
-    //         const updatedUser = await client.db("IntelliDish").collection("Users").updateOne(
-    //             { _id: new ObjectId(userId) },
-    //             { $addToSet: { savedRecipes: recipe } } // Store the entire recipe object
-    //         );
-
-    //         if (updatedUser.modifiedCount === 0) {
-    //             return res.status(404).json({ error: "User not found or recipe already added." });
-    //         }
-
-    //         res.status(200).send("Recipe added to user successfully.");
-    //     } catch (error) {
-    //         console.error("Error adding recipe to user:", error);
-    //         res.status(500).json({ error: "Failed to add recipe to user." });
-    //     }
-    // }
-
-
-    // async deleteRecipeFromUser(req: Request, res: Response, next: NextFunction) {
-    //     try {
-    //         const userId = req.params.id;
-    //         const { recipeId } = req.body;
-
-    //         if (!recipeId) {
-    //             return res.status(400).json({ error: "Recipe ID is required." });
-    //         }
-
-    //         const userObjectId = new ObjectId(userId);
-    //         const recipeObjectId = new ObjectId(recipeId);
-
-    //         // Check if user exists
-    //         const user = await client.db("IntelliDish").collection("Users").findOne({ _id: userObjectId });
-    //         if (!user) {
-    //             return res.status(404).json({ error: "User not found." });
-    //         }
-
-    //         // Remove the recipe from the user's savedRecipes array
-    //         const updateResult = await client.db("IntelliDish").collection("Users").updateOne(
-    //             { _id: userObjectId },
-    //             { $pull: { savedRecipes: { _id: recipeObjectId } } } as any  // Pull the entire object matching _id
-    //         );
-
-    //         if (updateResult.modifiedCount === 0) {
-    //             return res.status(404).json({ error: "Recipe not found in saved list." });
-    //         }
-
-    //         res.status(200).json({ message: "Recipe removed from user successfully." });
-    //     } catch (error) {
-    //         console.error("Error removing recipe from user:", error);
-    //         res.status(500).json({ error: "Failed to remove recipe from user." });
-    //     }
-    // }
-
-
-
-    // async addIngredientToUser(req: Request, res: Response, next: NextFunction) {
-    //     try {
-    //         const userId = req.params.id;
-    //         const { ingredientId } = req.body;
-
-    //         if (!ingredientId) {
-    //             return res.status(400).json({ error: "Ingredient ID is required." });
-    //         }
-
-    //         // Fetch full ingredient details from Ingredients DB
-    //         const ingredient = await client.db("IntelliDish").collection("Ingredients").findOne({ _id: new ObjectId(ingredientId) });
-
-    //         if (!ingredient) {
-    //             return res.status(404).json({ error: "Ingredient not found in the database." });
-    //         }
-
-    //         const updatedUser = await client.db("IntelliDish").collection("Users").updateOne(
-    //             { _id: new ObjectId(userId) },
-    //             { $addToSet: { ingredients: ingredient } }
-    //         );
-
-    //         if (updatedUser.modifiedCount === 0) {
-    //             return res.status(404).json({ error: "User not found or ingredient already added." });
-    //         }
-
-    //         res.status(200).send("Ingredient added to user successfully.");
-    //     } catch (error) {
-    //         console.error("Error adding ingredient to user:", error);
-    //         res.status(500).json({ error: "Failed to add ingredient to user." });
-    //     }
-    // }
-
-
-    // async deleteIngredientFromUser(req: Request, res: Response, next: NextFunction) {
-    //     try {
-    //         const userId = req.params.id;
-    //         const { ingredientId } = req.body;
-
-    //         if (!ingredientId) {
-    //             return res.status(400).json({ error: "Ingredient ID is required." });
-    //         }
-
-    //         const result = await client.db("IntelliDish").collection("Users").updateOne(
-    //             { _id: new ObjectId(userId) },
-    //             { $pull: { ingredients: { _id: new ObjectId(ingredientId) } } } as any
-    //         );
-
-    //         if (result.matchedCount === 0) {
-    //             return res.status(404).json({ error: "User not found." });
-    //         }
-
-    //         if (result.modifiedCount === 0) {
-    //             return res.status(404).json({ error: "Ingredient not in saved list." });
-    //         }
-
-    //         res.status(200).send("Ingredient removed from user successfully.");
-
-    //     } catch (error) {
-    //         console.error("Error removing ingredient from user:", error);
-    //         res.status(500).json({ error: "Failed to remove ingredient from user." });
-    //     }
-    // }
-
-
+    async deleteIngredientFromUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req.params.id;
+            const ingredientId = req.body._id;
+    
+            // Validate ObjectId format
+            if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(ingredientId)) {
+                return res.status(400).json({ error: "Invalid user ID or ingredient ID format." });
+            }
+    
+            if (!ingredientId) {
+                return res.status(400).json({ error: "Ingredient ID is required." });
+            }
+    
+            // Remove the ingredient from the user's ingredients list
+            const updatedUser = await UserModel.findByIdAndUpdate(
+                userId,
+                { $pull: { ingredients: ingredientId } }, // Remove ingredient ID from array
+                { new: true }
+            );
+    
+            if (!updatedUser) {
+                return res.status(404).json({ error: "User not found." });
+            }
+    
+            res.status(200).json({ message: "Ingredient removed from user successfully.", user: updatedUser });
+        } catch (error) {
+            console.error("Error removing ingredient from user:", error);
+            res.status(500).json({ error: "Failed to remove ingredient from user." });
+        }
+    }
 
     // Potluck related functions
     async getPotluckSessions() {
