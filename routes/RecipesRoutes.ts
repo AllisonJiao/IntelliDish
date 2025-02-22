@@ -44,27 +44,27 @@ export const RecipesRoutes = [
            body("name").isString()
        ]
    },
-//    {
-//        method: "post",
-//        route: "/recipes/AI",
-//        action: controller.postNewRecipeFromAI,
-//        validation: []
-//    },
-//    {
-//        method: "put",
-//        route: "/recipes/:id",
-//        action: controller.putRecipeById,
-//        validation: [
-//            param("id").isMongoId(),
-//            body("name").isString()
-//        ]
-//    },
-//    {
-//        method: "delete",
-//        route: "/recipes/:id",
-//        action: controller.deleteRecipeById,
-//        validation: [
-//            param("id").isMongoId()
-//        ]
-//    },
+   {
+       method: "post",
+       route: "/recipes/AI",
+       action: controller.postNewRecipeFromAI,
+       validation: []
+   },
+   {
+       method: "put",
+       route: "/recipes/:_id",
+       action: controller.putRecipeById,
+       validation: [
+           param("_id").isMongoId(),
+           body("name").isString()
+       ]
+   },
+   {
+       method: "delete",
+       route: "/recipes/:_id",
+       action: controller.deleteRecipeById,
+       validation: [
+           param("_id").isMongoId()
+       ]
+   },
 ];

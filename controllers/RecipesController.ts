@@ -1,6 +1,7 @@
 import { NextFunction, Response, Request } from "express";
 import mongoose, { ObjectId } from "mongoose";
 import RecipeModel from "../models/RecipeModel";
+import IngredientModel from "../models/IngredientModel";
 import { recipesGeneration } from "../index";
 
 export class RecipesController {
@@ -60,20 +61,32 @@ export class RecipesController {
         try {
             const recipeId = req.params.id;
     
-            const recipeWithIngredients = await RecipeModel.findById(recipeId)
-                .populate("ingredients") // Populating ingredients as ObjectId references
-                .exec();
+            // Find the recipe by its ID
+            const recipe = await RecipeModel.findById(recipeId);
     
-            if (!recipeWithIngredients) {
+            if (!recipe) {
                 return res.status(404).json({ error: "Recipe not found" });
             }
+
+            const ingredientNameRegexArray = recipe.ingredients.map(name => new RegExp(`^${name}$`, "i"));
     
-            return res.status(200).json(recipeWithIngredients.ingredients);
+            // Fetch ingredients by their names
+            const ingredients = await IngredientModel.find({
+                name: { $in: ingredientNameRegexArray }, // Assuming ingredients in the recipe are stored as names
+            });
+
+            console.log(ingredients);
+    
+            if (!ingredients.length) {
+                return res.status(404).json({ error: "No ingredients found for this recipe OR You don't own any ingredients." });
+            }
+    
+            return res.status(200).json(ingredients);
         } catch (error) {
-            console.error("Error fetching ingredients from recipe:", error);
+            console.error("Error fetching ingredients by recipe ID:", error);
             res.status(500).json({ error: "Failed to fetch ingredients." });
         }
-    };    
+    }    
 
     async postNewRecipe(req: Request, res: Response, next: NextFunction) {
         try {
@@ -91,46 +104,70 @@ export class RecipesController {
     }
 
 
-//    async postNewRecipeFromAI (req: Request, res: Response, nextFunction: NextFunction) {
-//         // Create a new recipe by given ingredients using AI
-//         const obj = await recipesGeneration(req.body.ingredients);
+   async postNewRecipeFromAI (req: Request, res: Response, nextFunction: NextFunction) {
+        // Create a new recipe by given ingredients using AI
+        const obj = await recipesGeneration(req.body.ingredients);
 
-//         // Extract the recipe
-//         if (!obj) {
-//             return res.status(400).send("No recipes found.");
-//         }
+        // Extract the recipe
+        if (!obj) {
+            return res.status(400).send("No recipes found.");
+        }
 
-//         // Ensure obj is an array before inserting
-//         const recipesArray = Array.isArray(obj) ? obj : [obj];
+        // Ensure obj is an array before inserting
+        const recipesArray = Array.isArray(obj) ? obj : [obj];
 
-//         await client.db("IntelliDish").collection("Recipes").insertMany(recipesArray);
+        await RecipeModel.insertMany(recipesArray);
 
-//         res.status(200).send(`An AI-generated recipe is posted!`);
-//    };
+        res.status(200).send(`An AI-generated recipe is posted!`);
+   };
 
-//    async putRecipeById (req: Request, res: Response, nextFunction: NextFunction) {
-//         // Update an recipe by id
-//         const updatedRecipe = await client.db("IntelliDish").collection("Recipes").replaceOne({_id: new ObjectId(req.params.id)}, req.body);
+   async putRecipeById (req: Request, res: Response, nextFunction: NextFunction) {
+        // Update an recipe by id
+        try {
+            const recipeId = req.params._id;
+            const updateData = req.body;
+    
+            if (!mongoose.Types.ObjectId.isValid(recipeId)) {
+                return res.status(400).json({ error: "Invalid recipe ID format." });
+            }
+    
+            const updatedRecipe = await RecipeModel.findByIdAndUpdate(
+                recipeId,
+                updateData,
+                { new: true, runValidators: true }
+            );
+    
+            if (!updatedRecipe) {
+                return res.status(404).json({ error: "Recipe with the given ID does not exist." });
+            }
+    
+            res.status(200).json({ message: "Recipe updated successfully.", recipe: updatedRecipe });
+        } catch (error) {
+            console.error("Error updating recipe:", error);
+            res.status(500).json({ error: "Failed to update recipe." });
+        }
+    };
 
-
-//         if (! updatedRecipe.acknowledged || updatedRecipe.modifiedCount == 0) {
-//             res.status(400).send("Recipe with given Id does not exist");
-//         } else {
-//             res.status(200).send("Recipe updated");
-//         }
-//     };
-
-
-    // async deleteRecipeById (req: Request, res: Response, nextFunction: NextFunction) {
-    //     // Delete an recipe by Id
-    //     const deleteRecipe = await client.db("IntelliDish").collection("Recipes").deleteOne({_id: new ObjectId(req.params.id)});
-
-
-    //     if (! deleteRecipe.acknowledged || deleteRecipe.deletedCount == 0) {
-    //         res.status(400).send("Recipe with given Id does not exist");
-    //     } else {
-    //         res.status(200).send("Recipe deleted");
-    //     }
-    // };
+    async deleteRecipeById (req: Request, res: Response, nextFunction: NextFunction) {
+        // Delete an recipe by Id
+        try {
+            const recipeId = req.params._id;
+    
+            if (!mongoose.Types.ObjectId.isValid(recipeId)) {
+                return res.status(400).json({ error: "Invalid recipe ID format." });
+            }
+ 
+            const deletedRecipe = await RecipeModel.findByIdAndDelete(recipeId);
+    
+            if (!deletedRecipe) {
+                return res.status(404).json({ error: "Recipe with the given ID does not exist." });
+            }
+    
+            res.status(200).json({ message: "Recipe deleted successfully.", recipe: deletedRecipe });
+        } catch (error) {
+            console.error("Error deleting recipe:", error);
+            res.status(500).json({ error: "Failed to delete recipe." });
+        }
+    };
 }
 

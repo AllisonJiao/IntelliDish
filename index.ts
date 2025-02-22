@@ -72,9 +72,10 @@ export async function recipesGeneration(jsonData: RecipeRequest) {
             "name": "Recipe Name",
             "ingredients": ["ingredient1", "ingredient2", "ingredient3"],
             "procedure": ["Step 1", "Step 2", "Step 3"],
-            "cuisine type": "Cuisine",
-            "preparation time": "Time in minutes",
-            "recipe complexity": "Low | Moderate | High",
+            "cuisineType": "Cuisine",
+            "recipeComplexity": "Don't Care" | "Very Easy" | "Easy" | "Medium" | "Hard" | "Very Hard",
+            "preparationTime": "Time in minutes(numeric)",
+            "calories": "Estimated calories(numeric)"
             "price": "Estimated price (numeric)"
           }
 
