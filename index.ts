@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import connectDB from "./services";
 import { IngredientsRoutes } from "./routes/IngredientsRoutes";
-// import { RecipesRoutes } from "./routes/RecipesRoutes";
+import { RecipesRoutes } from "./routes/RecipesRoutes";
 import {UsersRoutes} from "./routes/UsersRoutes";
 import morgan from "morgan";
 import OpenAI from "openai";
@@ -20,7 +20,7 @@ app.use(morgan('tiny'));
 
 const Routes = [
   ...IngredientsRoutes, 
-  // ...RecipesRoutes, 
+  ...RecipesRoutes, 
   ...UsersRoutes];
 
 Routes.forEach((route) => {

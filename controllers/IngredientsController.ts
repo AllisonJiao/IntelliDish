@@ -166,15 +166,14 @@ export class IngredientsController {
         }
     };
 
-    async getIngredientByName (req: Request, res: Response, nextFunction: NextFunction) {
-        // Return an ingredient/ingredients by name 
+    async getIngredientByName(req: Request, res: Response, nextFunction: NextFunction) {
         try {
-            const name = req.params.name;
+            const name = req.query.name as string; // Fetching from query instead of params
     
             if (!name) {
                 return res.status(400).json({ error: "Ingredient name is required." });
             }
-
+    
             const ingredient = await IngredientModel.find({ 
                 name: { $regex: `^${name}$`, $options: "i" }
             });
@@ -188,7 +187,7 @@ export class IngredientsController {
             console.error("Error fetching ingredient by name:", error);
             res.status(500).json({ error: "Failed to fetch ingredient." });
         }
-    };
+    };    
 
     async postNewIngredient (req: Request, res: Response, nextFunction: NextFunction) {
         try {

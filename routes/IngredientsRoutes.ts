@@ -1,5 +1,5 @@
 import { IngredientsController } from "../controllers/IngredientsController";
-import { body, param } from "express-validator";
+import { body, param, query } from "express-validator";
 
 const controller = new IngredientsController();
 
@@ -20,10 +20,12 @@ export const IngredientsRoutes = [
     }, 
     {
         method: "get",
-        route: "/ingredients/name/:name",
+        route: "/ingredients/name",
         action: controller.getIngredientByName,
-        validation: []
-    }, 
+        validation: [
+            query("name").isString().notEmpty().withMessage("Ingredient name is required.")
+        ]
+    },  
     {
         method: "post",
         route: "/ingredients",

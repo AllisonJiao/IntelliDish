@@ -5,58 +5,91 @@ import { recipesGeneration } from "../index";
 
 export class RecipesController {
 
-//    async getAllRecipes (req: Request, res: Response, nextFunction: NextFunction) {
-//        // Return ALL recipes
-//        try {
-//             const all_recipes = await RecipeModel.find();
-//             res.status(200).json(all_recipes);
-//         } catch (error) {
-//             console.error("Error fetching all recipes:", error);
-//             res.status(500).json({ error: "Failed to fetch recipes." });
-//         }
-//    };
+   async getAllRecipes (req: Request, res: Response, nextFunction: NextFunction) {
+       // Return ALL recipes
+       try {
+            const all_recipes = await RecipeModel.find();
+            res.status(200).json(all_recipes);
+        } catch (error) {
+            console.error("Error fetching all recipes:", error);
+            res.status(500).json({ error: "Failed to fetch recipes." });
+        }
+   };
 
+   async getRecipeById(req: Request, res: Response, nextFunction: NextFunction) {
+        try {
+            const recipe = await RecipeModel.findById(req.params.id);
 
-//    async getRecipeById (req: Request, res: Response, nextFunction: NextFunction) {
-//        // Return an unique recipe by id
-//        const recipe_by_id = await client.db("IntelliDish").collection("Recipes").find({_id: new ObjectId(req.params.id)}).toArray();
-//        res.status(200).send(recipe_by_id);
-//    };
+            if (!recipe) {
+                return res.status(404).json({ error: "Recipe not found." });
+            }
 
-//    async getIngredientsFromRecipeId (req: Request, res: Response, nextFunction: NextFunction) {
-//         // Return a list of ingredients (object) from the recipe by id
-//         const recipeId = req.params.id;
-//         const pipeline = 
-//         [
-//             {
-//               '$match': {
-//                     '_id': new ObjectId(recipeId)
-//               }
-//             },
-//             {
-//               '$lookup' : {
-//                   'from' : 'Ingredients',
-//                   'localField' : 'ingredients',
-//                   'foreignField' : 'name',
-//                   'as' : 'ingredientDetails'
-//               }
-//             }
-//         ];
-//         const recipeWithIngredients = await client.db("IntelliDish").collection("Recipes").aggregate(pipeline).toArray();
+            res.status(200).json(recipe);
+        } catch (error) {
+            console.error("Error fetching recipe by ID:", error);
+            res.status(500).json({ error: "Failed to fetch recipe." });
+        }
+    };
 
-//         if (recipeWithIngredients.length === 0) {
-//             return res.status(404).json({ error: "Recipe not found" });
-//         }
+    async getRecipeByName(req: Request, res: Response, nextFunction: NextFunction) {
+        try {
+            console.log("Received query:", req.query); // Debugging log
+            const name = req.query.name as string;
+    
+            if (!name || name.trim() === "") {
+                return res.status(400).json({ error: "Recipe name is required." });
+            }
+    
+            const recipe = await RecipeModel.find({
+                name: { $regex: `^${name}$`, $options: "i" } // Case-insensitive search
+            });
+    
+            if (recipe.length === 0) {
+                return res.status(404).json({ error: `Recipe '${name}' not found.` });
+            }
+    
+            return res.status(200).json(recipe);
+        } catch (error) {
+            console.error("Error fetching recipe by name:", error);
+            res.status(500).json({ error: "Failed to fetch recipe." });
+        }
+    }
+    
 
-//         return res.status(200).json(recipeWithIngredients[0].ingredientDetails);
-//    };
+    async getIngredientsFromRecipeId(req: Request, res: Response, nextFunction: NextFunction) {
+        try {
+            const recipeId = req.params.id;
+    
+            const recipeWithIngredients = await RecipeModel.findById(recipeId)
+                .populate("ingredients") // Populating ingredients as ObjectId references
+                .exec();
+    
+            if (!recipeWithIngredients) {
+                return res.status(404).json({ error: "Recipe not found" });
+            }
+    
+            return res.status(200).json(recipeWithIngredients.ingredients);
+        } catch (error) {
+            console.error("Error fetching ingredients from recipe:", error);
+            res.status(500).json({ error: "Failed to fetch ingredients." });
+        }
+    };    
 
+    async postNewRecipe(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Create a new recipe instance
+            const newRecipe = new RecipeModel(req.body);
 
-//    async postNewRecipe (req: Request, res: Response, nextFunction: NextFunction) {
-//        // Create a new recipe
-//        const new_recipe = await client.db("IntelliDish").collection("Recipes").insertOne(req.body);
-//        res.status(200).send(`Created ingredient with id: ${new_recipe.insertedId}`);
-//    };
+            // Save to the database
+            const savedRecipe = await newRecipe.save();
+
+            res.status(201).json({ message: "Recipe created successfully!", recipeId: savedRecipe._id });
+        } catch (error) {
+            console.error("Error creating recipe:", error);
+            res.status(500).json({ error: "Failed to create recipe." });
+        }
+    }
+
 
 //    async postNewRecipeFromAI (req: Request, res: Response, nextFunction: NextFunction) {
 //         // Create a new recipe by given ingredients using AI
