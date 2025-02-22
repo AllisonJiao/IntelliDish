@@ -2,7 +2,7 @@ import { NextFunction, Response, Request } from "express";
 import mongoose, { ObjectId } from "mongoose";
 import { Document } from "mongoose";
 import IngredientModel, {IIngredient} from "../models/IngredientModel";
-import { ingredientsRecognition } from "../index";
+import { ingredientsRecognition } from "../aiHelper";
 
 // Helper functions for post new ingredients =>
 // If the ingredient exists, update it

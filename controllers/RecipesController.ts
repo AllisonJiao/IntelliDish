@@ -2,7 +2,7 @@ import { NextFunction, Response, Request } from "express";
 import mongoose, { ObjectId } from "mongoose";
 import RecipeModel from "../models/RecipeModel";
 import IngredientModel from "../models/IngredientModel";
-import { recipesGeneration } from "../index";
+import { recipesGeneration } from "../aiHelper";
 
 export class RecipesController {
 

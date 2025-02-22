@@ -14,7 +14,7 @@ const IngredientSchema = new Schema<IIngredient>({
         enum: ["Vegetables", "Fruit", "Whole Grains", "Meats", "Eggs", "Dairy", "Condiments", "Others"], 
         required: true 
     }, 
-    quantity: { type: Number, required: false, min: 0 },
+    quantity: { type: Number, required: false, min: -1 },
     unit: { 
         type: String, 
         enum: ["g", "kg", "ml", "l", "tsp", "tbsp", "cup", "pcs"], 
