@@ -1,17 +1,20 @@
 import mongoose, { Schema, Document, ObjectId } from "mongoose";
 
 interface IPotluck extends Document {
-    users: ObjectId[];      // Array of user IDs participating in the potluck
-    ingredients: ObjectId[]; // Array of ingredient IDs brought to the potluck
-    recipes: ObjectId[];     // Array of recipe IDs included in the potluck
+    host: ObjectId; // Unique host for the potluck
+    participants: ObjectId[]; // Array of user IDs participating
+    ingredients: ObjectId[]; // Array of ingredient IDs
+    recipes: ObjectId[]; // Array of recipe IDs
 }
 
 const PotluckSchema = new Schema<IPotluck>({
-    users: [{ type: Schema.Types.ObjectId, ref: "User", required: true }],
-    ingredients: [{ type: Schema.Types.ObjectId, ref: "Ingredient", required: true }],
-    recipes: [{ type: Schema.Types.ObjectId, ref: "Recipe", required: true }],
-});
+    host: { type: Schema.Types.ObjectId, ref: "User", required: true, unique: true }, // Ensure only one host
+    participants: [{ type: Schema.Types.ObjectId, ref: "User", required: true }], // Array of user references
+    ingredients: [{ type: Schema.Types.ObjectId, ref: "Ingredient", required: true }], // Ingredient references
+    recipes: [{ type: Schema.Types.ObjectId, ref: "Recipe", required: true }], // Recipe references
+}, { timestamps: true }); // Adds createdAt and updatedAt timestamps
 
 const PotluckModel = mongoose.model<IPotluck>("Potluck", PotluckSchema);
 
 export { PotluckModel, IPotluck };
+
