@@ -12,4 +12,10 @@ COPY . .
 
 EXPOSE $PORT
 
-CMD ["npm", "start"]
+# CMD ["npm", "start"]
+# Copy the entrypoint script
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+# Use the entrypoint script to start the app
+ENTRYPOINT ["/app/entrypoint.sh"]
