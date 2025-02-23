@@ -34,6 +34,7 @@ jobs:
             # Write secrets into .env
             echo "PORT=${{ secrets.PROD_PORT }}" > .env
             echo "DB_URI=${{ secrets.PROD_DB_URI }}" >> .env
+            echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
 
             # Give .env permissions
             chmod 600 .env

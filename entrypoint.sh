@@ -19,4 +19,4 @@ if [ -z "$DB_URI" ]; then
 fi
 
 echo "Starting the application..."
-exec npm start  # or `node index.js` depending on your setup
+exec npm start
