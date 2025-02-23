@@ -1,5 +1,6 @@
 import { NextFunction, Response, Request } from "express";
 import mongoose, { ObjectId } from "mongoose";
+import { recipesGeneration } from "../aiHelper";
 import UserModel from "../models/UserModel";
 import RecipeModel from "../models/RecipeModel";
 import IngredientModel from "../models/IngredientModel";
@@ -379,7 +380,7 @@ export class UsersController {
         }
     }
 
-    async getPotluckSessionsByUserId(req: Request, res: Response, next: NextFunction) {
+    async getPotluckSessionsByHostId(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params; // Get user ID from request params
     
@@ -403,6 +404,34 @@ export class UsersController {
             res.status(200).json({ potlucks });
         } catch (error) {
             console.error("Error retrieving potluck sessions by host ID:", error);
+            res.status(500).json({ error: "Failed to retrieve potluck sessions." });
+        }
+    }
+    
+    async getPotluckSessionsByParticipantId(req: Request, res: Response, next: NextFunction) {
+        try {
+            const participantId = req.params.id; // Get participant ID from request params
+    
+            // Validate if participantId is a valid MongoDB ObjectId
+            if (!mongoose.Types.ObjectId.isValid(participantId)) {
+                return res.status(400).json({ error: "Invalid Participant ID format." });
+            }
+    
+            // Find all potluck sessions where this user is a participant
+            const potlucks = await PotluckModel.find({ participants: participantId })
+                .populate("host", "name email") // Populate host info
+                .populate("participants", "name email") // Populate participant info
+                .populate("ingredients", "name") // Populate ingredient names
+                .populate("recipes", "name"); // Populate recipe names
+    
+            // If no potluck sessions are found
+            if (!potlucks.length) {
+                return res.status(404).json({ error: "No potluck sessions found for this participant." });
+            }
+    
+            res.status(200).json({ potlucks });
+        } catch (error) {
+            console.error("Error retrieving potluck sessions by participant ID:", error);
             res.status(500).json({ error: "Failed to retrieve potluck sessions." });
         }
     }    
@@ -598,8 +627,73 @@ export class UsersController {
     }
 
     async updatePotluckRecipesByAI(req: Request, res: Response, next: NextFunction) {
+        try {
+            const id = req.params.id; // Potluck ID
+    
+            // Validate Potluck ID
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                return res.status(400).json({ error: "Invalid Potluck ID format." });
+            }
+    
+            // Find the potluck session
+            const potluck = await PotluckModel.findById(id);
+            if (!potluck) {
+                return res.status(404).json({ error: "Potluck session not found." });
+            }
+    
+            // Ensure potluck has ingredients
+            if (!potluck.ingredients || potluck.ingredients.length === 0) {
+                return res.status(400).json({ error: "No ingredients found in the potluck session." });
+            }
+    
+            // Fetch ingredient names from the database
+            const ingredients = await IngredientModel.find(
+                { _id: { $in: potluck.ingredients } }, // Find all ingredients matching ObjectId[]
+                { name: 1, _id: 0 } // Only return the name field
+            );
+    
+            // Extract ingredient names into a string array
+            const ingredientNames = ingredients.map(ingredient => ingredient.name);
+    
+            // Ensure we have ingredient names before proceeding
+            if (ingredientNames.length === 0) {
+                return res.status(400).json({ error: "No valid ingredient names found." });
+            }
 
-    }
+            console.log(ingredientNames);
+    
+            // Call AI to generate recipes based on ingredient names
+            const obj = await recipesGeneration({ ingredients: ingredientNames });
+    
+            // Extract the recipe
+            if (!obj) {
+                return res.status(400).send("No recipes found.");
+            }
+    
+            // Ensure obj is an array before inserting
+            const recipesArray = Array.isArray(obj) ? obj : [obj];
+    
+            console.log(`An AI-generated recipe is posted!`);
+    
+            // Insert generated recipes into the database
+            const insertedRecipes = await RecipeModel.insertMany(recipesArray);
+    
+            // Extract inserted recipe IDs
+            const recipeIds = insertedRecipes.map(recipe => recipe._id);
+    
+            // Update the potluck session with new recipe IDs
+            const updatedPotluck = await PotluckModel.findByIdAndUpdate(
+                id,
+                { $addToSet: { recipes: { $each: recipeIds } } }, // Adds unique recipe IDs to the potluck session
+                { new: true }
+            ).populate("recipes", "name"); // Populate updated recipes info
+    
+            res.status(200).json({ message: "Potluck recipes updated successfully with AI-generated recipes.", potluck: updatedPotluck });
+        } catch (error) {
+            console.error("Error updating potluck recipes by AI:", error);
+            res.status(500).json({ error: "Failed to update potluck recipes." });
+        }
+    }      
 
     async endPotluckSession(req: Request, res: Response, next: NextFunction) {
         try {

@@ -122,8 +122,14 @@ export const UsersRoutes = [
     },
     {
         method: "get",
-        route: "/potluck/user/:id",
-        action: controller.getPotluckSessionsByUserId,
+        route: "/potluck/host/:id",
+        action: controller.getPotluckSessionsByHostId,
+        validation: []
+    },
+    {
+        method: "get",
+        route: "/potluck/participant/:id",
+        action: controller.getPotluckSessionsByParticipantId,
         validation: []
     },
     {
@@ -169,6 +175,14 @@ export const UsersRoutes = [
         validation: [
             param("id").isMongoId(),
             body("participants").isArray()
+        ]
+    },
+    {
+        method: "put",
+        route: "/potluck/AI/:id",
+        action: controller.updatePotluckRecipesByAI,
+        validation: [
+            param("id").isMongoId()
         ]
     },
     {
