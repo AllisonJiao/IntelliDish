@@ -10,6 +10,4 @@ To run our App on the docker, please ensure that you:
 1. Stop all previous docker containers that run on the same port
 2. Run the container named 'cpen321_intellidish' which is indicated in `docker-compose.yml`
 3. Execute `docker compose up` in your terminal
-4. If you changes anything and need to rebuild the docker,
-    4.1 Run `docker compose down`
-    4.2 Then `docker compose up --build`
+4. If you changes anything and need to rebuild the docker -> `docker compose down` -> `docker compose up --build`
