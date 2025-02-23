@@ -107,13 +107,25 @@ export const UsersRoutes = [
             body("_id").isMongoId().withMessage("Invalid ingredient ID format")
         ]
     },
-    // // === Potluck Routes ===
-    // {
-    //     method: "get",
-    //     route: "/potluck",
-    //     action: controller.getPotluckSessions,
-    //     validation: []
-    // },
+    // === Potluck Routes ===
+    {
+        method: "get",
+        route: "/potluck",
+        action: controller.getPotluckSessions,
+        validation: []
+    },
+    {
+        method: "get",
+        route: "/potluck/:id",
+        action: controller.getPotluckSessionsById,
+        validation: []
+    },
+    {
+        method: "get",
+        route: "/potluck/user/:id",
+        action: controller.getPotluckSessionsByUserId,
+        validation: []
+    },
     {
         method: "post",
         route: "/potluck",
@@ -123,21 +135,48 @@ export const UsersRoutes = [
             body("ingredients").isArray()
         ]
     },
-    // {
-    //     method: "put",
-    //     route: "/potluck/:id/participants",
-    //     action: controller.updatePotluckParticipants,
-    //     validation: [
-    //         param("id").isMongoId(),
-    //         body("participants").isArray()
-    //     ]
-    // },
-    // {
-    //     method: "delete",
-    //     route: "/potluck/:id",
-    //     action: controller.endPotluckSession,
-    //     validation: [
-    //         param("id").isMongoId()
-    //     ]
-    // }
+    {
+            method: "put",
+            route: "/potluck/:id/ingredients",
+            action: controller.addPotluckIngredients,
+            validation: [
+                param("id").isMongoId(),
+                body("ingredients").isArray()
+            ]
+    },
+    {
+        method: "delete",
+        route: "/potluck/:id/ingredients",
+        action: controller.removePotluckIngredients,
+        validation: [
+            param("id").isMongoId(),
+            body("ingredients").isArray()
+        ]
+    },
+    {
+        method: "put",
+        route: "/potluck/:id/participants",
+        action: controller.addPotluckParticipants,
+        validation: [
+            param("id").isMongoId(),
+            body("participants").isArray()
+        ]
+    },
+    {
+        method: "delete",
+        route: "/potluck/:id/participants",
+        action: controller.removePotluckParticipants,
+        validation: [
+            param("id").isMongoId(),
+            body("participants").isArray()
+        ]
+    },
+    {
+        method: "delete",
+        route: "/potluck/:id",
+        action: controller.endPotluckSession,
+        validation: [
+            param("id").isMongoId()
+        ]
+    }
 ];

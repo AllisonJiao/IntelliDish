@@ -336,16 +336,76 @@ export class UsersController {
 
     // Potluck related functions
     async getPotluckSessions(req: Request, res: Response, next: NextFunction) {
-
-    }
+        try {
+            // Retrieve all potluck sessions
+            const potlucks = await PotluckModel.find()
+                .populate("host", "name email") // Populate host info
+                .populate("participants", "name email") // Populate participant info
+                .populate("ingredients", "name") // Populate ingredient names
+                .populate("recipes", "name"); // Populate recipe names
+    
+            res.status(200).json({ potlucks });
+        } catch (error) {
+            console.error("Error retrieving potluck sessions:", error);
+            res.status(500).json({ error: "Failed to retrieve potluck sessions." });
+        }
+    }    
 
     async getPotluckSessionsById(req: Request, res: Response, next: NextFunction) {
-
+        try {
+            const { id } = req.params; // Get potluck ID from request params
+    
+            // Validate if ID is a valid MongoDB ObjectId
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                return res.status(400).json({ error: "Invalid Potluck ID format." });
+            }
+    
+            // Find the potluck session by ID
+            const potluck = await PotluckModel.findById(id)
+                .populate("host", "name email") // Populate host info
+                .populate("participants", "name email") // Populate participant info
+                .populate("ingredients", "name") // Populate ingredient names
+                .populate("recipes", "name"); // Populate recipe names
+    
+            // If the potluck session is not found
+            if (!potluck) {
+                return res.status(404).json({ error: "Potluck session not found." });
+            }
+    
+            res.status(200).json({ potluck });
+        } catch (error) {
+            console.error("Error retrieving potluck session:", error);
+            res.status(500).json({ error: "Failed to retrieve potluck session." });
+        }
     }
 
-    async getPotluckSessionByUserId(req: Request, res: Response, next: NextFunction) {
-
-    }
+    async getPotluckSessionsByUserId(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params; // Get user ID from request params
+    
+            // Validate if userId is a valid MongoDB ObjectId
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                return res.status(400).json({ error: "Invalid User ID format." });
+            }
+    
+            // Find all potluck sessions hosted by this user
+            const potlucks = await PotluckModel.find({ host: id })
+                .populate("host", "name email") // Populate host info
+                .populate("participants", "name email") // Populate participant info
+                .populate("ingredients", "name") // Populate ingredient names
+                .populate("recipes", "name"); // Populate recipe names
+    
+            // If no potluck sessions are found
+            if (!potlucks.length) {
+                return res.status(404).json({ error: "No potluck sessions found for this user." });
+            }
+    
+            res.status(200).json({ potlucks });
+        } catch (error) {
+            console.error("Error retrieving potluck sessions by host ID:", error);
+            res.status(500).json({ error: "Failed to retrieve potluck sessions." });
+        }
+    }    
 
     async createPotluckSession(req: Request, res: Response, next: NextFunction) {
         try {
@@ -362,11 +422,6 @@ export class UsersController {
                 return res.status(404).json({ error: "Host user not found." });
             }
     
-            // Check if the host already has a potluck session
-            if (user.potluck) {
-                return res.status(400).json({ error: "This user already has a potluck session." });
-            }
-    
             // Create the new Potluck session
             const newPotluck = new PotluckModel({
                 host,
@@ -377,9 +432,11 @@ export class UsersController {
     
             await newPotluck.save();
     
-            // Update the User model with the potluck session ID
-            user.potluck = newPotluck._id as ObjectId;
-            await user.save();
+            // Update the User model by pushing the potluck session ID
+            await UserModel.updateOne(
+                { _id: host },
+                { $push: { potluck: newPotluck._id } } // Append the new potluck ID
+            );
     
             res.status(201).json({ message: "Potluck session created successfully.", potluck: newPotluck });
         } catch (error) {
@@ -388,46 +445,194 @@ export class UsersController {
         }
     }
 
-    async updatePotluckIngredients(req: Request, res: Response, next: NextFunction) {
-
+    async addPotluckIngredients(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params; // Potluck ID
+            const { ingredients } = req.body; // List of ingredient IDs to add
+    
+            // Validate Potluck ID
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                return res.status(400).json({ error: "Invalid Potluck ID format." });
+            }
+    
+            // Check if ingredients are provided and are in an array
+            if (!Array.isArray(ingredients) || ingredients.length === 0) {
+                return res.status(400).json({ error: "Ingredients must be an array with at least one ID." });
+            }
+    
+            // Ensure all ingredient IDs are valid
+            if (!ingredients.every(ingredient => mongoose.Types.ObjectId.isValid(ingredient))) {
+                return res.status(400).json({ error: "One or more ingredient IDs are invalid." });
+            }
+    
+            // Add new ingredients to the potluck session (avoids duplicates)
+            const updatedPotluck = await PotluckModel.findByIdAndUpdate(
+                id,
+                { $addToSet: { ingredients: { $each: ingredients } } }, // Adds only unique values
+                { new: true }
+            ).populate("ingredients", "name"); // Populate ingredients info
+    
+            if (!updatedPotluck) {
+                return res.status(404).json({ error: "Potluck session not found." });
+            }
+    
+            res.status(200).json({ message: "Ingredients added successfully.", potluck: updatedPotluck });
+        } catch (error) {
+            console.error("Error adding ingredients to potluck:", error);
+            res.status(500).json({ error: "Failed to add ingredients." });
+        }
     }
 
-    async updatePotluckParticipants(req: Request, res: Response, next: NextFunction) {
+    async removePotluckIngredients(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params; // Potluck ID
+            const { ingredients } = req.body; // List of ingredient IDs to remove
+    
+            // Validate Potluck ID
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                return res.status(400).json({ error: "Invalid Potluck ID format." });
+            }
+    
+            // Check if ingredients are provided and are in an array
+            if (!Array.isArray(ingredients) || ingredients.length === 0) {
+                return res.status(400).json({ error: "Ingredients must be an array with at least one ID." });
+            }
+    
+            // Ensure all ingredient IDs are valid
+            if (!ingredients.every(ingredient => mongoose.Types.ObjectId.isValid(ingredient))) {
+                return res.status(400).json({ error: "One or more ingredient IDs are invalid." });
+            }
+    
+            // Remove specified ingredients from the potluck session
+            const updatedPotluck = await PotluckModel.findByIdAndUpdate(
+                id,
+                { $pull: { ingredients: { $in: ingredients } } }, // Removes specified ingredient IDs
+                { new: true }
+            ).populate("ingredients", "name"); // Populate ingredients info
+    
+            if (!updatedPotluck) {
+                return res.status(404).json({ error: "Potluck session not found." });
+            }
+    
+            res.status(200).json({ message: "Ingredients removed successfully.", potluck: updatedPotluck });
+        } catch (error) {
+            console.error("Error removing ingredients from potluck:", error);
+            res.status(500).json({ error: "Failed to remove ingredients." });
+        }
+    }
 
+    async addPotluckParticipants(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params; // Potluck ID
+            const { participants } = req.body; // List of participant IDs to add
+    
+            // Validate Potluck ID
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                return res.status(400).json({ error: "Invalid Potluck ID format." });
+            }
+    
+            // Check if participants are provided and are in an array
+            if (!Array.isArray(participants) || participants.length === 0) {
+                return res.status(400).json({ error: "Participants must be an array with at least one ID." });
+            }
+    
+            // Ensure all participant IDs are valid
+            if (!participants.every(participant => mongoose.Types.ObjectId.isValid(participant))) {
+                return res.status(400).json({ error: "One or more participant IDs are invalid." });
+            }
+    
+            // Add new participants to the potluck session (avoids duplicates)
+            const updatedPotluck = await PotluckModel.findByIdAndUpdate(
+                id,
+                { $addToSet: { participants: { $each: participants } } }, // Adds only unique values
+                { new: true }
+            ).populate("participants", "name"); // Populate participants info
+    
+            if (!updatedPotluck) {
+                return res.status(404).json({ error: "Potluck session not found." });
+            }
+    
+            res.status(200).json({ message: "Participants added successfully.", potluck: updatedPotluck });
+        } catch (error) {
+            console.error("Error adding participants to potluck:", error);
+            res.status(500).json({ error: "Failed to add participants." });
+        }
+    }
+
+    async removePotluckParticipants(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params; // Potluck ID
+            const { participants } = req.body; // List of participant IDs to remove
+    
+            // Validate Potluck ID
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                return res.status(400).json({ error: "Invalid Potluck ID format." });
+            }
+    
+            // Check if participants are provided and are in an array
+            if (!Array.isArray(participants) || participants.length === 0) {
+                return res.status(400).json({ error: "Participants must be an array with at least one ID." });
+            }
+    
+            // Ensure all participant IDs are valid
+            if (!participants.every(participant => mongoose.Types.ObjectId.isValid(participant))) {
+                return res.status(400).json({ error: "One or more participant IDs are invalid." });
+            }
+    
+            // Remove specified participants from the potluck session
+            const updatedPotluck = await PotluckModel.findByIdAndUpdate(
+                id,
+                { $pull: { participants: { $in: participants } } }, // Removes specified ingredient IDs
+                { new: true }
+            ).populate("participants", "name"); // Populate participants info
+    
+            if (!updatedPotluck) {
+                return res.status(404).json({ error: "Potluck session not found." });
+            }
+    
+            res.status(200).json({ message: "Participants removed successfully.", potluck: updatedPotluck });
+        } catch (error) {
+            console.error("Error removing participants from potluck:", error);
+            res.status(500).json({ error: "Failed to remove participants." });
+        }
     }
 
     async updatePotluckRecipesByAI(req: Request, res: Response, next: NextFunction) {
 
     }
 
-    // async endPotluckSession(req: Request, res: Response, next: NextFunction) {
-    //     try {
-    //         const potluckId = req.params.id; // Potluck ID from request params
-
-    //         // Validate Potluck ID properly
-    //         if (!mongoose.Types.ObjectId.isValid(potluckId)) {
-    //             return res.status(400).json({ error: "Invalid Potluck ID format." });
-    //         }
-
-    //         // Find the potluck session
-    //         const potluck = await PotluckModel.findById(potluckId);
-    //         if (!potluck) {
-    //             return res.status(404).json({ error: "Potluck session not found." });
-    //         }
-
-    //         // Remove potluck session reference from the host user
-    //         await UserModel.updateOne(
-    //             { _id: potluck.host },
-    //             { $unset: { potluck: "" } } 
-    //         );
-
-    //         // Delete the potluck session
-    //         // await PotluckModel.deleteOne({ _id: potluckId });
-
-    //         res.status(200).json({ message: "Potluck session deleted successfully." });
-    //     } catch (error) {
-    //         console.error("Error deleting potluck session:", error);
-    //         res.status(500).json({ error: "Failed to delete potluck session." });
-    //     }
-    // }
+    async endPotluckSession(req: Request, res: Response, next: NextFunction) {
+        try {
+            const potluckId = req.params.id; // Potluck ID from request params
+    
+            // Validate Potluck ID
+            if (!mongoose.Types.ObjectId.isValid(potluckId)) {
+                return res.status(400).json({ error: "Invalid Potluck ID format." });
+            }
+    
+            console.log("Valid potluck ID: ", potluckId);
+    
+            // Find the potluck session
+            const potluck = await PotluckModel.findById(potluckId);
+            if (!potluck) {
+                return res.status(404).json({ error: "Potluck session not found." });
+            }
+    
+            console.log("Found potluck session.");
+    
+            // Remove potluck session reference from the host user
+            await UserModel.updateOne(
+                { _id: potluck.host },
+                { $pull: { potluck: potluckId } } // Remove only this potluck ID
+            );
+    
+            // Delete the potluck session
+            await PotluckModel.deleteOne({ _id: potluckId });
+    
+            res.status(200).json({ message: "Potluck session deleted successfully." });
+        } catch (error) {
+            console.error("Error deleting potluck session:", error);
+            res.status(500).json({ error: "Failed to delete potluck session." });
+        }
+    }    
 }

@@ -8,7 +8,7 @@ interface IPotluck extends Document {
 }
 
 const PotluckSchema = new Schema<IPotluck>({
-    host: { type: Schema.Types.ObjectId, ref: "User", required: true, unique: true }, // Unique host per potluck
+    host: { type: Schema.Types.ObjectId, ref: "User", required: true},
     participants: [{ type: Schema.Types.ObjectId, ref: "User" }],
     ingredients: [{ type: Schema.Types.ObjectId, ref: "Ingredient" }],
     recipes: [{ type: Schema.Types.ObjectId, ref: "Recipe" }],
