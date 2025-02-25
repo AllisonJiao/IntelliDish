@@ -6,6 +6,7 @@ Feb 24:
 - Updated Section 3.3 to clarify the detailed flow of the functional requirements for login and logout.
 - Revised Section 3.5.1 to simplify the security approach by removing AES and RSA references, focusing on HTTPS and trusted libraries for robust protection without added complexity.
 - Revised Section 3.5.2 to justify the four-click limit for user actions based on usability studies, emphasizing improved user satisfaction, task efficiency, and a user-friendly interface.
+- Revised Section 4.7 according to revisions in Section 3.5.
 
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
@@ -379,9 +380,9 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
 
 ### **4.7. Non-Functional Requirements Design**
 1. [**Data Security**](#nfr1)
-    - **Validation**: Use Advanced Encryption Standard (AES) encryption for user data at rest and Transport Layer Security (TLS) for data in transit. Verify the implementation through penetration testing and static code analysis to ensure compliance with security standards.
+    - **Validation**: Use Transport Layer Security (TLS) (via HTTPS) to secure user data in transit. Verify the implementation through penetration testing and static code analysis to ensure compliance with security standards and best practices. Trusted libraries and APIs should be used for secure data handling at the application and database levels.
 2. [**Usability/Ease of Use**](#nfr1)
-    - **Validation**: Conduct usability tests with diverse user groups, ensuring key actions like recipe searching or PotLuck creation require no more than 4 clicks. Provide contextual tooltips and real-time error handling to guide users effectively and enhance ease of use.
+    - **Validation**: Conduct usability tests with diverse user groups to ensure that key actions—such as recipe searching or PotLuck creation—can be completed in no more than four clicks, aligning with usability research on optimal interaction limits. Implement contextual tooltips and real-time error handling to guide users and enhance overall ease of use and task efficiency.
 3. [**Performance**](nfr1)
     - **Validation**: Use stress testing tools like JMeter or Locust to simulate real-world usage. Optimize performance through caching and query tuning to ensure 90% of API requests complete within 10 seconds under load.
 
