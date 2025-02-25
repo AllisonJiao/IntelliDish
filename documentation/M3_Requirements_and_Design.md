@@ -1,8 +1,9 @@
 # M3 - Requirements and Design
 
 ## 1. Change History
-<!-- Leave blank for M3 -->
-Not applicable for this milestone.
+Feb 24: 
+- Revised the use case diagram in Section 3.1 by consolidating login and logout into a single authentication use case.
+- Updated Section 3.3 to clarify the detailed flow of the functional requirements for login and logout.
 
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
@@ -57,7 +58,7 @@ For users like busy university students and employees (who often lack the time, 
     - **Description**: User logs in to IntelliDish using the authentication service with his/her credentials.
     - **Primary actor(s)**: User, Authentication Service.
     - **Main success scenario**:
-        - **1**. The user inputs his/her credentials into the authentication service log-in page.
+        - **1**. The user clicks "Sign In" on the home page and enters their credentials on the authentication service login page.
         - **2**. The authentication service system validates the user's credentials.
         - **3**. The user successfully logs in to IntelliDish and starts using the system.
     - **Failure scenario(s)**:
@@ -72,7 +73,7 @@ For users like busy university students and employees (who often lack the time, 
     - **Description**: User logs out from IntelliDish and the user session is terminated.
     - **Primary actor(s)**: User, Authentication Service.
     - **Main success scenario**:
-        - **1**. The user selects the "log out" option from the IntelliDish app.
+        - **1**. The user selects "Log Out" from the main page of IntelliDish (displayed after login).
         - **2**. The authentication service terminates the user's session.
         - **3**. Clear user session data (tokens, cookies, etc.) for security purposes. 
         - **4**. The user successfully logs out of IntelliDish and is redirected to the login screen.
