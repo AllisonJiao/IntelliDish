@@ -18,7 +18,7 @@ For users like busy university students and employees (who often lack the time, 
 
 ## 3. Requirements Specification
 ### **3.1. Use-Case Diagram**
-![UML_Use_Case_Diagram.png](images/UML_Use_Case_Diagram.png)
+![UML_Use_Case_Diagram.png](images/use_case_diagram.png)
 
 
 
