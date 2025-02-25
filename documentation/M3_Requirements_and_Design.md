@@ -4,6 +4,7 @@
 Feb 24: 
 - Revised the use case diagram in Section 3.1 by consolidating login and logout into a single authentication use case.
 - Updated Section 3.3 to clarify the detailed flow of the functional requirements for login and logout.
+- Revised Section 3.5.1 to simplify the security approach by removing AES and RSA references, focusing on HTTPS and trusted libraries for robust protection without added complexity.
 
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
@@ -169,8 +170,8 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
 <a name="nfr1"></a>
 
 1. **Data Security**
-    - **Description**: All user data (including login credentials, friend lists, query history, and saved recipes) should be processes using trusted libraries and APIs, and/ or properly encrypted using AES (Advanced Encryption Standard) or RSA (Rivest-Shamir-Adleman) protocols. Additionally, all user session data (tokens, cookies, etc.) should be cleared upon user logout.
-    - **Justification**: IntelliDish should ensure data security in order to ensure user privacy and make users feel safe giving  information such as login credentials, personal preferences, and location to IntelliDish.
+    - **Description**: All user data—including login credentials, friend lists, query history, and saved recipes—should be securely transmitted using HTTPS to ensure data confidentiality during communication. Sensitive information is handled using trusted libraries and APIs that follow industry best practices for security. Additionally, user session data (e.g., tokens, cookies) should be managed securely and cleared upon user logout to prevent unauthorized access.
+    - **Justification**: Using HTTPS ensures secure communication between the client and server, protecting data in transit. Relying on well-established libraries and security standards at the application and database levels helps safeguard sensitive information at rest. These measures enhance user privacy and build trust in IntelliDish when handling personal data such as login credentials, preferences, and location information.
 2. **Usability/ Ease of Use**
     - **Description**: All user actions (such as inviting friends to PotLuck, adding/ removing friends, adding ingredients, etc.) should not take more than 4 clicks to complete.
     - **Justification**: IntelliDish should aim to have an intuitive and user friendly GUI with a low learning curve in order to attract and retain users from all levels of technological backgrounds.
