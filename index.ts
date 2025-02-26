@@ -50,14 +50,14 @@ Routes.forEach((route) => {
 
 // Load self-signed certificate and private key
 const options = {
-  key: fs.readFileSync('key.pem'),
-  cert: fs.readFileSync('cert.pem')
+  key: fs.readFileSync('./key.pem'),
+  cert: fs.readFileSync('./cert.pem')
 };
 
 connectDB().then(() => {
-   app.listen(process.env.PORT, () => {
-       console.log("Listening on port " + process.env.PORT);
-   });
+  https.createServer(options, app).listen(process.env.PORT || 443, () => {
+    console.log(`HTTPS Server running on port ${process.env.PORT || 443}`);
+  });
 }).catch(err => {
-   console.error(err);
+  console.error(err);
 });
