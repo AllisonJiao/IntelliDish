@@ -104,22 +104,33 @@ export class RecipesController {
     }
 
 
-   async postNewRecipeFromAI (req: Request, res: Response, nextFunction: NextFunction) {
-        // Create a new recipe by given ingredients using AI
-        const obj = await recipesGeneration(req.body.ingredients);
-
-        // Extract the recipe
-        if (!obj) {
-            return res.status(400).send("No recipes found.");
+    async postNewRecipeFromAI(req: Request, res: Response, nextFunction: NextFunction) {
+        try {
+            // Generate a new recipe based on given ingredients using AI
+            const obj = await recipesGeneration(req.body.ingredients);
+    
+            // If no recipe is generated, return an error response
+            if (!obj) {
+                return res.status(400).json({ error: "No recipes found." });
+            }
+    
+            // Ensure obj is an array before inserting
+            const recipesArray = Array.isArray(obj) ? obj : [obj];
+    
+            // Insert generated recipes into the database
+            const insertedRecipes = await RecipeModel.insertMany(recipesArray);
+    
+            // Return the inserted recipes in JSON format
+            return res.status(200).json({
+                message: "AI-generated recipe posted successfully!",
+                recipes: insertedRecipes,
+            });
+    
+        } catch (error) {
+            console.error("Error generating recipe:", error);
+            return res.status(500).json({ error: "Failed to generate recipe." });
         }
-
-        // Ensure obj is an array before inserting
-        const recipesArray = Array.isArray(obj) ? obj : [obj];
-
-        await RecipeModel.insertMany(recipesArray);
-
-        res.status(200).send(`An AI-generated recipe is posted!`);
-   };
+    }    
 
    async putRecipeById (req: Request, res: Response, nextFunction: NextFunction) {
         // Update an recipe by id
