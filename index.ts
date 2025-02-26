@@ -50,7 +50,7 @@ Routes.forEach((route) => {
 
 // Load self-signed certificate and private key
 const options = {
-  key: fs.readFileSync('./key.pem'),
+  key: fs.readFileSync('./key_unencrypted.pem'),
   cert: fs.readFileSync('./cert.pem')
 };
 
