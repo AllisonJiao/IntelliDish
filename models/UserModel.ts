@@ -18,6 +18,19 @@ const UserSchema = new Schema<IUser>({
     potluck: [{ type: Schema.Types.ObjectId, ref: "Potluck"}]
 });
 
+// Middleware to remove user from friends lists when deleted
+UserSchema.pre("findOneAndDelete", async function (next) {
+    const deletedUser = await this.model.findOne(this.getQuery());
+  
+    if (deletedUser) {
+      await mongoose.model("User").updateMany(
+        { friends: deletedUser._id },
+        { $pull: { friends: deletedUser._id } }
+      );
+    }
+    next();
+});
+
 const UserModel = mongoose.model<IUser>("User", UserSchema);
 
 export default UserModel;
