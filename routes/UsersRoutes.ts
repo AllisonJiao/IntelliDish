@@ -123,6 +123,14 @@ export const UsersRoutes = [
             body("_id").isMongoId().withMessage("Invalid ingredient ID format")
         ]
     },
+    {
+        method: "get",
+        route: "/users/:id/ingredients",
+        action: controller.getIngredients,
+        validation: [
+            param("id").isMongoId()
+        ]
+    },
     // === Potluck Routes ===
     {
         method: "get",

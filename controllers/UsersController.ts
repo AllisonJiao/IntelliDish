@@ -299,13 +299,13 @@ export class UsersController {
             }
     
             // Find the user
-            const user = await UserModel.findById(userId).populate("recipes", "name procedures"); // Populate recipes details
+            const user = await UserModel.findById(userId).populate("recipes", "name procedure"); // Populate recipes details
     
             if (!user) {
                 return res.status(404).json({ error: `User with ID '${userId}' not found.` });
             }
     
-            // Return the list of friends
+            // Return the list of recipes
             res.status(200).json({ recipes: user.recipes });
         } catch (error) {
             console.error("Error fetching recipes:", error);
@@ -380,6 +380,30 @@ export class UsersController {
         } catch (error) {
             console.error("Error removing ingredient from user:", error);
             res.status(500).json({ error: "Failed to remove ingredient from user." });
+        }
+    }
+
+    async getIngredients (req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req.params.id;
+    
+            // Validate the user ID
+            if (!mongoose.isValidObjectId(userId)) {
+                return res.status(400).json({ message: "Invalid user ID format" });
+            }
+    
+            // Find the user
+            const user = await UserModel.findById(userId).populate("ingredients", "name category"); // Populate ingredient details
+    
+            if (!user) {
+                return res.status(404).json({ error: `User with ID '${userId}' not found.` });
+            }
+    
+            // Return the list of ingredients
+            res.status(200).json({ recipes: user.ingredients });
+        } catch (error) {
+            console.error("Error fetching ingredients:", error);
+            res.status(500).json({ error: "Failed to retrieve ingredients." });
         }
     }
 
