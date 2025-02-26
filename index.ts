@@ -6,6 +6,8 @@ import { RecipesRoutes } from "./routes/RecipesRoutes";
 import { UsersRoutes } from "./routes/UsersRoutes";
 import morgan from "morgan";
 import dotenv from "dotenv";
+import * as fs from 'fs';
+import * as https from 'https';
 
 dotenv.config();
 
@@ -45,8 +47,8 @@ Routes.forEach((route) => {
 
 // Load self-signed certificate and private key
 const options = {
-  key: fs.readFileSync('/etc/ssl/private/server.key'),
-  cert: fs.readFileSync('/etc/ssl/certs/server.crt')
+  key: fs.readFileSync('../etc/ssl/private/server.key'),
+  cert: fs.readFileSync('../etc/ssl/certs/server.crt')
 };
 
 connectDB().then(() => {
