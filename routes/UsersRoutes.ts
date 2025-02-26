@@ -98,6 +98,14 @@ export const UsersRoutes = [
         ]
     },
     {
+        method: "get",
+        route: "/users/:id/recipes",
+        action: controller.getRecipes,
+        validation: [
+            param("id").isMongoId()
+        ]
+    },
+    {
         method: "post",
         route: "/users/:id/ingredient",
         action: controller.addIngredientToUser,

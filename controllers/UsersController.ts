@@ -289,6 +289,30 @@ export class UsersController {
         }
     }
 
+    async getRecipes (req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req.params.id;
+    
+            // Validate the user ID
+            if (!mongoose.isValidObjectId(userId)) {
+                return res.status(400).json({ message: "Invalid user ID format" });
+            }
+    
+            // Find the user
+            const user = await UserModel.findById(userId).populate("recipes", "name procedures"); // Populate recipes details
+    
+            if (!user) {
+                return res.status(404).json({ error: `User with ID '${userId}' not found.` });
+            }
+    
+            // Return the list of friends
+            res.status(200).json({ recipes: user.recipes });
+        } catch (error) {
+            console.error("Error fetching recipes:", error);
+            res.status(500).json({ error: "Failed to retrieve recipes." });
+        }
+    }
+
     async addIngredientToUser(req: Request, res: Response, next: NextFunction) {
         try {
             const userId = req.params.id;
