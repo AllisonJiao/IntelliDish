@@ -13,6 +13,9 @@ dotenv.config();
 
 const app = express();
 
+// Enable CORS to allow frontend access
+// app.use(cors());
+
 app.use(express.json());
 app.use(morgan('tiny'));
 
@@ -47,8 +50,8 @@ Routes.forEach((route) => {
 
 // Load self-signed certificate and private key
 const options = {
-  key: fs.readFileSync('../etc/ssl/private/server.key'),
-  cert: fs.readFileSync('../etc/ssl/certs/server.crt')
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
 };
 
 connectDB().then(() => {
