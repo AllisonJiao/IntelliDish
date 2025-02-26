@@ -3,7 +3,7 @@ import { validationResult } from "express-validator";
 import connectDB from "./services";
 import { IngredientsRoutes } from "./routes/IngredientsRoutes";
 import { RecipesRoutes } from "./routes/RecipesRoutes";
-import {UsersRoutes} from "./routes/UsersRoutes";
+import { UsersRoutes } from "./routes/UsersRoutes";
 import morgan from "morgan";
 import dotenv from "dotenv";
 
@@ -42,6 +42,12 @@ Routes.forEach((route) => {
      },
    );
 });
+
+// Load self-signed certificate and private key
+const options = {
+  key: fs.readFileSync('/etc/ssl/private/server.key'), // Path to your private key
+  cert: fs.readFileSync('/etc/ssl/certs/server.crt')   // Path to your certificate
+};
 
 connectDB().then(() => {
    app.listen(process.env.PORT, () => {
