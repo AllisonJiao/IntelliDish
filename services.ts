@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 async function connectDB() {
     try {
         console.log("DB_URI is: ", `"${process.env.DB_URI}"`)
-        await mongoose.connect(process.env.DB_URI ?? "mongodb://localhost:27017/IntelliDish");
+        await mongoose.connect(process.env.DB_URI ?? "mongodb://mongo:27017/IntelliDish?directConnection=true");
         console.log("MongoDB Connected Successfully");
     } catch (error) {
         console.error("MongoDB Connection Error:", error);
