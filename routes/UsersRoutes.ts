@@ -80,8 +80,8 @@ export const UsersRoutes = [
         ]
     },
     {
-        method: "post",
-        route: "/users/:id/recipe",
+        method: "put",
+        route: "/users/:id/addRecipe",
         action: controller.addRecipeToUser,
         validation: [
             param("id").isMongoId().withMessage("Invalid MongoDB ID format"),
@@ -89,8 +89,8 @@ export const UsersRoutes = [
         ]
     },
     {
-        method: "delete",
-        route: "/users/:id/recipe",
+        method: "put",
+        route: "/users/:id/deleteRecipe",
         action: controller.deleteRecipeFromUser,
         validation: [
             param("id").isMongoId(),
@@ -107,7 +107,7 @@ export const UsersRoutes = [
     },
     {
         method: "post",
-        route: "/users/:id/ingredient",
+        route: "/users/:id/addIngredient",
         action: controller.addIngredientToUser,
         validation: [
             param("id").isMongoId().withMessage("Invalid MongoDB ID format"),
@@ -116,7 +116,7 @@ export const UsersRoutes = [
     },
     {
         method: "delete",
-        route: "/users/:id/ingredient",
+        route: "/users/:id/deleteIngredient",
         action: controller.deleteIngredientFromUser,
         validation: [
             param("id").isMongoId().withMessage("Invalid MongoDB ID format"),
