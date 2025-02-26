@@ -12,7 +12,7 @@ interface IUser extends Document {
 const UserSchema = new Schema<IUser>({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    friends: [{ type: Schema.Types.ObjectId, ref: "Users" }],
+    friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
     recipes: [{ type: Schema.Types.ObjectId, ref: "Recipe" }],
     ingredients: [{ type: Schema.Types.ObjectId, ref: "Ingredient" }],
     potluck: [{ type: Schema.Types.ObjectId, ref: "Potluck"}]
