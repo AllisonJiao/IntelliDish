@@ -45,8 +45,8 @@ Routes.forEach((route) => {
 
 // Load self-signed certificate and private key
 const options = {
-  key: fs.readFileSync('/etc/ssl/private/server.key'), // Path to your private key
-  cert: fs.readFileSync('/etc/ssl/certs/server.crt')   // Path to your certificate
+  key: fs.readFileSync('/etc/ssl/private/server.key'),
+  cert: fs.readFileSync('/etc/ssl/certs/server.crt')
 };
 
 connectDB().then(() => {
