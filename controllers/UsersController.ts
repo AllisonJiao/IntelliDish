@@ -400,7 +400,7 @@ export class UsersController {
             }
     
             // Return the list of ingredients
-            res.status(200).json({ recipes: user.ingredients });
+            res.status(200).json({ ingredients: user.ingredients });
         } catch (error) {
             console.error("Error fetching ingredients:", error);
             res.status(500).json({ error: "Failed to retrieve ingredients." });
