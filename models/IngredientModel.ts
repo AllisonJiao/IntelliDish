@@ -22,6 +22,17 @@ const IngredientSchema = new Schema<IIngredient>({
     }
 });
 
+IngredientSchema.pre("findOneAndDelete", async function (next) {
+    const ingredientId = this.getQuery()._id;
+
+    await mongoose.model("User").updateMany(
+        { ingredients: ingredientId },
+        { $pull: { ingredients: ingredientId } }
+    );
+
+    next();
+});
+
 const IngredientModel = mongoose.model<IIngredient>("Ingredient", IngredientSchema);
 
 export default IngredientModel;

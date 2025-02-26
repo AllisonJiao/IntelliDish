@@ -167,6 +167,8 @@ export class RecipesController {
             if (!mongoose.Types.ObjectId.isValid(recipeId)) {
                 return res.status(400).json({ error: "Invalid recipe ID format." });
             }
+
+            await RecipeModel.findOneAndDelete({ _id: recipeId });
  
             const deletedRecipe = await RecipeModel.findByIdAndDelete(recipeId);
     

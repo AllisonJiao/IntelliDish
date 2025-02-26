@@ -202,6 +202,9 @@ export class UsersController {
             if (!mongoose.Types.ObjectId.isValid(userId)) {
                 return res.status(400).json({ error: "Invalid user ID format." });
             }
+
+            await UserModel.findOneAndDelete({ _id: userId });
+
             const deletedUser = await UserModel.findByIdAndDelete(userId);
 
             if (!deletedUser) {

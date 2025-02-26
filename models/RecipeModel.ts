@@ -27,6 +27,17 @@ const RecipeSchema = new Schema<IRecipe>({
     price: { type: Number, required: false, min: 0 } 
 });
 
+RecipeSchema.pre("findOneAndDelete", async function (next) {
+    const recipeId = this.getQuery()._id;
+
+    await mongoose.model("User").updateMany(
+        { recipes: recipeId },
+        { $pull: { recipes: recipeId } }
+    );
+
+    next();
+});
+
 // Create the model
 const RecipeModel = mongoose.model<IRecipe>("Recipe", RecipeSchema);
 

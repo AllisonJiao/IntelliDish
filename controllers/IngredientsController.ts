@@ -254,6 +254,8 @@ export class IngredientsController {
             if (!mongoose.Types.ObjectId.isValid(ingredientId)) {
                 return res.status(400).json({ error: "Invalid ingredient ID format." });
             }
+
+            await IngredientModel.findOneAndDelete({ _id: ingredientId });
  
             const deletedIngredient = await IngredientModel.findByIdAndDelete(ingredientId);
     
