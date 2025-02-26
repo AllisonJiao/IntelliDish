@@ -64,6 +64,14 @@ export const UsersRoutes = [
         ]
     },
     {
+        method: "get",
+        route: "/users/:id/friends",
+        action: controller.getFriends,
+        validation: [
+            param("id").isMongoId()
+        ]
+    },
+    {
         method: "delete",
         route: "/users/:id",
         action: controller.deleteUserAccount,

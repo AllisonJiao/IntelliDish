@@ -171,6 +171,30 @@ export class UsersController {
         res.status(200).send("Delete friend successfully");
     }
 
+    async getFriends(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req.params.id;
+    
+            // Validate the user ID
+            if (!mongoose.isValidObjectId(userId)) {
+                return res.status(400).json({ message: "Invalid user ID format" });
+            }
+    
+            // Find the user
+            const user = await UserModel.findById(userId).populate("friends", "name email"); // Populate friend details
+    
+            if (!user) {
+                return res.status(404).json({ error: `User with ID '${userId}' not found.` });
+            }
+    
+            // Return the list of friends
+            res.status(200).json({ friends: user.friends });
+        } catch (error) {
+            console.error("Error fetching friends:", error);
+            res.status(500).json({ error: "Failed to retrieve friends list." });
+        }
+    }    
+
     async deleteUserAccount(req: Request, res: Response, next: NextFunction) {
         try {
             const userId = req.params.id;
