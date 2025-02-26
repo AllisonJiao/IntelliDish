@@ -25,7 +25,7 @@ export async function recipesGeneration(jsonData: RecipeRequest) {
             role: "system",
             content: `
             You are an AI assistant that generates recipes from given ingredients.
-            Return a **valid JSON object** where all fields **match this exact database format**:
+            Return exactly five **valid JSON object** where all fields **match this exact database format**:
             
             {
                 "name": "Recipe Name",
