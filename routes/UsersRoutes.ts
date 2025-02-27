@@ -167,24 +167,26 @@ export const UsersRoutes = [
     },
     {
         method: "put",
-        route: "/potluck/:potluckId/participant/:participantId/ingredients",
+        route: "/potluck/:id/ingredients",
         action: controller.addPotluckIngredientsToParticipant,
         validation: [
-            param("potluckId").isMongoId(),
-            param("participantId").isMongoId(),
-            body("ingredients").isArray().withMessage("Ingredients must be an array")
+            param("id").isMongoId().withMessage("Invalid Potluck ID."),
+            body("participantId").isMongoId().withMessage("Invalid Participant ID."),
+            body("ingredients").isArray({ min: 1 }).withMessage("Ingredients must be a non-empty array."),
+            body("ingredients.*").isString().withMessage("Each ingredient must be a string.")
         ]
     },
     {
         method: "delete",
-        route: "/potluck/:potluckId/participant/:participantId/ingredients",
+        route: "/potluck/:id/ingredients",
         action: controller.removePotluckIngredientsFromParticipant,
         validation: [
-            param("potluckId").isMongoId(),
-            param("participantId").isMongoId(),
-            body("ingredients").isArray().withMessage("Ingredients must be an array")
+            param("id").isMongoId().withMessage("Invalid Potluck ID."),
+            body("participantId").isMongoId().withMessage("Invalid Participant ID."),
+            body("ingredients").isArray({ min: 1 }).withMessage("Ingredients must be a non-empty array."),
+            body("ingredients.*").isString().withMessage("Each ingredient must be a string.")
         ]
-    },    
+    },
     {
         method: "put",
         route: "/potluck/:id/participants",
