@@ -6,6 +6,7 @@ Feb 24:
 - Updated Section 3.3 to clarify the detailed flow of the functional requirements for login and logout.
 - Revised Section 3.5.1 to simplify the security approach by removing AES and RSA references, focusing on HTTPS and trusted libraries for robust protection without added complexity.
 - Revised Section 3.5.2 to justify the four-click limit for user actions based on usability studies, emphasizing improved user satisfaction, task efficiency, and a user-friendly interface.
+- Revised Section 4.5 to separate frontend, backend, and external component (Databases and APIs) using dotted lines.
 - Revised Section 4.7 according to revisions in Section 3.5.
 
 ## 2. Project Description
