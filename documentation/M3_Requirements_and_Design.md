@@ -61,7 +61,7 @@ For users like busy university students and employees (who often lack the time, 
     - **Description**: User logs in to IntelliDish using the authentication service with his/her credentials.
     - **Primary actor(s)**: User, Authentication Service.
     - **Main success scenario**:
-        - **1**. The user clicks "Sign In" on the home page and enters their credentials on the authentication service login page.
+        - **1**. Upon opening the app, the user will be in the login page. The user clicks "Sign In" on the home page and enters their credentials on the authentication service login page.
         - **2**. The authentication service system validates the user's credentials.
         - **3**. The user successfully logs in to IntelliDish and starts using the system.
     - **Failure scenario(s)**:
