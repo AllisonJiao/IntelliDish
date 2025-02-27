@@ -166,23 +166,25 @@ export const UsersRoutes = [
         ]
     },
     {
-            method: "put",
-            route: "/potluck/:id/ingredients",
-            action: controller.addPotluckIngredients,
-            validation: [
-                param("id").isMongoId(),
-                body("ingredients").isArray()
-            ]
+        method: "put",
+        route: "/potluck/:potluckId/participant/:participantId/ingredients",
+        action: controller.addPotluckIngredientsToParticipant,
+        validation: [
+            param("potluckId").isMongoId(),
+            param("participantId").isMongoId(),
+            body("ingredients").isArray().withMessage("Ingredients must be an array")
+        ]
     },
     {
         method: "delete",
-        route: "/potluck/:id/ingredients",
-        action: controller.removePotluckIngredients,
+        route: "/potluck/:potluckId/participant/:participantId/ingredients",
+        action: controller.removePotluckIngredientsFromParticipant,
         validation: [
-            param("id").isMongoId(),
-            body("ingredients").isArray()
+            param("potluckId").isMongoId(),
+            param("participantId").isMongoId(),
+            body("ingredients").isArray().withMessage("Ingredients must be an array")
         ]
-    },
+    },    
     {
         method: "put",
         route: "/potluck/:id/participants",
