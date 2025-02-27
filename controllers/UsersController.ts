@@ -450,36 +450,44 @@ export class UsersController {
 
     async createPotluckSession(req: Request, res: Response, next: NextFunction) {
         try {
-            const { name, date, host, participants, ingredients, recipes } = req.body;
-
+            const { name, date, host, participants = [], ingredients = [], recipes = [] } = req.body;
+    
             if (!name || !date || !host) {
                 return res.status(400).json({ error: "Name, Date, and Host are required." });
             }
-
+    
             const user = await UserModel.findById(host);
             if (!user) {
                 return res.status(404).json({ error: "Host user not found." });
             }
-
+    
+            // Ensure the host is added as a participant
+            const updatedParticipants = [...participants];
+    
+            // Check if host is already in participants list, if not, add them
+            if (!updatedParticipants.some(p => p.user.toString() === host)) {
+                updatedParticipants.push({ user: host, ingredients: [] });
+            }
+    
             const newPotluck = new PotluckModel({
                 name,
                 date,
                 host,
-                participants: participants || [],
-                ingredients: ingredients || [],
-                recipes: recipes || [],
+                participants: updatedParticipants, // Ensuring host is included
+                ingredients,
+                recipes,
             });
-
+    
             await newPotluck.save();
             await UserModel.updateOne({ _id: host }, { $push: { potluck: newPotluck._id } });
-
+    
             res.status(201).json({ message: "Potluck session created successfully.", potluck: newPotluck });
         } catch (error) {
             console.error("Error creating potluck session:", error);
             res.status(500).json({ error: "Failed to create potluck session." });
         }
     }
-
+    
     async getPotluckSessionsByHostId(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
