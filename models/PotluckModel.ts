@@ -1,12 +1,12 @@
 import mongoose, { Schema, Document, ObjectId } from "mongoose";
 
 interface IPotluck extends Document {
-    name: string; // Name of the potluck event
-    date: Date; // Date of the potluck
-    host: ObjectId; // Unique host for the potluck
-    participants: { user: ObjectId; ingredients: ObjectId[] }[]; // Users with their ingredients
-    ingredients: ObjectId[]; // All ingredients contributed
-    recipes: ObjectId[]; // Recipes generated/shared for the potluck
+    name: string;
+    date: Date;
+    host: ObjectId;
+    participants: { user: ObjectId; ingredients: string[] }[];
+    ingredients: string[];
+    recipes: ObjectId[];
 }
 
 const PotluckSchema = new Schema<IPotluck>(
@@ -17,10 +17,10 @@ const PotluckSchema = new Schema<IPotluck>(
         participants: [
             {
                 user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-                ingredients: [{ type: Schema.Types.ObjectId, ref: "Ingredient" }]
+                ingredients: [{ type: String, required: true }]
             }
         ],
-        ingredients: [{ type: Schema.Types.ObjectId, ref: "Ingredient" }],
+        ingredients: [{ type: String, required: true }],
         recipes: [{ type: Schema.Types.ObjectId, ref: "Recipe" }],
     },
     { timestamps: true }
