@@ -14,6 +14,7 @@ Feb 28:
 - Revised Section 3.5.3 to align with industry best practices by reducing the response time target from 10 seconds to 5 seconds, ensuring a more responsive user experience.
 - Revised Sectiin 4.7.3 according to revision in Section 3.5.3.
 - Revised Section 3.4 to reflect the updated user interface design with enhanced clarity and functionality.
+- Revised Section 4.2 to align with the current MongoDB schema, incorporating Mongoose for schema validation, middleware-based lifecycle management, and automated referential integrity.
 
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
@@ -298,18 +299,21 @@ These screen mockups illustrate the user interfaces for the Full Recipe Recommen
 
 ### **4.2. Databases**
 1. **MongoDB Database**
-    - **Purpose**: Stores all user data (credentials, preferences, friend lists), recipes, ingredient lists, and collaborative group information.
-    -  **Rational**: MongoDB’s flexible document-based schema allows handling dynamic and unstructured data, such as recipes and ingredient metadata. It integrates seamlessly with TypeScript via libraries like Mongoose, providing type safety and schema validation.
+    - **Purpose**: Stores user data, including credentials, preferences, friend lists, recipes, ingredient lists, and potluck information. The database enables seamless integration with TypeScript through Mongoose, ensuring type safety, schema validation, and middleware-based lifecycle management while handling dynamic and unstructured data efficiently.
+    -  **Rationale**: MongoDB’s document-based schema offers flexibility for handling hierarchical and unstructured data, such as recipes and ingredient metadata. By leveraging Mongoose, the schema ensures robust validation, optimized queries, and seamless updates when user-related documents are deleted or modified. Mongoose middleware functions facilitate automated referential integrity, such as removing references to deleted users, recipes, or ingredients, ensuring data consistency across collections.
     ##### **Database Collections**
 
     ##### **Users (`/users`)**
     ```
     [
         {
-        "_id":
-        "email":
-        "name": 
-        "friends":
+            "_id": ObjectId,
+            "email": String,
+            "name": String,
+            "friends": [ObjectId],
+            "recipes": [ObjectId],
+            "ingredients": [ObjectId],
+            "potluck": [ObjectId]
         }
     ]
     ```
@@ -318,14 +322,15 @@ These screen mockups illustrate the user interfaces for the Full Recipe Recommen
     ```
     [
         {
-        "_id": 
-        "name": 
-        "ingredients":
-        "procedure":
-        "cuisine type":
-        "preparation time":
-        "recipe complexity":
-        "price":
+            "_id": ObjectId,
+            "name": String,
+            "ingredients": [String],
+            "procedure": [String],
+            "cuisineType": String,
+            "recipeComplexity": "Don't Care" | "Very Easy" | "Easy" | "Medium" | "Hard" | "Very Hard",
+            "preparationTime": Number, // Time in minutes
+            "calories": Number, // Total calories per serving
+            "price": Number
         }
     ]
     ```
@@ -334,13 +339,30 @@ These screen mockups illustrate the user interfaces for the Full Recipe Recommen
     ```
     [
         {
-        "_id": 
-        "name": 
-        "category": 
-        "quantity": 
+            "_id": ObjectId,
+            "name": String,
+            "category": "Vegetables" | "Fruit" | "Whole Grains" | "Meats" | "Eggs" | "Dairy" | "Condiments" | "Others",
+            "quantity": Number,
+            "unit": "g" | "kg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "pcs"
         }
     ]
     ```
+
+    ##### **Potluck (`/potluck`)**
+    ```
+    [
+        {
+            "_id": ObjectId,
+            "name": String,
+            "date": Date,
+            "host": ObjectId,
+            "participants": [{ "user": ObjectId, "ingredients": [String] }],
+            "ingredients": [String],
+            "recipes": [ObjectId]
+        }
+    ]
+    ```
+
 ### **4.3. External Modules**
 1. **OPENAI API** 
     - **Purpose**: Processes user-provided inputs such as ingredients and cuisine preferences to generate personalized recipe suggestions using advanced NLP.
