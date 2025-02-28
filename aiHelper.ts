@@ -24,18 +24,20 @@ export async function recipesGeneration(jsonData: RecipeRequest) {
             {
             role: "system",
             content: `
-            You are an AI assistant that generates recipes from given ingredients.
+            You are an AI assistant that generates recipes from given ingredients, cusineType, recipeComplexity, spiceLevel, preparationTime, calories, nutritionLevel, and price.
             Return exactly five **valid JSON object** where all fields **match this exact database format**:
             
             {
-                "name": "Recipe Name",
-                "ingredients": ["ingredient1", "ingredient2", "ingredient3"],
-                "procedure": ["Step 1", "Step 2", "Step 3"],
-                "cuisineType": "Cuisine",
-                "recipeComplexity": "Don't Care" | "Very Easy" | "Easy" | "Medium" | "Hard" | "Very Hard",
-                "preparationTime": "Time in minutes(numeric)",
-                "calories": "Estimated calories(numeric)"
-                "price": "Estimated price (numeric)"
+                "name": string;
+                "ingredients": string[];
+                "procedure": string[];
+                "cuisineType": "Any" | "African" | "American" | "Brazilian" | "British" | "Caribbean" | "Chinese" | "Ethiopian" | "Filipino" | "French" | "German" | "Greek" | "Hawaiian" | "Indian" | "Indonesian" | "Italian" | "Japanese" | "Korean" | "Lebanese" | "Malaysian" | "Mediterranean" | "Mexican" | "Middle Eastern" | "Moroccan" | "Peruvian" | "Polish" | "Russian" | "Spanish" | "Swedish" | "Thai" | "Turkish" | "Vietnamese";
+                "recipeComplexity": "Don't Care" | "Very Easy" | "Easy" | "Moderate" | "Challenging" | "Complex";
+                "spiceLevel": "Don't Care" | "No Spice" | "Mild Spice" | "Low Spice" | "Medium Spice" | "High Spice" | "Extreme Spice";
+                "preparationTime": number; // Time in minutes
+                "calories": number; // Total calories per serving
+                "nutritionLevel": "Don't Care" | "Very Low" | "Low" | "Medium" | "High" | "Very High";
+                "price": number;
             }
 
             Always return the response in **this exact structure**.
