@@ -15,6 +15,7 @@ Feb 28:
 - Revised Sectiin 4.7.3 according to revision in Section 3.5.3.
 - Revised Section 3.4 to reflect the updated user interface design with enhanced clarity and functionality.
 - Revised Section 4.2 to align with the current MongoDB schema, incorporating Mongoose for schema validation, middleware-based lifecycle management, and automated referential integrity.
+- Revised Section 4.4 to include Firebase Cloud Messaging (FCM) for real-time notifications and live updates, enhancing user engagement and responsiveness.
 
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
@@ -375,12 +376,15 @@ These screen mockups illustrate the user interfaces for the Full Recipe Recommen
 1. **Frontend Framework: Kotlin (Android)**
     - **Purpose**: Develop a native Android application to deliver an optimized, responsive, and user-friendly interface for mobile users.
     - **Reason**: Kotlin is the standard for Android development, offering seamless integration with Android SDK and native performance.
-3. **Backend Framework: Node.js (TypeScript)**
+2. **Backend Framework: Node.js (TypeScript)**
    - **Purpose**: Implements the server-side logic to handle API requests, manage the database, and integrate external services like OpenAI.
     - **Reason**: Node.js with TypeScript ensures scalability, maintainability, and type safety.
-4. **Cloud Service: AWS**
-   - **Purpose**: Hosts the backend (Node.js)
+3. **Cloud Service: AWS**
+   - **Purpose**: Hosts the backend (Node.js).
    - **Reason**: AWS offers robust free-tier options, scalability, and integration flexibility for deploying and managing EC2 instances. It complies with the project constraints and ensures reliability and availability.
+4. **Live Updates: Firebase Cloud Messaging (FCM)**
+   - **Purpose**: Enables real-time notifications and live updates for users, such as recipe status changes and potluck activity updates.
+   - **Reason**: FCM provides a scalable and reliable push notification service that integrates seamlessly with Android and Node.js, enhancing real-time user engagement.
 
 ### **4.5. Dependencies Diagram**
 ![dependency_diagram.png](images/dependency_diagram.png)
