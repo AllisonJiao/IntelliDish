@@ -441,9 +441,9 @@ These screen mockups illustrate the user interfaces for the Full Recipe Recommen
 
 ### **4.6. Functional Requirements Sequence Diagram**
 1. [**Authenticate**](#fr1)\
-![UML_Use_Case_Diagram.png](images/sequence1.png)
+![UML_Use_Case_Diagram.png](images/seq1.png)
 2. [**Get Full Recipe Recommendation**](#fr1)\
-![UML_Use_Case_Diagram.png](images/sequence2.png)
+![UML_Use_Case_Diagram.png](images/seq2.png)
 3. [**Get Partial Recipe Recommendation**](#fr1)\
 ![UML_Use_Case_Diagram.png](images/seq4.png)
 4. [**Participate In PotLuck**](#fr1)\
