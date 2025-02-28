@@ -461,25 +461,13 @@ export class UsersController {
                 return res.status(404).json({ error: "Host user not found." });
             }
     
-            // Add host to participants, but ensure uniqueness
-            const updatedParticipants = new Map();
-    
-            // Add existing participants
-            participants.forEach((participant: { user: string; ingredients?: any[] }) => {
-                updatedParticipants.set(participant.user.toString(), participant);
-            });            
-    
-            // Add the host (only if not already in the list)
-            updatedParticipants.set(host.toString(), { user: host, ingredients: [] });
-    
-            const uniqueParticipants = Array.from(updatedParticipants.values());
-    
+            // Directly use `participants` and `ingredients` from frontend request
             const newPotluck = new PotluckModel({
                 name,
                 date,
-                host,
-                participants: uniqueParticipants, // Ensuring unique participants
-                ingredients,
+                host, 
+                participants,  // Use participants exactly as received
+                ingredients,   // Use ingredients exactly as received
                 recipes,
             });
     
@@ -491,31 +479,8 @@ export class UsersController {
             console.error("Error creating potluck session:", error);
             res.status(500).json({ error: "Failed to create potluck session." });
         }
-    }    
-    
-    async getPotluckSessionsByHostId(req: Request, res: Response, next: NextFunction) {
-        try {
-            const { id } = req.params;
-    
-            if (!mongoose.Types.ObjectId.isValid(id)) {
-                return res.status(400).json({ error: "Invalid User ID format." });
-            }
-    
-            const potlucks = await PotluckModel.find({ host: id })
-                .populate("host", "name email")
-                .populate("participants.user", "name email")
-                .populate("recipes", "name"); // No need to populate `participants.ingredients` and `ingredients` (they are strings)
-    
-            if (!potlucks.length) {
-                return res.status(404).json({ error: "No potluck sessions found for this user." });
-            }
-    
-            res.status(200).json({ potlucks });
-        } catch (error) {
-            console.error("Error retrieving potluck sessions by host ID:", error);
-            res.status(500).json({ error: "Failed to retrieve potluck sessions." });
-        }
     }
+    
     
     async getPotluckSessionsByParticipantId(req: Request, res: Response, next: NextFunction) {
         try {
