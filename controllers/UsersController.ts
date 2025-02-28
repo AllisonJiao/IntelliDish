@@ -779,7 +779,7 @@ export class UsersController {
     
             res.status(200).json({
                 message: "AI-generated recipes added successfully.",
-                potluck: updatedPotluck
+                recipe: insertedRecipes
             });
         } catch (error) {
             console.error("Error updating potluck recipes by AI:", error);
