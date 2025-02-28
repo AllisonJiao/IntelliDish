@@ -19,6 +19,9 @@ Feb 28:
 - Revised Section 3.2 "Participate in PotLuck" use case to clarify the flow, incorporating group creation, invitations, and real-time updates.
 - Revised Section 4.8 to replace the previous recipe ranking algorithm with a stable matching algorithm for Potluck, ensuring group-based recipe selection optimizes overall satisfaction and resolves conflicting preferences dynamically.
 
+Feb 29:
+- Revised Section 4.1 to provide clearer rationale for separating the main components and updated each interface to align with the latest implementation details.
+
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
 
@@ -196,114 +199,153 @@ These screen mockups illustrate the user interfaces for the Full Recipe Recommen
 ## 4. Designs Specification
 ### **4.1. Main Components**
 1. **User Management Component**
-    - **Purpose**: Handles user authentication, registration, and profile management, including adding and removing friends. This ensures secure access to user-specific features and personal data.
-    -  **Rationale**: Centralized handling of authentication and user data simplifies the app's backend structure and enables scalability. Alternatives like third-party services (e.g., Google OAuth) were considered but are unnecessary for initial implementation.
+    - **Purpose**: Manages the creation, retrieval, updating, and deletion of users. It also handles friend relationships (adding/removing friends) and manages user-associated recipes and ingredients.
+    - **Rationale**: Centralizing these operations simplifies maintenance, security, and scaling. It also streamlines integration with external authentication (like Google OAuth) and facilitates future expansion of user-related features.
     - **Interfaces**: 
-        1. `boolean login(String username, String password);`
-            - **Purpose**: Validates user credentials and initiates a user session. Return true if login is successful; return false otherwise.
-        2. `boolean register(String username, String password, String email);`
-            - **Purpose**: Registers a new user. Return true if registration is successful, false otherwise.
-        3. `boolean logout(String sessionId);`
-            - **Purpose**: Ends a user session. Return true if log out successfully, false otherwise.
-        4. `List<String> getFriends(String userId)`
-           - **Purpose**: Fetches the user's friend list
-        5. `boolean addFriend(String userId, String friendUsername);`
-           - **Purpose**: Adds a friend to the user's friend list.
-        6. `boolean removeFriend(String userId, String friendUsername);`
-           - **Purpose**: Removes a friend from the user's friend list.
+        1. `List<User> getUsers();`
+            - **Purpose**: Fetches a list of all users.
+        2. `User getUserById(String userId);`
+            - **Purpose**: Retrieves a single user based on their MongoDB ObjectId.
+        3. `User getUserByEmail(String email);`
+            - **Purpose**: Retrieves a single user using their email address.
+        4. `String createNewUser(User userData);`
+           - **Purpose**: Creates a new user record in the database. Returns the user’s newly assigned ID on success.
+        5. `boolean updateUserName(String userId, String newName);`
+           - **Purpose**: Updates a user's name if the user exists.
+        6. `boolean deleteUserAccount(String userId);`
+           - **Purpose**: Removes a user record from the database.
+        7. `boolean addNewFriend(String userId, String friendId);`
+            - **Purpose**: Establishes a mutual friend relationship between two users.
+        8. `boolean deleteFriend(String userId, String friendId);`
+            - **Purpose**: Removes an existing friend relationship between two users.
+        9. `List<User> getFriends(String userId);`
+            - **Purpose**: Returns a list of the user’s friends with optional friend detail (e.g., name, email).
+        10. `boolean addRecipeToUser(String userId, String recipeId);`
+            - **Purpose**: Associates an existing recipe with a user, storing only the recipe ID in the user’s recipes list.
+        11. `boolean deleteRecipeFromUser(String userId, String recipeId);`
+            - **Purpose**: Removes a recipe reference from a user’s saved recipes.
+        12. `List<Recipe> getRecipes(String userId);`
+            - **Purpose**: Retrieves the user’s associated recipes (populated from recipe IDs).
+        13. `boolean addIngredientToUser(String userId, String ingredientId);`
+            - **Purpose**: Adds a reference to an existing ingredient to the user’s ingredients list.
+        14. `boolean deleteIngredientFromUser(String userId, String ingredientId);`
+            - **Purpose**: Removes the given ingredient from the user’s ingredients list.
+        15. `List<Ingredient> getIngredients(String userId);`
+            - **Purpose**: Fetches all ingredients associated with a user.
+   - **HTTP/REST Interfaces**:
+     - GET /users – Retrieves all users.
+     - POST /users – Creates a new user.
+     - GET /users/id/{id} – Retrieves a user by ID.
+     - PUT /users/{id}/name – Updates a user’s name.
+     - PUT /users/{id}/addFriend – Adds a friend to a user’s list.
+     - PUT /users/{id}/deleteFriend – Removes a friend from a user’s list.
+     - GET /users/{id}/friends – Fetches a user’s friends.
+     - DELETE /users/{id} – Deletes a user.
+     - POST /users/{id}/recipe – Adds a recipe to the user’s saved list.
+     - DELETE /users/{id}/recipe – Removes a recipe from a user’s saved list.
+     - GET /users/{id}/recipes – Retrieves a user’s saved recipes.
+     - POST /users/{id}/ingredient – Adds an ingredient to a user’s list.
+     - DELETE /users/{id}/ingredient – Removes an ingredient from a user’s list.
+     - GET /users/{id}/ingredients – Retrieves a user’s ingredients.
         
 2. **Recipe Management Component**
-   - **Purpose**: Manages communication with the AI API for generating recipes based on user-provided ingredients and preferences. It handles full and partial recipe recommendations, ensuring that missing ingredients are substituted appropriately.
-   - **Rational**:  Centralizing recipe logic allows easy integration with external APIs and simplifies future enhancements, such as adding dietary filters.
+   - **Purpose**: Manages the creation, retrieval, updating, and deletion of recipe records. It can also generate new recipes via AI (recipesGeneration), and fetch ingredient details associated with a given recipe.
+   - **Rationale**:  Centralizing recipe operations simplifies the system architecture. By isolating all recipe-related functions, it becomes straightforward to add features like advanced recipe filtering, integration with external APIs, or extended AI capabilities.
    - **Interfaces**:
-     1. `List<Recipe> getRecipes(List<String> ingredients, String cuisine);`
-        - **Purpose**: Fetches recipes based on all provided ingredients and cuisine preference. Return a list of recipes
-     2. `List<Recipe> getPartialRecipes(List<String> ingredients, String cuisine);`
-        - **Purpose**: Suggests recipes even if some ingredients are missing, with substitutes. Return a list of recipes with substitution suggestions
-     3. `boolean saveRecipe(Recipe recipe);`
-        - **Purpose**: Saves a newly generated recipe to the database if it does not already exist, preventing duplicate entries and enabling recipe history tracking. Returns `true` if successful, `false` otherwise.
-     4. `boolean removeRecipe(String recipeId);`
-        - **Purpose**: Removes a saved recipe from the database based on the recipe ID. Returns `true` if successful, `false` otherwise.
-    - **HTTP/REST Interfaces interact with OPENAI API**:
-      1. `POST /recipes/generate`
-         - **Purpose**: Generates recipes based on ingredients and cuisine preferences.
-         - **Example Request**:
-         ```
-           {
-              "ingredients": ["chicken", "rice", "carrots"],
-              "cuisine": "Asian"
-            }
-         ```
-         - **Example Response**:
-         ```
-         {
-            "recipes": [
-              {
-                "name": "Chicken Stir-Fry",
-                "ingredients": ["chicken", "rice", "carrots"],
-                "instructions": "Cook chicken, then stir-fry with rice and carrots."
-              },
-              {
-                "name": "Vegetable Fried Rice",
-                "ingredients": ["rice", "carrots"],
-                "instructions": "Fry rice with chopped carrots."
-              }
-            ]
-          }
-          ```
-      2. `POST /ingredients/suggest-substitution`
-         - **Purpose**: Suggests recipes with partially available ingredients, along with guidance on missing ingredients and their replacements.
-         - **Example Request**:
-         ```
-          {
-            "ingredients": ["chicken"],
-            "cuisine": "Italian"
-          }
-         ```
-         - **Example Response**:
-         ```
-          {
-            "partialRecipes": [
-              {
-                "name": "Chicken Salad",
-                "availableIngredients": ["chicken"],
-                "missingIngredients": ["lettuce", "tomatoes"],
-                "instructions": "Mix chicken with chopped vegetables for a quick salad."
-              }
-            ],
-            "suggestions": {
-              "ingredientsToBuy": ["pasta", "cream", "lettuce", "tomatoes"],
-              "substitutions": {
-                "cream": "Greek yogurt",
-                "lettuce": "spinach"
-              }
-            }
-          }
-          ```
+     1. `List<Recipe> getAllRecipes();`
+        - **Purpose**: Fetches a list of all recipes from the database.
+     2. `Recipe getRecipeById(String recipeId);`
+        - **Purpose**: Retrieves a single recipe based on its MongoDB ObjectId.
+     3. `List<Recipe> getRecipeByName(String recipeName);`
+        - **Purpose**: Performs a case-insensitive search for recipes matching the specified name.
+     4. `List<Ingredient> getIngredientsFromRecipeId(String recipeId);`
+        - **Purpose**: Looks up all ingredient records corresponding to the names listed in a recipe.
+     5. `String postNewRecipe(Recipe recipeData);`
+        - **Purpose**: Creates a new recipe in the database. Returns the assigned ID upon successful creation.
+     6. `List<Recipe> postNewRecipeFromAI(List<String> ingredients);`
+        - **Purpose**: Uses an AI helper (recipesGeneration) to generate recipes from the supplied ingredients. Inserts any new recipes into the database.
+     7. `boolean putRecipeById(String recipeId, Recipe updateData);`
+        - **Purpose**: Updates an existing recipe by its ID, modifying fields such as name, ingredients, or instructions.
+     8. `boolean deleteRecipeById(String recipeId);`
+        - **Purpose**: Deletes an existing recipe record from the database.
+    - **HTTP/REST Interfaces**:
+      - GET /recipes - Retrieves all recipes in the database.
+      - POST /recipes - Creates a new recipe record.
+      - GET /recipes/id/{id} - Retrieves a single recipe by its ID.
+      - GET /recipes/name?name={recipeName} - Retrieves all recipes matching a specific name (case-insensitive).
+      - GET /recipes/{id}/getIngredientDetails - Returns all matching ingredient documents for a recipe’s ingredient names.
+      - POST /recipes/AI - Generates recipes using AI from a list of ingredients, then inserts them into the database.
+      - PUT /recipes/{_id} - Updates an existing recipe by ID.
+      - DELETE /recipes/{_id} - Deletes a recipe by its ID.
+
 3. **Ingredient Management Component**
-   - **Purpose**: Manages user-provided ingredients, including adding, removing, and editing ingredients for both individual and collaborative use cases.
-   - **Rational**: A dedicated component ensures clear separation of ingredient management logic, which simplifies extending functionality, such as handling alternate ingredient suggestions.
+   - **Purpose**: Manages the creation, retrieval, updating, and deletion of ingredient records in the database. It also handles AI-based ingredient recognition (ingredientsRecognition) and merges or splits ingredient entries based on name, unit, and quantity.
+   - **Rationale**: A dedicated ingredient component provides a clear and scalable way to handle diverse ingredient operations. This includes:
+     - Centralized “add or update” logic (creating a new ingredient if one does not exist, or updating quantity if it does).
+     - Unit conversion for ingredients (e.g., grams to kilograms, mL to L).
+     - AI-driven image processing to detect and parse ingredients from uploaded images.
    - **Interfaces**:
-     1. `boolean addIngredient(String userId, String ingredient);`
-           - **Purpose**: Adds an ingredient to the user's personal ingredient list.
-     2. `boolean removeIngredient(String userId, String ingredient);`
-           - **Purpose**: Removes an ingredient from the user's personal ingredient list.
-     3. `boolean addGroupIngredient(String groupId, String userId, String ingredient);`
-           - **Purpose**: Adds an ingredient to a PotLuck group.
-     4. `boolean removeGroupIngredient(String groupId, String userId, String ingredient);`
-           - **Purpose**: Removes an ingredient added by the user to a PotLuck group.
+      1. `List<Ingredient> getAllIngredients();`
+           - **Purpose**: Fetches a list of all ingredients from the database.
+      2. `Ingredient getIngredientById(String ingredientId);`
+           - **Purpose**: Retrieves a single ingredient based on its MongoDB ObjectId.
+      3. `List<Ingredient> getIngredientByName(String name);`
+           - **Purpose**: Retrieves all ingredients that match a given name (case-insensitive).
+      4. `Ingredient postNewIngredient(Ingredient ingredientData);`
+           - **Purpose**: Creates a new ingredient record or merges quantity with an existing ingredient if a matching name/unit is found.
+      5. `boolean putIngredientById(String ingredientId, Ingredient updateData);`
+           - **Purpose**: Updates an existing ingredient’s fields (e.g., quantity, category) based on the provided ID.
+      6. `boolean deleteIngredientById(String ingredientId);`
+           - **Purpose**: Removes a specific ingredient from the database by its ID.
+      7. `boolean postIngredientsFromAI(String imgPath);`
+           - **Purpose**: Invokes an AI service to recognize ingredients in the given image, then processes each recognized ingredient via the “add or update” logic.
+   - **HTTP/REST Interfaces**:
+     - GET /ingredients - Retrieves all ingredients from the database.
+     - GET /ingredients/id/{id} - Retrieves a single ingredient by its MongoDB ObjectId.
+     - GET /ingredients/name?name={name} - Retrieves all ingredients matching the specified name (case-insensitive).
+     - POST /ingredients - Creates or updates an ingredient based on name, unit, and quantity.
+     - POST /ingredients/AI - Parses ingredients from an uploaded image using AI, then adds or updates each ingredient record.
+     - PUT /ingredients/{id} - Updates a specific ingredient’s fields.
+     - DELETE /ingredients/{id} - Deletes a specific ingredient by its ID.
+
 4. **PotLuck Collaboration Component**
-   - **Purpose**: Allows multiple users to collaborate by pooling their ingredients and generating group-specific recipe recommendations. Ensures user contributions are tracked and managed efficiently.
-   - **Rational**: Isolating collaboration logic as a separate component improves modularity.
+   - **Purpose**: Allows multiple users to collaborate on a potluck event, pooling their ingredients to generate group-specific recipe recommendations. Tracks which user contributes which ingredients, and manages potluck-level details like participants, recipes, and the host.
+   - **Rationale**: Isolating potluck logic in a separate module ensures clean separation of event-based collaboration from individual user actions.
    - **Interfaces**:
-     1. `boolean createPotluck(String groupName, String ownerId);`
-        - **Purpose**: Creates a new PotLuck group. Return true if the group is successfully created, false otherwise.
-     2. `boolean addMember(String groupId, String newUserId);`
-        - **Purpose**: Adds a member to an existing PotLuck group.
-     3. `boolean removeMember(String groupId, String userId);`
-        - **Purpose**: Removes a member from the PotLuck group.
-     4. `List<String> listGroupIngredients(String groupId);`
-        - **Purpose**: Fetches the list of all ingredients contributed by group members. Return a list of ingredients.
+     1. `boolean createPotluckSession(String name, Date date, String hostId, List<String> initialParticipants);`
+        - **Purpose**: Creates a new potluck event, specifying a host and optional initial participants. Persists the event and references in the host’s record.
+     2. `List<Potluck> getPotluckSessions();`
+        - **Purpose**: Retrieves all potluck sessions from the database.
+     3. `Potluck getPotluckSessionsById(String potluckId);`
+        - **Purpose**: Retrieves a single potluck session by its ID.
+     4. `List<Potluck> getPotluckSessionsByHostId(String userId);`
+        - **Purpose**: Fetches all potluck sessions where the specified user is the host.
+     5. `List<Potluck> getPotluckSessionsByParticipantId(String userId);`
+        - **Purpose**: Fetches all potluck sessions in which the specified user is a participant.
+     6. `boolean addPotluckParticipants(String potluckId, List<String> participantIds);`
+        - **Purpose**: Adds new participants to an existing potluck, if they are not already included.
+     7. `boolean removePotluckParticipants(String potluckId, List<String> participantIds);`
+        - **Purpose**: Removes one or more participants from a potluck, also removing their contributed ingredients from the potluck’s overall list.
+     8. `boolean addPotluckIngredientsToParticipant(String potluckId, String participantId, List<String> ingredients);`
+        - **Purpose**: Adds ingredient names to a participant’s contributed list, and merges them into the potluck’s global ingredients set.
+     9. `boolean removePotluckIngredientsFromParticipant(String potluckId, String participantId, List<String> ingredients);`
+        - **Purpose**: Removes specific ingredients from the participant’s list and, if no longer contributed by any participant, from the potluck itself.
+     10. `List<Recipe> updatePotluckRecipesByAI(String potluckId);`
+        - **Purpose**: Gathers the potluck’s global ingredients, calls the AI helper for recipe generation, and adds the resulting recipes to the potluck’s recipes array.
+     11. `boolean endPotluckSession(String potluckId);`
+        - **Purpose**: Terminates a potluck session by removing it from the database and clearing any references from the host’s user record.
+   - **HTTP/REST Interfaces**:
+     - GET /potluck – Retrieves all potluck sessions.
+     - GET /potluck/{id} – Retrieves a potluck by ID.
+     - GET /potluck/host/{id} – Retrieves potlucks by host ID.
+     - GET /potluck/participant/{id} – Retrieves potlucks by participant ID.
+     - POST /potluck – Creates a new potluck session.
+     - PUT /potluck/{id}/participants – Adds participants to a potluck.
+     - DELETE /potluck/{id}/participants – Removes participants from a potluck.
+     - PUT /potluck/{id}/ingredients – Adds ingredients for a given participant.
+     - DELETE /potluck/{id}/ingredients – Removes ingredients for a given participant.
+     - PUT /potluck/AI/{id} – Generates recipes via AI and updates the potluck.
+     - DELETE /potluck/{id} – Ends (deletes) a potluck session.
 
 ### **4.2. Databases**
 1. **MongoDB Database**
