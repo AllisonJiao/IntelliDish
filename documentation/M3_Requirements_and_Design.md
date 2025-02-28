@@ -445,13 +445,13 @@ These screen mockups illustrate the user interfaces for the Full Recipe Recommen
 2. [**Get Full Recipe Recommendation**](#fr1)\
 ![UML_Use_Case_Diagram.png](images/seq2.png)
 3. [**Get Partial Recipe Recommendation**](#fr1)\
-![UML_Use_Case_Diagram.png](images/seq4.png)
+![UML_Use_Case_Diagram.png](images/seq3.png)
 4. [**Participate In PotLuck**](#fr1)\
-![UML_Use_Case_Diagram.png](images/seq5.png)
+![UML_Use_Case_Diagram.png](images/seq4.png)
 5. [**Manage Recipes**](#fr1)\
-![UML_Use_Case_Diagram.png](images/sequence6.png)
+![UML_Use_Case_Diagram.png](images/seq5.png)
 6. [**Manage Friends**](#fr1)\
-![UML_Use_Case_Diagram.png](images/sequence7.png)
+![UML_Use_Case_Diagram.png](images/seq6.png)
 
 ### **4.7. Non-Functional Requirements Design**
 1. [**Data Security**](#nfr1)
