@@ -3,11 +3,16 @@
 ## 1. Change History
 Feb 24: 
 - Revised the use case diagram in Section 3.1 by consolidating login and logout into a single authentication use case.
-- Updated Section 3.3 to clarify the detailed flow of the functional requirements for login and logout.
 - Revised Section 3.5.1 to simplify the security approach by removing AES and RSA references, focusing on HTTPS and trusted libraries for robust protection without added complexity.
 - Revised Section 3.5.2 to justify the four-click limit for user actions based on usability studies, emphasizing improved user satisfaction, task efficiency, and a user-friendly interface.
 - Revised Section 4.5 to separate frontend, backend, and external component (Databases and APIs) using dotted lines.
-- Revised Section 4.7 according to revisions in Section 3.5.
+- Revised Section 4.7.1 according to revision in Section 3.5.1.
+- Revised Section 4.7.2 according to revision in Section 3.5.2.
+
+Feb 28:
+- Revised Section 3.2 "Authenticate" use case to align with the consolidation made in the use case diagram.
+- Revised Section 3.5.3 to align with industry best practices by reducing the response time target from 10 seconds to 5 seconds, ensuring a more responsive user experience.
+- Revised sectiin 4.7.3 according to revision in Section 3.5.3.
 
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
@@ -42,51 +47,44 @@ For users like busy university students and employees (who often lack the time, 
 <a name="fr1"></a>
 
 **Overview**:
-1. **Log in**
-    * User logs in to IntelliDish using the authentication service with his/her credentials.
-2. **Log out**
-    * User logs out from IntelliDish and the user session is terminated.
-3. **Get Full Recipe Recommendation**
+1. **Authenticate**
+    * User logs into and out of IntelliDish using the authentication service to manage their session securely.
+2. **Get Full Recipe Recommendation**
     * User provides a list of available ingredients and cuisine preferences, and the AI API returns a list of possible recipes.
-4. **Get Partial Recipe Recommendation**
+3. **Get Partial Recipe Recommendation**
     * Suggest recipes where some ingredients are missing from user input, and provide possible substitutes for missing ingredients as well as possible recipes that doesn't match the user's cuisine preferences.
-5. **Participate In PotLuck**
+4. **Participate In PotLuck**
     * Users can collaboratively input available ingredients as a group for recipe recommendations.
-6. **Manage Recipes**
+5. **Manage Recipes**
     * Users can add or remove favorite recipes.
-7. **Manage Friends**
+6. **Manage Friends**
     * Users can add or remove friends, with whom they can PotLuck and share recipes with.
 
 **Detailed Flow for Each Independent Scenario**:
-1. **Log in**:
-    - **Description**: User logs in to IntelliDish using the authentication service with his/her credentials.
-    - **Primary actor(s)**: User, Authentication Service.
-    - **Main success scenario**:
-        - **1**. Upon opening the app, the user will be in the login page. The user clicks "Sign In" on the home page and enters their credentials on the authentication service login page.
-        - **2**. The authentication service system validates the user's credentials.
-        - **3**. The user successfully logs in to IntelliDish and starts using the system.
-    - **Failure scenario(s)**:
-        - **1a**: Authentication service is unreachable/ unavailable.
-            - **1a1**: Display error message that the authentication service is unreachable/ unavailable.
-            - **1a2**: Prompt the user to try again later, or check online whether then authentication service is down/ under maintainence.
-        - **2a**: Authentication service determines that user crendentials are invalid.
-            - **2a1**: Display error message that credentials are invalid.
-            - **2a2**: Prompt the user to try again.
 
-2. **Log out**:
-    - **Description**: User logs out from IntelliDish and the user session is terminated.
-    - **Primary actor(s)**: User, Authentication Service.
-    - **Main success scenario**:
-        - **1**. The user selects "Log Out" from the main page of IntelliDish (displayed after login).
-        - **2**. The authentication service terminates the user's session.
-        - **3**. Clear user session data (tokens, cookies, etc.) for security purposes. 
-        - **4**. The user successfully logs out of IntelliDish and is redirected to the login screen.
-    - **Failure scenario(s)**:
-        - **2a**: Authentication service is unreachable/ unavailable, and session termination fails.
-            - **2a1**: Display error message that the authentication service is unreachable/ unavailable.
-            - **2a2**: Prompt the user to try again later, or check online whether then authentication service is down/ under maintainence.
+1. **Authenticate**
+  - **Description**: User logs in to and logs out from IntelliDish using the authentication service to manage their session securely.
+  - **Primary actor(s)**: User, Authentication Service.
+  - **Main success scenario:**  
+      - **1**. Upon opening the app, the user is on the login page. The user clicks "Sign In" and enters their credentials on the authentication service login page.  
+      - **2**. The authentication service validates the user's credentials.  
+      - **3**. The user successfully logs in to IntelliDish and starts using the system.  
+      - **4**. When the user wants to log out, they select "Log Out" from the main page.  
+      - **5**. The authentication service terminates the user's session.  
+      - **6**. User session data (tokens, cookies, etc.) are cleared for security purposes.  
+      - **7**. The user is redirected to the login screen after logging out.
+  - **Failure scenario(s):**  
+      - **1a**: Authentication service is unreachable/unavailable during login.
+        - **1a1**: Display an error message that the authentication service is unreachable/unavailable.
+        - **1a2**: Prompt the user to try again later or check online if the authentication service is down/under maintenance.  
+      - **2a**: Authentication service determines that the user's credentials are invalid.
+        - **2a1**: Display an error message that credentials are invalid.
+        - **2a2**: Prompt the user to try again.
+      - **4a**: Authentication service is unreachable/unavailable during logout, and session termination fails.
+        - **4a1**: Display an error message that the authentication service is unreachable/unavailable.
+        - **4a2**: Prompt the user to try again later or check online if the authentication service is down/under maintenance.
 
-3. **Get Full Recipe Recommendation**:
+2. **Get Full Recipe Recommendation**:
     - **Description**: User provides a list of available ingredients and cuisine preferences, and the AI API returns a list of possible recipes.
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
@@ -100,7 +98,7 @@ For users like busy university students and employees (who often lack the time, 
         - **2b**: No recipes are possible for the provided user inputs.
             - **2b1**: Suggest the user to use partial recipe recommendations, PotLuck with friends, or try again with different inputs instead.
 
-4. **Get Partial Recipe Recommendation**:
+3. **Get Partial Recipe Recommendation**:
     - **Description**: Suggest recipes where some ingredients are missing from user input, and provide possible substitutes for missing ingredients as well as possible recipes that doesn't match the user's cuisine preferences.
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
@@ -115,7 +113,7 @@ For users like busy university students and employees (who often lack the time, 
         - **2b**: No recipes are possible for the provided user inputs.
             - **2b1**: Suggest the user to use PotLuck with friends, or try again with different inputs instead.
 
-5. **Participate In PotLuck**:
+4. **Participate In PotLuck**:
     - **Description**: Users can collaboratively input available ingredients as a group for recipe recommendations.
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
@@ -134,7 +132,7 @@ For users like busy university students and employees (who often lack the time, 
         - **3b**: No recipes are possible for the provided user inputs.
             - **3b1**: Suggest the users to use partial recipe recommendations, or try again with different inputs instead.
 
-6. **Manage Favorite Recipes**:
+5. **Manage Favorite Recipes**:
     - **Description**: Users can add or remove favorite recipes.
     - **Primary actor(s)**: User.
     - **Main success scenario**:
@@ -147,7 +145,7 @@ For users like busy university students and employees (who often lack the time, 
         - **1b**: The user attempts to add a duplicate recipe.
             - **1b1**: Display error message that the recipe is already in the user's favorite recipes list.
 
-7. **Manage Friends**:
+6. **Manage Friends**:
     - **Description**: Users can add or remove friends, with whom they can PotLuck and share recipes with.
     - **Primary actor(s)**: User.
     - **Main success scenario**:
@@ -180,8 +178,8 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
     - **Justification**: IntelliDish aims to provide an intuitive, user-friendly interface with a low learning curve to attract and retain users of varying technological backgrounds. Limiting the number of clicks required for common actions helps streamline user workflows, reduce cognitive load, and enhance the overall user experience.
 
 3. **Performance**
-    - **Description**: 90% of user recipe queries should receive a response in less than 10 seconds. This accounts for worst case scenarios such as heavy backend loads, API call failures, and/ or extremely long/ complex ingredient lists.
-    - **Justification**: IntelliDish should aim to have fast request response times in order to attract and retain users, as well as maintain user satisfaction and engagement.
+    - **Description**: 90% of user recipe queries should receive a response in less than 5 seconds. This accounts for worst-case scenarios such as heavy backend loads, API call failures, and/or extremely long or complex ingredient lists.
+    - **Justification**: IntelliDish should aim to maintain fast response times to enhance user experience, increase retention, and sustain engagement. According to [this article](https://odown.com/blog/what-is-a-good-api-response-time/?utm_source=chatgpt.com#conclusion), users begin to perceive delays beyond 1 second, and response times exceeding 5 seconds are associated with increased frustration and potential abandonment. Industry best practices suggest that API response times between 2 to 5 seconds are tolerable for non-critical applications but should be optimized for user satisfaction.
 
 
 ## 4. Designs Specification
@@ -385,7 +383,7 @@ This is a screen mockup of what a user will see for the "Full Recipe Recommendat
 2. [**Usability/Ease of Use**](#nfr1)
     - **Validation**: Conduct usability tests with diverse user groups to ensure that key actions—such as recipe searching or PotLuck creation—can be completed in no more than four clicks, aligning with usability research on optimal interaction limits. Implement contextual tooltips and real-time error handling to guide users and enhance overall ease of use and task efficiency.
 3. [**Performance**](nfr1)
-    - **Validation**: Use stress testing tools like JMeter or Locust to simulate real-world usage. Optimize performance through caching and query tuning to ensure 90% of API requests complete within 10 seconds under load.
+    - **Validation**: Use stress testing tools like JMeter or Locust to simulate real-world usage scenarios. Optimize performance by implementing caching, query tuning, and load balancing to ensure 90% of API requests complete within 5 seconds under expected loads.
 
 
 ### **4.8. Main Project Complexity Design - Recipe Ranking Algorithm**
