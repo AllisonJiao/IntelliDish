@@ -127,24 +127,20 @@ For users like busy university students and employees (who often lack the time, 
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
         - **1**. A user starts a PotLuck and invites their friends to create a group.
-        - **2**. Invited users accept or decline the invitation.
-        - **3**. Each user independently adds or removes their ingredient contributions and sets cuisine type and preferences within the PotLuck group. Live updates ensure real-time synchronization across all participants.
-        - **4**. A request is sent to the AI API based on the combined user inputs.
-        - **5**. The AI API returns a list of possible recipes based on the collective ingredients.
+        - **2**. Each user independently adds or removes their ingredient contributions and sets cuisine type and preferences within the PotLuck group. Live updates ensure real-time synchronization across all participants.
+        - **3**. A request is sent to the AI API based on the combined user inputs.
+        - **4**. The AI API returns a list of possible recipes based on the collective ingredients.
     - **Failure scenario(s)**:
         - **1a**: Group creation failed.
             - **1a1**: Display an error message indicating the reason for failure (e.g., duplicate PotLuck name, server issues, or invalid invitations).
             - **1a2**: Prompt the user to retry with a different name or check server status.
-        - **1b**: Invitation handling failure.
-            - **1b1**: Display an error message if an invitee’s account is unavailable or already part of another group.
-            - **1b2**: Notify the inviter if an invitee declines the invitation.
-        - **3a**: A user attempts to delete another user’s contributions.
-            - **3a1**: Display an error message stating that users can only modify their own contributions.
-        - **4a**: The AI API is unreachable/unavailable.
-            - **4a1**: Display an error message that the AI API is unreachable/unavailable.
-            - **4a2**: Prompt the users to try again later or check online whether the AI API is down/under maintenance.
-        - **5a**: No recipes are possible for the provided user inputs.
-            - **5a1**: Suggest the users use partial recipe recommendations or modify their ingredient list.
+        - **2a**: A user attempts to delete another user’s contributions.
+            - **2a1**: Display an error message stating that users can only modify their own contributions.
+        - **3a**: The AI API is unreachable/unavailable.
+            - **3a1**: Display an error message that the AI API is unreachable/unavailable.
+            - **3a2**: Prompt the users to try again later or check online whether the AI API is down/under maintenance.
+        - **4a**: No recipes are possible for the provided user inputs.
+            - **4a1**: Suggest the users use partial recipe recommendations or modify their ingredient list.
 
 5. **Manage Recipes**:
     - **Description**: Users can add or remove recipes.
