@@ -72,26 +72,26 @@ For users like busy university students and employees (who often lack the time, 
 **Detailed Flow for Each Independent Scenario**:
 
 1. **Authenticate**
-  - **Description**: User logs in to and logs out from IntelliDish using the authentication service to manage their session securely.
-  - **Primary actor(s)**: User, Authentication Service.
-  - **Main success scenario:**  
-      - **1**. Upon opening the app, the user is on the login page. The user clicks "Sign In" and enters their credentials on the authentication service login page.  
-      - **2**. The authentication service validates the user's credentials.  
-      - **3**. The user successfully logs in to IntelliDish and starts using the system.  
-      - **4**. When the user wants to log out, they select "Log Out" from the main page.  
-      - **5**. The authentication service terminates the user's session.  
-      - **6**. User session data (tokens, cookies, etc.) are cleared for security purposes.  
-      - **7**. The user is redirected to the login screen after logging out.
-  - **Failure scenario(s):**  
-      - **1a**: Authentication service is unreachable/unavailable during login.
-        - **1a1**: Display an error message that the authentication service is unreachable/unavailable.
-        - **1a2**: Prompt the user to try again later or check online if the authentication service is down/under maintenance.  
-      - **2a**: Authentication service determines that the user's credentials are invalid.
-        - **2a1**: Display an error message that credentials are invalid.
-        - **2a2**: Prompt the user to try again.
-      - **4a**: Authentication service is unreachable/unavailable during logout, and session termination fails.
-        - **4a1**: Display an error message that the authentication service is unreachable/unavailable.
-        - **4a2**: Prompt the user to try again later or check online if the authentication service is down/under maintenance.
+    - **Description**: User logs in to and logs out from IntelliDish using the authentication service to manage their session securely.
+    - **Primary actor(s)**: User, Authentication Service.
+    - **Main success scenario:**  
+        - **1**. Upon opening the app, the user is on the login page. The user clicks "Sign In" and enters their credentials on the authentication service login page.  
+        - **2**. The authentication service validates the user's credentials.  
+        - **3**. The user successfully logs in to IntelliDish and starts using the system.  
+        - **4**. When the user wants to log out, they select "Log Out" from the main page.  
+        - **5**. The authentication service terminates the user's session.  
+        - **6**. User session data (tokens, cookies, etc.) are cleared for security purposes.  
+        - **7**. The user is redirected to the login screen after logging out.
+    - **Failure scenario(s):**  
+        - **1a**: Authentication service is unreachable/unavailable during login.
+          - **1a1**: Display an error message that the authentication service is unreachable/unavailable.
+          - **1a2**: Prompt the user to try again later or check online if the authentication service is down/under maintenance.  
+        - **2a**: Authentication service determines that the user's credentials are invalid.
+          - **2a1**: Display an error message that credentials are invalid.
+          - **2a2**: Prompt the user to try again.
+        - **4a**: Authentication service is unreachable/unavailable during logout, and session termination fails.
+          - **4a1**: Display an error message that the authentication service is unreachable/unavailable.
+          - **4a2**: Prompt the user to try again later or check online if the authentication service is down/under maintenance.
 
 2. **Get Full Recipe Recommendation**:
     - **Description**: User provides a list of available ingredients and cuisine preferences, and the AI API returns a list of possible recipes.
