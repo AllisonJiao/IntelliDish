@@ -17,6 +17,7 @@ Feb 28:
 - Revised Section 4.2 to align with the current MongoDB schema, incorporating Mongoose for schema validation, middleware-based lifecycle management, and automated referential integrity.
 - Revised Section 4.4 to include Firebase Cloud Messaging (FCM) for real-time notifications and live updates, enhancing user engagement and responsiveness.
 - Revised Section 3.2 "Participate in PotLuck" use case to clarify the flow, incorporating group creation, invitations, and real-time updates.
+- Revised Section 4.8 to replace the previous recipe ranking algorithm with a stable matching algorithm for Potluck, ensuring group-based recipe selection optimizes overall satisfaction and resolves conflicting preferences dynamically.
 
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
@@ -420,136 +421,88 @@ These screen mockups illustrate the user interfaces for the Full Recipe Recommen
     - **Validation**: Use stress testing tools like JMeter or Locust to simulate real-world usage scenarios. Optimize performance by implementing caching, query tuning, and load balancing to ensure 90% of API requests complete within 5 seconds under expected loads.
 
 
-### **4.8. Main Project Complexity Design - Recipe Ranking Algorithm**
+### **4.8. Main Project Complexity Design - Stable Matching Algorithm for Potluck**
 **Description:**
 
-When the user requests recipe recommendations, they will have the option to adjust a series of slide bars corresponding to key attributes of a recipe:
-  - Preparation time
-  - Recipe complexity
-  - Nutritional value
-  - Number of calories
-  - Spice level
-  - Price
-  - Cuisine type (optional filtering criterion)
+Instead of ranking recipes individually based on a single user's preferences, we implement a stable matching algorithm to optimize group-based recipe selection for Potluck sessions. Each participant in a Potluck session specifies their preferred cuisine type and recipe attributes, including:
 
-Each slide bar allows the user to select a value from 1 to 10, or choose “don’t care”, which means the attribute will not be considered in the ranking process. For example, a busy student or employee might input:
-  - Preparation time = 3/10 (prefers quick recipes)
-  - Recipe complexity = 3/10 (wants easy recipes)
-  - Nutritional value = "don't care"
-  - Number of calories = "don't care"
-  - Spice level = "don't care"
+- Preparation time
+- Recipe complexity
+- Nutritional value
+- Number of calories
+- Spice level
+- Price
 
-This means the ranking will prioritize fast and easy recipes while ignoring the other attributes.
+The system will determine the best possible recipe that maximizes group satisfaction, ensuring a fair balance between each participant’s preferences.
 
-Each recipe returned by the AI API will come with corresponding metadata ratings. Examples:
+**Why complex?**
 
-Beef Wellington
-  - Preparation time: 9/10 (Time-intensive, multiple steps)
-  - Recipe complexity: 10/10 (Very complex, requires precise technique)
-  - Nutritional value: 6/10 (High protein but also high saturated fat)
-  - Number of calories: 8/10 (High due to puff pastry and butter)
-  - Spice level: 2/10 (Mild, seasoned with salt, pepper, and mustard)
-  - Price: 9/10 (Expensive, premium ingredients)
-  - Cuisine type: French
+1. Multi-User Optimization:
+   - Unlike a single-user ranking system, this approach must accommodate multiple users with potentially conflicting preferences.
+   - The system must ensure that no individual is disproportionately unsatisfied while maximizing overall happiness.
 
-Caesar Salad
-  - Preparation time: 3/10 (Quick to prepare)
-  - Recipe complexity: 3/10 (Simple, but making dressing from scratch requires emulsification)
-  - Nutritional value: 7/10 (Healthy fats, protein, fiber, but can be high in sodium)
-  - Number of calories: 5/10 (Moderate, varies with dressing and toppings)
-  - Spice level: 2/10 (Mild, seasoned with garlic, lemon, and anchovies)
-  - Price: 3/10 (Inexpensive, common ingredients)
-  - Cuisine type: Italian
+2. Stable Matching Algorithm:
+   - Inspired by the Gale-Shapley algorithm, the system aims to find a stable match between participants' preferences and recipe options.
+   - A recipe is considered stable if no subset of participants would collectively prefer a different recipe over the one selected.
 
-**Why complex?:**
-1. Adaptive Multi-Attribute Optimization
-  - The system must dynamically adjust rankings based on multiple user-defined attributes.
-  - Each user may prioritize different aspects (e.g., one may focus on nutritional value, while another may care more about speed and simplicity).
-2. Handling “Don’t Care” Inputs
-  - If a user selects “don’t care” for an attribute, it should be excluded from ranking calculations.
-  - The ranking algorithm must adapt dynamically based on which attributes are relevant.
-3. Choosing the Best Ranking Algorithm
-  - The system must determine which ranking approach to use based on:
-  - The number of recipes being ranked.
-  - The trade-off between accuracy and computational efficiency.
-  - The distribution of user preferences, as different weight distributions can impact ranking behavior.
+3. Handling Conflicting Preferences:
+   - The system must balance trade-offs when different participants prioritize different recipe attributes.
+   - If one participant values low preparation time while another prioritizes high nutritional value, the algorithm seeks a compromise that best satisfies both.
 
 **Design**:
 
 Input:
-1. User Preferences (from Slide Bars):
-  - Preparation time (1-10, or "don't care")
-  - Recipe complexity (1-10, or "don't care")
-  - Nutritional value (1-10, or "don't care")
-  - Number of calories (1-10, or "don't care")
-  - Spice level (1-10, or "don't care")
-  - Price (1-10, or "don't care")
-  - Cuisine type (optional filtering criterion)
-2. List of Recipes Returned by AI API:
+- User Preferences (Per Participant in Potluck Group):
+  - Preferred cuisine type
+  - Preferred recipe attributes (1-10 scale, or “don’t care”)
+- List of Available Recipes from AI API:
   - Recipe name
-  - Metadata attributes (Preparation time, Recipe complexity, Nutritional value, Calories, Spice level, Price, Cuisine type)
+  - Recipe metadata (Preparation time, Recipe complexity, Nutritional value, Calories, Spice level, Price, Cuisine type)
 
 Output:
-  - A ranked list of recipes, sorted based on user preferences.
+- A stable, optimized recipe selection that best matches the collective preferences of the group.
 
 **Main computational logic**:
 
-1. Weight Assignment:
-  - Convert user preferences into weights for each attribute.
-  - Normalize weights so that only selected attributes contribute to ranking.
-2. Exclude "Don't Care" Attributes:
-  - Ignore attributes that the user marked as “don’t care” in ranking calculations.
-3. Compute Recipe Scores:
-  - Use a weighted similarity function to compare each recipe’s metadata against user preferences.
-  - The function should prioritize matches while allowing some flexibility.
-4. Sort Recipes by Score:
-  - Rank recipes in descending order based on their computed similarity scores.
+
+
+1. Preference Weighting:
+   - Each participant’s input is assigned a weight based on their preference intensity.
+   - “Don’t care” attributes are ignored.
+2. Pairing Algorithm:
+   - Apply a stable matching algorithm that iteratively adjusts the selection to improve group satisfaction.
+   - If a better match is found (i.e., another recipe that increases overall happiness without severely impacting any individual’s preference), the algorithm swaps selections.
+3. Conflict Resolution:
+   - If conflicting preferences exist (e.g., one participant prefers spicy food while another does not), the system finds a compromise recipe that minimizes dissatisfaction.
+4. Final Selection:
+   - The recipe that results in the most stable and fair match across all users is selected.
 
 **Pseudo-code**:
 
 ```
-FUNCTION rank_recipes(user_preferences, recipe_list)
+FUNCTION stable_match_potluck(user_preferences, recipe_list):
     // Step 1: Assign Weights Based on User Preferences
-    weights ← Normalize user preferences so that important attributes have more influence
+    weights ← Normalize user preferences to ensure fair balance
 
-    ranked_recipes ← Empty list
+    stable_recipe ← None
+    best_happiness_score ← 0
 
-    // Step 2: Calculate Score for Each Recipe
+    // Step 2: Iterate Through Recipes to Find Optimal Match
     FOR each recipe IN recipe_list DO
-        score ← 0
-        total_weight ← 0
+        group_happiness ← 0
 
-        // Step 3: Evaluate Each Attribute
-        FOR each attribute IN recipe.metadata DO
-            user_value ← user_preferences[attribute]
+        FOR each user IN user_preferences DO
+            user_happiness ← Compute match score between recipe and user preferences
+            group_happiness ← group_happiness + user_happiness
 
-            IF user_value is NOT "don't care" THEN
-                attribute_weight ← weights[attribute]
-                
-                // Calculate how well the recipe matches the user’s preference
-                match_score ← (10 - ABS(recipe.metadata[attribute] - user_value)) * attribute_weight
-                
-                score ← score + match_score
-                total_weight ← total_weight + attribute_weight
+        // Step 3: Check Stability of Current Selection
+        IF group_happiness > best_happiness_score THEN
+            stable_recipe ← recipe
+            best_happiness_score ← group_happiness
 
-        // Normalize score if applicable
-        IF total_weight > 0 THEN
-            score ← score / total_weight
-
-        // Store the recipe and its final score
-        ADD (recipe.name, score) TO ranked_recipes
-
-    // Step 4: Sort Recipes by Score (Descending Order)
-    SORT ranked_recipes BY score IN descending order
-
-    // Step 5: Return the Ranked List
-    RETURN ranked_recipes
+    // Step 4: Return the Best Recipe Selection
+    RETURN stable_recipe
 ```
-
-**Additional Considerations**
-
-1. Cuisine Type Filtering: If the user selects a specific cuisine type, recipes outside of that cuisine should be filtered out before ranking.
-2. Real-Time UI Updates: The system should instantly re-rank recipes when users adjust sliders, ensuring a seamless experience.
 
 ## 5. Contributions
 **TLDR**: Work was distributed evenly among team members, and all members are satisfied.
