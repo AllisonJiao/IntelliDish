@@ -448,6 +448,7 @@ export class UsersController {
         }
     }
 
+    
     async createPotluckSession(req: Request, res: Response, next: NextFunction) {
         try {
             const { name, date, host, participants = [], ingredients = [], recipes = [] } = req.body;
@@ -461,7 +462,7 @@ export class UsersController {
                 return res.status(404).json({ error: "Host user not found." });
             }
     
-            // Directly use `participants` and `ingredients` from frontend request
+            //Directly use `participants` and `ingredients` from frontend request
             const newPotluck = new PotluckModel({
                 name,
                 date,
@@ -480,7 +481,31 @@ export class UsersController {
             res.status(500).json({ error: "Failed to create potluck session." });
         }
     }
+       
     
+    async getPotluckSessionsByHostId(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+    
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                return res.status(400).json({ error: "Invalid User ID format." });
+            }
+    
+            const potlucks = await PotluckModel.find({ host: id })
+                .populate("host", "name email")
+                .populate("participants.user", "name email")
+                .populate("recipes", "name"); // No need to populate `participants.ingredients` and `ingredients` (they are strings)
+    
+            if (!potlucks.length) {
+                return res.status(404).json({ error: "No potluck sessions found for this user." });
+            }
+    
+            res.status(200).json({ potlucks });
+        } catch (error) {
+            console.error("Error retrieving potluck sessions by host ID:", error);
+            res.status(500).json({ error: "Failed to retrieve potluck sessions." });
+        }
+    }
     
     async getPotluckSessionsByParticipantId(req: Request, res: Response, next: NextFunction) {
         try {
