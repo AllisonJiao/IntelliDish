@@ -461,19 +461,20 @@ export class UsersController {
                 return res.status(404).json({ error: "Host user not found." });
             }
     
-            // Ensure the host is added as a participant
-            const updatedParticipants = [...participants];
+            // Add the host as a participant and ensure uniqueness
+            let updatedParticipants = [...participants, { user: host, ingredients: [] }];
     
-            // Check if host is already in participants list, if not, add them
-            if (!updatedParticipants.some(p => p.user.toString() === host)) {
-                updatedParticipants.push({ user: host, ingredients: [] });
-            }
+            // Remove duplicate participants based on user ID
+            updatedParticipants = updatedParticipants.filter(
+                (participant, index, self) =>
+                    self.findIndex(p => p.user.toString() === participant.user.toString()) === index
+            );
     
             const newPotluck = new PotluckModel({
                 name,
                 date,
                 host,
-                participants: updatedParticipants, // Ensuring host is included
+                participants: updatedParticipants, // Ensuring only unique participants
                 ingredients,
                 recipes,
             });
@@ -487,6 +488,7 @@ export class UsersController {
             res.status(500).json({ error: "Failed to create potluck session." });
         }
     }
+    
     
     async getPotluckSessionsByHostId(req: Request, res: Response, next: NextFunction) {
         try {
