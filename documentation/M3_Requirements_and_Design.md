@@ -440,19 +440,17 @@ These screen mockups illustrate the user interfaces for the Full Recipe Recommen
 ![dependency_diagram.png](images/dependency_diagram.png)
 
 ### **4.6. Functional Requirements Sequence Diagram**
-1. [**Log In**](#fr1)\
-![UML_Use_Case_Diagram.png](images/sequence_log_in.png)
-2. [**Log Out**](#fr1)\
-![UML_Use_Case_Diagram.png](images/sequence_log_out.png)
-3. [**Get Full Recipe Recommendation**](#fr1)\
+1. [**Authenticate**](#fr1)\
+![UML_Use_Case_Diagram.png](images/sequence1.png)
+2. [**Get Full Recipe Recommendation**](#fr1)\
 ![UML_Use_Case_Diagram.png](images/seq3.png)
-4. [**Get Partial Recipe Recommendation**](#fr1)\
+3. [**Get Partial Recipe Recommendation**](#fr1)\
 ![UML_Use_Case_Diagram.png](images/seq4.png)
-5. [**Participate In PotLuck**](#fr1)\
+4. [**Participate In PotLuck**](#fr1)\
 ![UML_Use_Case_Diagram.png](images/seq5.png)
-6. [**Manage Recipes**](#fr1)\
+5. [**Manage Recipes**](#fr1)\
 ![UML_Use_Case_Diagram.png](images/sequence6.png)
-7. [**Manage Friends**](#fr1)\
+6. [**Manage Friends**](#fr1)\
 ![UML_Use_Case_Diagram.png](images/sequence7.png)
 
 ### **4.7. Non-Functional Requirements Design**
