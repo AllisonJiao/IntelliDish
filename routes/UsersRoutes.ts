@@ -80,8 +80,8 @@ export const UsersRoutes = [
         ]
     },
     {
-        method: "put",
-        route: "/users/:id/addRecipe",
+        method: "post",
+        route: "/users/:id/recipe",
         action: controller.addRecipeToUser,
         validation: [
             param("id").isMongoId().withMessage("Invalid MongoDB ID format"),
@@ -89,8 +89,8 @@ export const UsersRoutes = [
         ]
     },
     {
-        method: "put",
-        route: "/users/:id/deleteRecipe",
+        method: "delete",
+        route: "/users/:id/recipe",
         action: controller.deleteRecipeFromUser,
         validation: [
             param("id").isMongoId(),
