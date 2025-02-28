@@ -12,7 +12,8 @@ Feb 24:
 Feb 28:
 - Revised Section 3.2 "Authenticate" use case to align with the consolidation made in the use case diagram.
 - Revised Section 3.5.3 to align with industry best practices by reducing the response time target from 10 seconds to 5 seconds, ensuring a more responsive user experience.
-- Revised sectiin 4.7.3 according to revision in Section 3.5.3.
+- Revised Sectiin 4.7.3 according to revision in Section 3.5.3.
+- Revised Section 3.4 to reflect the updated user interface design with enhanced clarity and functionality.
 
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
@@ -159,12 +160,13 @@ For users like busy university students and employees (who often lack the time, 
             - **1b1**: Display error message that the user cannot add himself/ herself as a friend.
 
 ### **3.4. Screen Mockups**
-This is a screen mockup of what a user will see for the "Full Recipe Recommendation", "Partial Recipe Recommendation", and "Participate In PotLuck" use cases. The user can either add “ingredient cards” or take a photo of his/ her fridge to add to the “Pot”. Once the user is finished, one click on the “Generate” button will send a request for the AI API to generate and return possible recipes. 
+These screen mockups illustrate the user interfaces for the Full Recipe Recommendation, Partial Recipe Recommendation, and Participate in PotLuck use cases.
+- On the Recipe Recommendation page, users can manually add ingredients or upload a photo of their fridge. Once the ingredients are set, clicking the "Generate" button sends a request to the AI API, which processes and returns possible recipes.
+- On the PotLuck page, users can browse, search for, join, or create potluck groups, enabling social meal planning and collaboration.
 
 <p align="center">
-  <img src="images/mockup_1.jpg" alt="Mockup Main Screen" width="30%" />
-  <img src="images/mockup_2.jpg" alt="Mockup Ingredient Screen" width="30%" />
-  <img src="images/mockup_3.jpg" alt="Mockup Potluck Screen" width="30%" />
+  <img src="images/mockup1.png" alt="Mockup Recommendation Screen" width="35%" />
+  <img src="images/mockup2.png" alt="Mockup Potluck Screen" width="35%" />
 </p>
 
 ### **3.5. Non-Functional Requirements**
