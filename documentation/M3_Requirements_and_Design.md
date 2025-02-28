@@ -65,7 +65,7 @@ For users like busy university students and employees (who often lack the time, 
 4. **Participate In PotLuck**
     * Users can collaboratively input available ingredients as a group for recipe recommendations.
 5. **Manage Recipes**
-    * Users can add or remove favorite recipes.
+    * Users can add or remove recipes.
 6. **Manage Friends**
     * Users can add or remove friends, with whom they can PotLuck and share recipes with.
 
@@ -146,18 +146,18 @@ For users like busy university students and employees (who often lack the time, 
         - **5a**: No recipes are possible for the provided user inputs.
             - **5a1**: Suggest the users use partial recipe recommendations or modify their ingredient list.
 
-5. **Manage Favorite Recipes**:
-    - **Description**: Users can add or remove favorite recipes.
+5. **Manage Recipes**:
+    - **Description**: Users can add or remove recipes.
     - **Primary actor(s)**: User.
     - **Main success scenario**:
-        - **1**. The user selects a recipe from past queries to add to his/ her list of favorite recipes, or selects an existing recipe from his/ her list of favorite recipes to remove.
+        - **1**. The user selects a recipe from past queries to add to their list of saved recipes, or selects an existing recipe from their list of saved recipes to remove.
         - **2**. System asks the user for confirmation of action.
-        - **3**. The user's list of favorite recipes is updated with the addition/ removal of a recipe.
+        - **3**. The user's list of saved recipes is updated with the addition/ removal of a recipe.
     - **Failure scenario(s)**:
         - **1a**: The addition of a recipe fails due to issues with accessing past query data.
             - **1a1**: Display error message that the addition failed, and prompt the user to try again. Removal of recipes do not fail.
         - **1b**: The user attempts to add a duplicate recipe.
-            - **1b1**: Display error message that the recipe is already in the user's favorite recipes list.
+            - **1b1**: Display error message that the recipe is already in the user's saved recipes list.
 
 6. **Manage Friends**:
     - **Description**: Users can add or remove friends, with whom they can PotLuck and share recipes with.
