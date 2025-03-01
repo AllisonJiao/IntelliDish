@@ -107,7 +107,7 @@ export const UsersRoutes = [
     },
     {
         method: "post",
-        route: "/users/:id/ingredient",
+        route: "/users/:id/addIngredient",
         action: controller.addIngredientToUser,
         validation: [
             param("id").isMongoId().withMessage("Invalid MongoDB ID format"),
@@ -116,7 +116,7 @@ export const UsersRoutes = [
     },
     {
         method: "delete",
-        route: "/users/:id/ingredient",
+        route: "/users/:id/deleteIngredient",
         action: controller.deleteIngredientFromUser,
         validation: [
             param("id").isMongoId().withMessage("Invalid MongoDB ID format"),

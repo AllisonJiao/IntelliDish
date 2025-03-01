@@ -107,7 +107,7 @@ export class RecipesController {
     async postNewRecipeFromAI(req: Request, res: Response, nextFunction: NextFunction) {
         try {
             // Generate a new recipe based on given ingredients using AI
-            const obj = await recipesGeneration(req.body.ingredients);
+            const obj = await recipesGeneration(req.body);
     
             // If no recipe is generated, return an error response
             if (!obj) {
