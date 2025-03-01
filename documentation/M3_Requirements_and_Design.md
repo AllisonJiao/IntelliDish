@@ -22,6 +22,7 @@ Feb 28:
 Feb 29:
 - Revised Section 4.1 to provide clearer rationale for separating the main components and updated each interface to align with the latest implementation details.
 - Revised Section 4.5 to capture the updated interactions between components.
+- Revised Section 4.6 to more clearly illustrate the flow of each use case.
 
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
@@ -445,9 +446,9 @@ These screen mockups illustrate the user interfaces for the Full Recipe Recommen
 4. [**Participate In PotLuck**](#fr1)\
 ![UML_Use_Case_Diagram.png](images/seq_4.png)
 5. [**Manage Recipes**](#fr1)\
-![UML_Use_Case_Diagram.png](images/seq5.png)
+![UML_Use_Case_Diagram.png](images/seq_5.png)
 6. [**Manage Friends**](#fr1)\
-![UML_Use_Case_Diagram.png](images/seq6.png)
+![UML_Use_Case_Diagram.png](images/seq_6.png)
 
 ### **4.7. Non-Functional Requirements Design**
 1. [**Data Security**](#nfr1)
