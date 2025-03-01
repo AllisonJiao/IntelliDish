@@ -160,7 +160,7 @@ For users like busy university students and employees (who often lack the time, 
     - **Primary actor(s)**: User.
     - **Main success scenario**:
         - **1**. The user enters the username of a user to add as a friend, or the user chooses a user from his/ her existing friend list to remove.
-        - **2**. System asks the user for confirmation of action.
+        - **2**. System asks the user for confirmation of friend removal.
         - **3**. The user's friend list is updated with the addition/ removal of a friend.
     - **Failure scenario(s)**:
         - **1a**: The friend addition fails because the entered username is invalid/ cannot be found.
