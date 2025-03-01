@@ -670,6 +670,11 @@ export class UsersController {
     
             potluck.participants.push(...newParticipants);
             await potluck.save();
+
+            await UserModel.updateMany(
+                { _id: { $in: participants } },
+                { $addToSet: { potluck: id } }
+            );
     
             const updatedPotluck = await PotluckModel.findById(id)
                 .populate("host", "name email")
@@ -716,6 +721,12 @@ export class UsersController {
             potluck.ingredients = potluck.ingredients.filter((ingredient) => !ingredientsToRemove.includes(ingredient));
     
             await potluck.save();
+
+            await UserModel.updateMany(
+                { _id: { $in: participants } },
+                { $pull: { potluck: id } }
+            );
+            
     
             const updatedPotluck = await PotluckModel.findById(id)
                 .populate("host", "name email")
