@@ -147,7 +147,7 @@ For users like busy university students and employees (who often lack the time, 
     - **Primary actor(s)**: User.
     - **Main success scenario**:
         - **1**. The user selects a recipe from past queries to add to their list of saved recipes, or selects an existing recipe from their list of saved recipes to remove.
-        - **2**. System asks the user for confirmation of action.
+        - **2**. System asks the user for confirmation of recipe removal.
         - **3**. The user's list of saved recipes is updated with the addition/ removal of a recipe.
     - **Failure scenario(s)**:
         - **1a**: The addition of a recipe fails due to issues with accessing past query data.
