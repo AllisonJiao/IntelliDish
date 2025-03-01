@@ -443,7 +443,7 @@ These screen mockups illustrate the user interfaces for the Full Recipe Recommen
 3. [**Get Partial Recipe Recommendation**](#fr1)\
 ![UML_Use_Case_Diagram.png](images/seq_3.png)
 4. [**Participate In PotLuck**](#fr1)\
-![UML_Use_Case_Diagram.png](images/seq4.png)
+![UML_Use_Case_Diagram.png](images/seq_4.png)
 5. [**Manage Recipes**](#fr1)\
 ![UML_Use_Case_Diagram.png](images/seq5.png)
 6. [**Manage Friends**](#fr1)\
