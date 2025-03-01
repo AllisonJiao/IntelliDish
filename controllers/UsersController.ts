@@ -462,18 +462,29 @@ export class UsersController {
                 return res.status(404).json({ error: "Host user not found." });
             }
     
-            //Directly use `participants` and `ingredients` from frontend request
+            // Directly use `participants` and `ingredients` from frontend request
             const newPotluck = new PotluckModel({
                 name,
                 date,
-                host, 
+                host,
                 participants,  // Use participants exactly as received
                 ingredients,   // Use ingredients exactly as received
                 recipes,
             });
     
             await newPotluck.save();
+    
+            // Update host's potluck list
             await UserModel.updateOne({ _id: host }, { $push: { potluck: newPotluck._id } });
+    
+            // Update all participants' potluck lists
+            if (participants.length > 0) {
+                const participantIds = participants.map((p: { user: string }) => p.user);
+                await UserModel.updateMany(
+                    { _id: { $in: participantIds } },
+                    { $addToSet: { potluck: newPotluck._id } } // Ensure no duplicate potluck IDs
+                );
+            }
     
             res.status(201).json({ message: "Potluck session created successfully.", potluck: newPotluck });
         } catch (error) {
@@ -481,7 +492,7 @@ export class UsersController {
             res.status(500).json({ error: "Failed to create potluck session." });
         }
     }
-       
+    
     
     async getPotluckSessionsByHostId(req: Request, res: Response, next: NextFunction) {
         try {
