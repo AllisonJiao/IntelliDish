@@ -461,7 +461,7 @@ These screen mockups illustrate the user interfaces for the Full Recipe Recommen
     - **Validation**: Use stress testing tools like JMeter or Locust to simulate real-world usage scenarios. Optimize performance by implementing caching, query tuning, and load balancing to ensure 90% of API requests complete within 5 seconds under expected loads.
 
 
-### **4.8. Main Project Complexity Design - Stable Matching Algorithm for Potluck**
+### **4.8. Main Project Complexity Design - Levenshtein Distance Algorithm for Fuzzy Cuisine Type Search**
 **Description:**
 
 To generate a recipe, users can search for cuisine types by entering keywords in a search field. We employ the Levenshtein distance algorithm to account for typos and partial matches, ensuring users find relevant cuisine types even if their input is not an exact match. This improves usability by accommodating minor spelling errors while still delivering accurate and meaningful results.
