@@ -471,32 +471,29 @@ Throughout our app, there are multiple search bars where users can enter key wor
 1. Robust User Input Handling
   - Typing errors, alternative spellings, and varying word boundaries are common in search fields. Levenshtein distance provides a clear metric for similarity, thus capturing near matches and improving user experience.
 2. Efficiency Constraints
-  - Since we have dozens of predefined cuisine types, calculating a distance metric against each can be computationally expensive. Balancing speed with accuracy requires careful design (e.g., quick filtering before expensive operations).
+  - We may need to perform fuzzy matching against potentially large or diverse datasets (e.g., potlucks, user lists, recipes). This can be computationally heavy if not optimized. Strategies such as quick filtering or indexing can help balance speed and accuracy.
 3. Usability and Relevance
-  - Simple substring or prefix matching often fails to capture slight variations (e.g., “Italina” for “Italian”). Fuzzy search aligns more closely with user expectations for modern interfaces, returning the most relevant options in descending order of similarity.
+  - Simple “substring” or “prefix” matches often fail to capture subtle variations (e.g., “Ilalina” for “Italian”). A fuzzy search method aligns with modern user expectations, returning the most relevant options ranked by similarity.
 
 **Design**:
 
 Input:
 
-  - User Query: A text string that the user types in the cuisine search field.
-    - Example: "Italina" instead of the correct "Italian".
-  - Cuisine Types List: A predefined list or array of possible cuisine options.
-    - Example: ["Italian", "Indian", "Chinese", "Mexican", ...]
+  - User Query: A text string that the user types into any search bar (e.g., “Italina” instead of the correct “Italian”).
+  - Data List: A predefined list or dynamic collection of possible items to search from (e.g., user names, potluck titles, recipe names, cuisine types).
 
 Output:
 
-  - Ranked Cuisine Suggestions: A filtered set of cuisine names that best match the user input, sorted from most similar to least similar.
-    - For instance, if the user typed "Italina", the top match would be "Italian".
+  - Ranked Suggestions: A filtered set of items that best match the user input, sorted from most similar to least similar. For instance, if the user typed “Italina,” the top match could be “Italian” when searching cuisines.
 
 **Main Computational Logic**:
 
 1. Pre-Filter Candidates
   - Perform a quick check for substring or prefix matches.
-  - If the user’s input is very short, consider all cuisine types as potential candidates.
+  - If the user input is very short, consider including more candidates to avoid missing relevant results.
 
 2. Levenshtein Distance Calculation
-  - For each remaining candidate, compute the Levenshtein distance, which measures how many edits (insertions, deletions, substitutions) are needed to transform the candidate into the user’s query.
+  - For each remaining candidate, compute the Levenshtein distance, which measures how many edits (insertions, deletions, substitutions) are needed to transform one string into the other.
 
 3. Convert Distance to Similarity
   - Use a similarity formula such as:
@@ -517,18 +514,18 @@ Output:
 **Pseudo-code**:
 
 ```
-FUNCTION fuzzy_search_cuisine(input_query, cuisine_list):
+FUNCTION fuzzy_search(input_query, candidate_list):
     best_matches ← []
     threshold ← 0.7  // Minimum similarity score
 
     // Step 1: Pre-filter
     preliminary_candidates ← []
-    FOR each cuisine IN cuisine_list:
+    FOR each candidate IN candidate_list:
         // Quick checks:
-        IF cuisine contains input_query
-           OR input_query starts with some portion of cuisine
-           OR length(input_query) is small:
-            preliminary_candidates.add(cuisine)
+        IF candidate contains input_query
+           OR input_query is very short
+           OR candidate starts with input_query:
+            preliminary_candidates.add(candidate)
 
     // Step 2: Calculate similarity via Levenshtein distance
     FOR each candidate IN preliminary_candidates:
@@ -537,7 +534,7 @@ FUNCTION fuzzy_search_cuisine(input_query, cuisine_list):
         similarity ← (longer_length - dist) / longer_length
 
         IF similarity >= threshold:
-            best_matches.add({ 'cuisine': candidate, 'similarity': similarity })
+            best_matches.add({ 'item': candidate, 'similarity': similarity })
 
     // Step 3: Sort by similarity (descending)
     best_matches.sort_by_descending('similarity')
