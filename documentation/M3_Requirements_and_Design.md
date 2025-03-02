@@ -24,7 +24,7 @@ Feb 28:
 - Revised Section 4.6 to more clearly illustrate the flow of each use case.
 
 Mar 1:
-- Revised Section 4.8 to replace the original main complexity idea with a Levenshtein Distance approach for fuzzy user input matching, ensuring more robust cuisine type searches and enhanced user experience.
+- Revised Section 4.8 to replace the original main complexity idea with a Levenshtein Distance approach for fuzzy user input matching, ensuring more robust text input searches and enhanced user experience.
 
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
