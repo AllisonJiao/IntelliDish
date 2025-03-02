@@ -661,8 +661,13 @@ class PotluckDetailActivity : AppCompatActivity() {
                         val cuisineLower = cuisine.lowercase()
                         when {
                             cuisineLower.contains(searchText) -> true
-                            searchText.length > 2 && calculateSimilarity(cuisineLower, searchText) > 0.7 -> true
-                            cuisineLower.split(" ").any { it.startsWith(searchText) } -> true
+                            // More lenient threshold for fuzzy matching
+                            searchText.length >= 2 && calculateSimilarity(cuisineLower, searchText) > 0.4 -> true
+                            // Special handling for prefix matches with more lenient threshold
+                            cuisineLower.split(" ").any { word ->
+                                word.startsWith(searchText) || 
+                                (searchText.length >= 2 && calculateSimilarity(word, searchText) > 0.5)
+                            } -> true
                             else -> false
                         }
                     })
@@ -682,35 +687,39 @@ class PotluckDetailActivity : AppCompatActivity() {
             dialog.dismiss()
         }
     }
-    // Helper for fuzzy search
-    private fun calculateSimilarity(s1: String, s2: String): Double {
-        val longer = if (s1.length > s2.length) s1 else s2
-        val shorter = if (s1.length > s2.length) s2 else s1
-        if (longer.isEmpty()) return 1.0
 
-        val longerLength = longer.length
-        return (longerLength - calculateLevenshteinDistance(longer, shorter)) / longerLength.toDouble()
+    private fun calculateSimilarity(s1: String, s2: String): Double {
+        if (s1.isEmpty() || s2.isEmpty()) return 0.0
+        
+        val maxLength = maxOf(s1.length, s2.length)
+        val distance = calculateLevenshteinDistance(s1, s2).toDouble()
+        
+        // Normalize the score between 0 and 1, where 1 means exact match
+        return 1.0 - (distance / maxLength)
     }
 
     private fun calculateLevenshteinDistance(s1: String, s2: String): Int {
-        val costs = IntArray(s2.length + 1)
-
-        for (i in 0..s2.length) costs[i] = i
-        var lastValue = 0
-
-        for (i in 0 until s1.length) {
-            costs[0] = i + 1
-            lastValue = i
-
-            for (j in 0 until s2.length) {
-                val newValue = if (s1[i] == s2[j]) lastValue
-                else minOf(costs[j], costs[j + 1], lastValue) + 1
-                costs[j] = lastValue
-                lastValue = newValue
+        val dp = Array(s1.length + 1) { IntArray(s2.length + 1) }
+        
+        // Initialize first row and column
+        for (i in 0..s1.length) dp[i][0] = i
+        for (j in 0..s2.length) dp[0][j] = j
+        
+        // Fill in the rest of the matrix
+        for (i in 1..s1.length) {
+            for (j in 1..s2.length) {
+                dp[i][j] = if (s1[i-1] == s2[j-1]) {
+                    dp[i-1][j-1]  // No operation needed
+                } else {
+                    minOf(
+                        dp[i-1][j] + 1,    // deletion
+                        dp[i][j-1] + 1,    // insertion
+                        dp[i-1][j-1] + 1   // substitution
+                    )
+                }
             }
-            costs[s2.length] = lastValue
         }
-        return costs[s2.length]
+        return dp[s1.length][s2.length]
     }
 
     private fun showUploadedImage() {

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -31,6 +32,10 @@ class HomePage : AppCompatActivity() {
             finish()
             return
         }
+
+        // Set welcome message with user's name
+        val userName = UserManager.getUserName() ?: "User"
+        findViewById<TextView>(R.id.welcome_text).text = "Welcome back, $userName!"
 
         // Initialize Google Sign-In Client
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()

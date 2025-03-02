@@ -221,7 +221,7 @@ class ManageRecipes : AppCompatActivity() {
                     },
                     onFailure = { e ->
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(this@ManageRecipes, "Failed to delete recipe: ${e.message}", Toast.LENGTH_SHORT).show()
+                            //Toast.makeText(this@ManageRecipes, "Failed to delete recipe: ${e.message}", Toast.LENGTH_SHORT).show()
                         }
                     }
                 )
@@ -286,16 +286,63 @@ class ManageRecipes : AppCompatActivity() {
             // If search is empty, show all recipes
             filteredRecipes.addAll(recipes)
         } else {
-            // Filter recipes based on search
+            // Filter recipes based on search with fuzzy matching
             filteredRecipes.addAll(recipes.filter { recipe ->
-                recipe.name.lowercase().contains(searchText) ||
-                recipe.cuisineType?.lowercase()?.contains(searchText) == true ||
-                recipe.ingredients?.any { it.lowercase().contains(searchText) } == true
+                when {
+                    // Direct contains match
+                    recipe.name.lowercase().contains(searchText) -> true
+                    recipe.cuisineType?.lowercase()?.contains(searchText) == true -> true
+                    // Fuzzy name matching
+                    searchText.length >= 2 && calculateSimilarity(recipe.name.lowercase(), searchText) > 0.4 -> true
+                    // Fuzzy cuisine type matching
+                    recipe.cuisineType != null && searchText.length >= 2 && 
+                        calculateSimilarity(recipe.cuisineType.lowercase(), searchText) > 0.4 -> true
+                    // Ingredient matching
+                    recipe.ingredients?.any { ingredient ->
+                        ingredient.lowercase().contains(searchText) ||
+                        (searchText.length >= 2 && calculateSimilarity(ingredient.lowercase(), searchText) > 0.4)
+                    } == true -> true
+                    else -> false
+                }
             })
         }
         
         adapter.updateRecipes(filteredRecipes)
         updateEmptyState(filteredRecipes.isEmpty())
+    }
+
+    private fun calculateSimilarity(s1: String, s2: String): Double {
+        if (s1.isEmpty() || s2.isEmpty()) return 0.0
+        
+        val maxLength = maxOf(s1.length, s2.length)
+        val distance = calculateLevenshteinDistance(s1, s2).toDouble()
+        
+        // Normalize the score between 0 and 1, where 1 means exact match
+        return 1.0 - (distance / maxLength)
+    }
+
+    private fun calculateLevenshteinDistance(s1: String, s2: String): Int {
+        val dp = Array(s1.length + 1) { IntArray(s2.length + 1) }
+        
+        // Initialize first row and column
+        for (i in 0..s1.length) dp[i][0] = i
+        for (j in 0..s2.length) dp[0][j] = j
+        
+        // Fill in the rest of the matrix
+        for (i in 1..s1.length) {
+            for (j in 1..s2.length) {
+                dp[i][j] = if (s1[i-1] == s2[j-1]) {
+                    dp[i-1][j-1]  // No operation needed
+                } else {
+                    minOf(
+                        dp[i-1][j] + 1,    // deletion
+                        dp[i][j-1] + 1,    // insertion
+                        dp[i-1][j-1] + 1   // substitution
+                    )
+                }
+            }
+        }
+        return dp[s1.length][s2.length]
     }
 
     private fun updateEmptyState(isEmpty: Boolean) {

@@ -318,11 +318,61 @@ class ManageFriends : AppCompatActivity() {
 
     private fun filterFriends(query: String) {
         friends.clear()
-        friends.addAll(friendsCache.filter { user ->
-            user.name.contains(query, ignoreCase = true) ||
-            user.email.contains(query, ignoreCase = true)
-        })
+        if (query.isEmpty()) {
+            friends.addAll(friendsCache)
+        } else {
+            val searchText = query.lowercase()
+            friends.addAll(friendsCache.filter { user ->
+                when {
+                    // Direct contains match
+                    user.name.lowercase().contains(searchText) -> true
+                    user.email.lowercase().contains(searchText) -> true
+                    // Fuzzy name matching
+                    searchText.length >= 2 && calculateSimilarity(user.name.lowercase(), searchText) > 0.4 -> true
+                    // Fuzzy email matching (before the @ symbol)
+                    searchText.length >= 2 && calculateSimilarity(
+                        user.email.substringBefore("@").lowercase(), 
+                        searchText
+                    ) > 0.4 -> true
+                    else -> false
+                }
+            })
+        }
         adapter.notifyDataSetChanged()
+    }
+
+    private fun calculateSimilarity(s1: String, s2: String): Double {
+        if (s1.isEmpty() || s2.isEmpty()) return 0.0
+        
+        val maxLength = maxOf(s1.length, s2.length)
+        val distance = calculateLevenshteinDistance(s1, s2).toDouble()
+        
+        // Normalize the score between 0 and 1, where 1 means exact match
+        return 1.0 - (distance / maxLength)
+    }
+
+    private fun calculateLevenshteinDistance(s1: String, s2: String): Int {
+        val dp = Array(s1.length + 1) { IntArray(s2.length + 1) }
+        
+        // Initialize first row and column
+        for (i in 0..s1.length) dp[i][0] = i
+        for (j in 0..s2.length) dp[0][j] = j
+        
+        // Fill in the rest of the matrix
+        for (i in 1..s1.length) {
+            for (j in 1..s2.length) {
+                dp[i][j] = if (s1[i-1] == s2[j-1]) {
+                    dp[i-1][j-1]  // No operation needed
+                } else {
+                    minOf(
+                        dp[i-1][j] + 1,    // deletion
+                        dp[i][j-1] + 1,    // insertion
+                        dp[i-1][j-1] + 1   // substitution
+                    )
+                }
+            }
+        }
+        return dp[s1.length][s2.length]
     }
 
     private fun isValidEmail(email: String): Boolean {
