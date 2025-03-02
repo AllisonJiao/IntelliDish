@@ -9,7 +9,7 @@ Feb 24:
 - Revised Section 4.7.1 according to revision in Section 3.5.1.
 - Revised Section 4.7.2 according to revision in Section 3.5.2.
 
-Feb 28:
+Feb 27:
 - Revised Section 3.2 "Authenticate" use case to align with the consolidation made in the use case diagram.
 - Revised Section 3.5.3 to align with industry best practices by reducing the response time target from 10 seconds to 5 seconds, ensuring a more responsive user experience.
 - Revised Sectiin 4.7.3 according to revision in Section 3.5.3.
@@ -17,12 +17,14 @@ Feb 28:
 - Revised Section 4.2 to align with the current MongoDB schema, incorporating Mongoose for schema validation, middleware-based lifecycle management, and automated referential integrity.
 - Revised Section 4.4 to include Firebase Cloud Messaging (FCM) for real-time notifications and live updates, enhancing user engagement and responsiveness.
 - Revised Section 3.2 "Participate in PotLuck" use case to clarify the flow, incorporating group creation, invitations, and real-time updates.
-- Revised Section 4.8 to replace the previous recipe ranking algorithm with a stable matching algorithm for Potluck, ensuring group-based recipe selection optimizes overall satisfaction and resolves conflicting preferences dynamically.
 
-Feb 29:
+Feb 28:
 - Revised Section 4.1 to provide clearer rationale for separating the main components and updated each interface to align with the latest implementation details.
 - Revised Section 4.5 to capture the updated interactions between components.
 - Revised Section 4.6 to more clearly illustrate the flow of each use case.
+
+Mar 1:
+- Revised Section 4.8 to replace the original main complexity idea with a Levenshtein Distance approach for fuzzy user input matching, ensuring more robust cuisine type searches and enhanced user experience.
 
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
@@ -462,84 +464,105 @@ These screen mockups illustrate the user interfaces for the Full Recipe Recommen
 ### **4.8. Main Project Complexity Design - Stable Matching Algorithm for Potluck**
 **Description:**
 
-Instead of ranking recipes individually based on a single user's preferences, we implement a stable matching algorithm to optimize group-based recipe selection for Potluck sessions. Each participant in a Potluck session specifies their preferred cuisine type and recipe attributes, including:
-
-- Preparation time
-- Recipe complexity
-- Nutritional value
-- Number of calories
-- Spice level
-- Price
-
-The system will determine the best possible recipe that maximizes group satisfaction, ensuring a fair balance between each participant’s preferences.
+To generate a recipe, users can search for cuisine types by entering keywords in a search field. We employ the Levenshtein distance algorithm to account for typos and partial matches, ensuring users find relevant cuisine types even if their input is not an exact match. This improves usability by accommodating minor spelling errors while still delivering accurate and meaningful results.
 
 **Why complex?**
 
-1. Multi-User Optimization:
-   - Unlike a single-user ranking system, this approach must accommodate multiple users with potentially conflicting preferences.
-   - The system must ensure that no individual is disproportionately unsatisfied while maximizing overall happiness.
-
-2. Stable Matching Algorithm:
-   - Inspired by the Gale-Shapley algorithm, the system aims to find a stable match between participants' preferences and recipe options.
-   - A recipe is considered stable if no subset of participants would collectively prefer a different recipe over the one selected.
-
-3. Handling Conflicting Preferences:
-   - The system must balance trade-offs when different participants prioritize different recipe attributes.
-   - If one participant values low preparation time while another prioritizes high nutritional value, the algorithm seeks a compromise that best satisfies both.
+1. Robust User Input Handling
+  - Typing errors, alternative spellings, and varying word boundaries are common in search fields. Levenshtein distance provides a clear metric for similarity, thus capturing near matches and improving user experience.
+2. Efficiency Constraints
+  - Since we have dozens of predefined cuisine types, calculating a distance metric against each can be computationally expensive. Balancing speed with accuracy requires careful design (e.g., quick filtering before expensive operations).
+3. Usability and Relevance
+  - Simple substring or prefix matching often fails to capture slight variations (e.g., “Italina” for “Italian”). Fuzzy search aligns more closely with user expectations for modern interfaces, returning the most relevant options in descending order of similarity.
 
 **Design**:
 
 Input:
-- User Preferences (Per Participant in Potluck Group):
-  - Preferred cuisine type
-  - Preferred recipe attributes (1-10 scale, or “don’t care”)
-- List of Available Recipes from AI API:
-  - Recipe name
-  - Recipe metadata (Preparation time, Recipe complexity, Nutritional value, Calories, Spice level, Price, Cuisine type)
+
+  - User Query: A text string that the user types in the cuisine search field.
+    - Example: "Italina" instead of the correct "Italian".
+  - Cuisine Types List: A predefined list or array of possible cuisine options.
+    - Example: ["Italian", "Indian", "Chinese", "Mexican", ...]
 
 Output:
-- A stable, optimized recipe selection that best matches the collective preferences of the group.
 
-**Main computational logic**:
+  - Ranked Cuisine Suggestions: A filtered set of cuisine names that best match the user input, sorted from most similar to least similar.
+    - For instance, if the user typed "Italina", the top match would be "Italian".
 
+## Main Computational Logic
 
+1. Pre-Filter Candidates
+  - Perform a quick check for substring or prefix matches.
+  - If the user’s input is very short, consider all cuisine types as potential candidates.
 
-1. Preference Weighting:
-   - Each participant’s input is assigned a weight based on their preference intensity.
-   - “Don’t care” attributes are ignored.
-2. Pairing Algorithm:
-   - Apply a stable matching algorithm that iteratively adjusts the selection to improve group satisfaction.
-   - If a better match is found (i.e., another recipe that increases overall happiness without severely impacting any individual’s preference), the algorithm swaps selections.
-3. Conflict Resolution:
-   - If conflicting preferences exist (e.g., one participant prefers spicy food while another does not), the system finds a compromise recipe that minimizes dissatisfaction.
-4. Final Selection:
-   - The recipe that results in the most stable and fair match across all users is selected.
+2. Levenshtein Distance Calculation
+  - For each remaining candidate, compute the Levenshtein distance, which measures how many edits (insertions, deletions, substitutions) are needed to transform the candidate into the user’s query.
+
+3. Convert Distance to Similarity
+  - Use a similarity formula such as:
+  
+  $$
+  \text{similarity} = \frac{\bigl(\text{length of the longer string}\bigr) - \bigl(\text{Levenshtein distance}\bigr)}{\text{length of the longer string}}
+  $$
+
+  - Higher similarity scores indicate closer matches.
+
+4. Ranking and Filtering
+  - Filter out candidates below a chosen similarity threshold (e.g., 0.7).
+  - Sort the remaining candidates in descending order of similarity.
+
+5. Display Results
+- Show the top matches to the user (e.g., in a real-time dropdown), ensuring that the best fuzzy matches appear first.
 
 **Pseudo-code**:
 
 ```
-FUNCTION stable_match_potluck(user_preferences, recipe_list):
-    // Step 1: Assign Weights Based on User Preferences
-    weights ← Normalize user preferences to ensure fair balance
+FUNCTION fuzzy_search_cuisine(input_query, cuisine_list):
+    best_matches ← []
+    threshold ← 0.7  // Minimum similarity score
 
-    stable_recipe ← None
-    best_happiness_score ← 0
+    // Step 1: Pre-filter
+    preliminary_candidates ← []
+    FOR each cuisine IN cuisine_list:
+        // Quick checks:
+        IF cuisine contains input_query
+           OR input_query starts with some portion of cuisine
+           OR length(input_query) is small:
+            preliminary_candidates.add(cuisine)
 
-    // Step 2: Iterate Through Recipes to Find Optimal Match
-    FOR each recipe IN recipe_list DO
-        group_happiness ← 0
+    // Step 2: Calculate similarity via Levenshtein distance
+    FOR each candidate IN preliminary_candidates:
+        dist ← levenshtein_distance(input_query, candidate)
+        longer_length ← max(length(input_query), length(candidate))
+        similarity ← (longer_length - dist) / longer_length
 
-        FOR each user IN user_preferences DO
-            user_happiness ← Compute match score between recipe and user preferences
-            group_happiness ← group_happiness + user_happiness
+        IF similarity >= threshold:
+            best_matches.add({ 'cuisine': candidate, 'similarity': similarity })
 
-        // Step 3: Check Stability of Current Selection
-        IF group_happiness > best_happiness_score THEN
-            stable_recipe ← recipe
-            best_happiness_score ← group_happiness
+    // Step 3: Sort by similarity (descending)
+    best_matches.sort_by_descending('similarity')
 
-    // Step 4: Return the Best Recipe Selection
-    RETURN stable_recipe
+    RETURN best_matches
+
+FUNCTION levenshtein_distance(s1, s2):
+    // Classic dynamic programming approach
+    let dp be a 2D array of size (len(s1)+1) x (len(s2)+1)
+
+    FOR i IN 0 to len(s1):
+        dp[i, 0] = i
+    FOR j IN 0 to len(s2):
+        dp[0, j] = j
+
+    FOR i IN 1 to len(s1):
+        FOR j IN 1 to len(s2):
+            cost ← IF s1[i-1] = s2[j-1] THEN 0 ELSE 1
+            dp[i, j] = min(
+                dp[i-1, j] + 1,       // deletion
+                dp[i, j-1] + 1,       // insertion
+                dp[i-1, j-1] + cost   // substitution
+            )
+
+    RETURN dp[len(s1), len(s2)]
 ```
 
 ## 5. Contributions
