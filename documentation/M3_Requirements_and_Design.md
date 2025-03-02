@@ -489,7 +489,7 @@ Output:
   - Ranked Cuisine Suggestions: A filtered set of cuisine names that best match the user input, sorted from most similar to least similar.
     - For instance, if the user typed "Italina", the top match would be "Italian".
 
-## Main Computational Logic
+**Main Computational Logic**:
 
 1. Pre-Filter Candidates
   - Perform a quick check for substring or prefix matches.
