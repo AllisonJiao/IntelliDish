@@ -461,7 +461,7 @@ These screen mockups illustrate the user interfaces for the Full Recipe Recommen
     - **Validation**: Use stress testing tools like JMeter or Locust to simulate real-world usage scenarios. Optimize performance by implementing caching, query tuning, and load balancing to ensure 90% of API requests complete within 5 seconds under expected loads.
 
 
-### **4.8. Main Project Complexity Design - Levenshtein Distance Algorithm for Fuzzy Cuisine Type Search**
+### **4.8. Main Project Complexity Design - Levenshtein Distance Algorithm for Fuzzy Search**
 **Description:**
 
 Throughout our app, there are multiple search bars where users can enter key words for matching results, such as searching for friends, saved recipes, potlucks, and cuisine types. To accomodate user input mistakes, we employ the Levenshtein distance algorithm to account for typos and partial matches, ensuring users find relevant cresults even if their input is not an exact match. This improves usability by accommodating minor spelling errors while still delivering accurate and meaningful results.
