@@ -3,7 +3,7 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - backend_allison_edward
+      - main
 
 jobs:
   deploy:
