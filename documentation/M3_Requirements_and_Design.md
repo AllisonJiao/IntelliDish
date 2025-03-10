@@ -103,7 +103,7 @@ For users like busy university students and employees (who often lack the time, 
     - **Description**: User provides a list of available ingredients and cuisine preferences, and the AI API returns a list of possible recipes.
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
-        - **1**. The user clicks the "Get Recommendation" button on the main page to access the "Get Full Recipe Recommendation" feature.
+        - **1**. The user clicks the "Get Recommendation" button on the main page to access the "Get Recipe Recommendation" feature.
         - **2**. The app displays the following UI components:
           - Text Field labeled “Enter ingredients”
           - Add Ingredient (button)
@@ -132,7 +132,7 @@ For users like busy university students and employees (who often lack the time, 
     - **Description**: Suggest recipes where some ingredients are missing from user input, and provide possible substitutes for missing ingredients as well as possible recipes that doesn't match the user's cuisine preferences.
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
-        - **1**. The user clicks the "Get Recommendation" button on the main page to access the "Get Full Recipe Recommendation" feature.
+        - **1**. The user clicks the "Get Recommendation" button on the main page to access the "Get Recipe Recommendation" feature.
         - **2**. The app displays the following UI components:
           - Text Field labeled “Enter ingredients”
           - Add Ingredient (button)
