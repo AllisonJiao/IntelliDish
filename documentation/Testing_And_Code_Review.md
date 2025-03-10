@@ -86,25 +86,19 @@ _(Placeholder for Jest coverage screenshot without mocks)_
 
 ### 4.2. Tests
 
-- **Use Case: Authenticate**
-
-  - **Expected Behaviors:**
-    | **Scenario Steps** | **Test Case Steps** |
-    | ------------------ | ------------------- |
-    | ...                | ...                 |
-
-  - **Test Logs:**
-    ```
-    [Placeholder for Espresso test execution logs]
-    ```
-
 - **Use Case: Get Full Recipe Recommendation**
 
   - **Expected Behaviors:**
-
     | **Scenario Steps** | **Test Case Steps** |
     | ------------------ | ------------------- |
-    | ...                | ...                 |
+    | 1. The user clicks the "Get Recommendation" button on the main page to access the "Get Recipe Recommendation" feature. | Open "Get Recommendation" page |
+    | 2. The app displays the following UI components:<br> - Text Field labeled “Enter ingredients”<br> - Add Ingredient (button)<br> - Upload Image (button)<br> - View Image (button)<br> - Ingredient List Display (large rectangular container for added ingredients)<br> - Clear Ingredients (button)<br> - Cuisine Type (button)<br> - Preferences (button)<br> - Reset Cuisine Type and Preferences (button)<br> - Allow Partial Recipe Recommendations (toggle switch)<br> - Generate Recipes (button) | Check all UI components are present|
+    | 3a. The user attempts to generate a recipe without entering any ingredients. | Click "Generate Recipes" |
+    | 3a1. Display an error message: “Please enter at least one ingredient!” | Check dialog is opened with text: "Please enter at least one ingredient!” |
+    | 3. The user enters a list of available ingredients and selects cuisine preferences. | Input "egg" in text field<br> Click "Add Ingredient" button<br> Input "tomato" in text field<br> Click "Add Ingredient" button<br> Check "egg" and "tomato" are added to the ingredient list recycler view<br> Click "Cuisine Type"<br> Select "Chinese"<br> Click "Apply"<br> Click "Preferences"<br> Change "Recipe Complexity" to "2" |
+    | 4. The app sends a request to the AI API with the provided inputs. | Click "Generate Recipes" |
+    | 5. The AI API returns a possible recipe to the user. | Requires backend API (not tested) |
+    
 
   - **Test Logs:**
     ```
@@ -112,6 +106,19 @@ _(Placeholder for Jest coverage screenshot without mocks)_
     ```
 
 - **Use Case: Participate In PotLuck**
+
+  - **Expected Behaviors:**
+
+    | **Scenario Steps** | **Test Case Steps** |
+    | ------------------ | ------------------- |
+    | ...                | ...                 |
+
+  - **Test Logs:**
+    ```
+    [Placeholder for Espresso test execution logs]
+    ```
+
+- **Use Case: Manage Friends**
 
   - **Expected Behaviors:**
 
