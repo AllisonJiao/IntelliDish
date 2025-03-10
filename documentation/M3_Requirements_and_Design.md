@@ -16,7 +16,7 @@ Feb 27:
 - Revised Section 3.4 to reflect the updated user interface design with enhanced clarity and functionality.
 - Revised Section 4.2 to align with the current MongoDB schema, incorporating Mongoose for schema validation, middleware-based lifecycle management, and automated referential integrity.
 - Revised Section 4.4 to include Firebase Cloud Messaging (FCM) for real-time notifications and live updates, enhancing user engagement and responsiveness.
-- Revised Section 3.2 "Participate in PotLuck" use case to clarify the flow, incorporating group creation, invitations, and real-time updates.
+- Revised Section 3.3 "Participate in PotLuck" use case to clarify the flow, incorporating group creation, invitations, and real-time updates.
 
 Feb 28:
 - Revised Section 4.1 to provide clearer rationale for separating the main components and updated each interface to align with the latest implementation details.
@@ -25,6 +25,9 @@ Feb 28:
 
 Mar 1:
 - Revised Section 4.8 to replace the original main complexity idea with a Levenshtein Distance approach for fuzzy user input matching, ensuring more robust text input searches and enhanced user experience.
+
+Mar 9:
+- Revised Section 3.3 to clarify the flow of "Get Full Recipe Recommendation" and "Get Partial Recipe Recommendation" for testing purposes.
 
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
@@ -100,30 +103,60 @@ For users like busy university students and employees (who often lack the time, 
     - **Description**: User provides a list of available ingredients and cuisine preferences, and the AI API returns a list of possible recipes.
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
-        - **1**. The user provides a list of available ingredients and cuisine preferences to IntelliDish.
-        - **2**. A request to the AI API is made based on the user's inputs.
-        - **3**. The AI API returns a list of possible recipes to the user.
+        - **1**. The user clicks the "Get Recommendation" button on the main page to access the "Get Full Recipe Recommendation" feature.
+        - **2**. The app displays the following UI components:
+          - Text Field labeled “Enter ingredients”
+          - Add Ingredient (button)
+          - Upload Image (button)
+          - View Image (button)
+          - Ingredient List Display (large rectangular container for added ingredients)
+          - Clear Ingredients (button)
+          - Cuisine Type (button)
+          - Preferences (button)
+          - Reset Cuisine Type and Preferences (button)
+          - Allow Partial Recipe Recommendations (toggle switch)
+          - Generate Recipes (button)
+        - **3**. The user enters a list of available ingredients and selects cuisine preferences.
+        - **4**. The app sends a request to the AI API with the provided inputs.
+        - **5**. The AI API returns a possible recipe to the user.
     - **Failure scenario(s)**:
-        - **2a**: The AI API is unreachable/ unavailable.
-            - **2a1**: Display error message that the AI API is unreachable/ unavailable.
-            - **2a2**: Prompt the user to try again later, or check online whether the AI API is down/ under maintainence.
-        - **2b**: No recipes are possible for the provided user inputs.
-            - **2b1**: Suggest the user to use partial recipe recommendations, PotLuck with friends, or try again with different inputs instead.
+        - **4a**: The user attempts to generate a recipe without entering any ingredients.
+            - **4a1**: Display an error message: “Please enter at least one ingredient!”
+        - **5a**: The AI API is unreachable/ unavailable.
+            - **5a1**: Display error message that the AI API is unreachable/ unavailable.
+            - **5a2**: Prompt the user to try again later, or check online whether the AI API is down/ under maintainence.
+        - **5b**: No recipes are possible for the provided user inputs.
+            - **5b1**: Suggest the user to use partial recipe recommendations, PotLuck with friends, or try again with different inputs instead.
 
 3. **Get Partial Recipe Recommendation**:
     - **Description**: Suggest recipes where some ingredients are missing from user input, and provide possible substitutes for missing ingredients as well as possible recipes that doesn't match the user's cuisine preferences.
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
-        - **1**. The user provides a list of available ingredients and cuisine preferences to IntelliDish.
-        - **2**. A request to the AI API is made based on the user's inputs.
-        - **3**. The AI API determines that there are no possible recipes based on the user's input.
-        - **4**. The AI API suggests recipes where some ingredients are missing from user input, and provide possible substitutes for missing ingredients as well as possible recipes that doesn't match the user's cuisine preferences.
+        - **1**. The user clicks the "Get Recommendation" button on the main page to access the "Get Full Recipe Recommendation" feature.
+        - **2**. The app displays the following UI components:
+          - Text Field labeled “Enter ingredients”
+          - Add Ingredient (button)
+          - Upload Image (button)
+          - View Image (button)
+          - Ingredient List Display (large rectangular container for added ingredients)
+          - Clear Ingredients (button)
+          - Cuisine Type (button)
+          - Preferences (button)
+          - Reset Cuisine Type and Preferences (button)
+          - Allow Partial Recipe Recommendations (toggle switch)
+          - Generate Recipes (button)
+        - **3**. The user enters a list of available ingredients and selects cuisine preferences.
+        - **4**. The user clicks the "Allow Partial Recipe Recommendations" switch.
+        - **4**. The app sends a request to the AI API with the provided inputs.
+        - **5**. The AI API returns a possible recipe to the user.
     - **Failure scenario(s)**:
-        - **2a**: The AI API is unreachable/ unavailable.
-            - **2a1**: Display error message that the AI API is unreachable/ unavailable.
-            - **2a2**: Prompt the user to try again later, or check online whether the AI API is down/ under maintainence.
-        - **2b**: No recipes are possible for the provided user inputs.
-            - **2b1**: Suggest the user to use PotLuck with friends, or try again with different inputs instead.
+        - **4a**: The user attempts to generate a recipe without entering any ingredients.
+            - **4a1**: Display an error message: “Please enter at least one ingredient!”
+        - **5a**: The AI API is unreachable/ unavailable.
+            - **5a1**: Display error message that the AI API is unreachable/ unavailable.
+            - **5a2**: Prompt the user to try again later, or check online whether the AI API is down/ under maintainence.
+        - **5b**: No recipes are possible for the provided user inputs.
+            - **5b1**: Suggest the user to use PotLuck with friends, or try again with different inputs instead.
 
 4. **Participate In PotLuck**:
     - **Description**: Users collaboratively contribute available ingredients for group-based recipe recommendations while managing group creation, invitations, and participant interactions.
