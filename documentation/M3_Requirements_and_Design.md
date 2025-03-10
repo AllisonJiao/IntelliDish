@@ -120,7 +120,7 @@ For users like busy university students and employees (who often lack the time, 
         - **4**. The app sends a request to the AI API with the provided inputs.
         - **5**. The AI API returns a possible recipe to the user.
     - **Failure scenario(s)**:
-        - **3a**: The user attempts to generate a recipe without entering any ingredients.
+        - **3a**: The user attempts to add an ingredient without entering any text input.
             - **3a1**: Display an error message: “Please enter at least one ingredient!”
         - **5a**: The AI API is unreachable/ unavailable.
             - **5a1**: Display error message that the AI API is unreachable/ unavailable.
@@ -150,7 +150,7 @@ For users like busy university students and employees (who often lack the time, 
         - **4**. The app sends a request to the AI API with the provided inputs.
         - **5**. The AI API returns a possible recipe to the user.
     - **Failure scenario(s)**:
-        - **3a**: The user attempts to generate a recipe without entering any ingredients.
+        - **3a**: The user attempts to add an ingredient without entering any text input.
             - **3a1**: Display an error message: “Please enter at least one ingredient!”
         - **5a**: The AI API is unreachable/ unavailable.
             - **5a1**: Display error message that the AI API is unreachable/ unavailable.
