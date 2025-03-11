@@ -41,14 +41,25 @@ export const RecipesRoutes = [
        route: "/recipes",
        action: controller.postNewRecipe,
        validation: [
-           body("name").isString()
+           body("name").isString(),
+           body("ingredients").isArray(),
+           body("procedure").isArray(),
+           body("cuisineType").isString(),
+           body("recipeComplexity").isString(),
+           body("spiceLevel").isString(),
+           body("preparationTime").isInt(),
+           body("calories").isInt(),
+           body("nutritionLevel").isString(),
+           body("price").isInt()
        ]
    },
    {
        method: "post",
        route: "/recipes/AI",
        action: controller.postNewRecipeFromAI,
-       validation: []
+       validation: [
+           body("name").isString(),
+       ]
    },
    {
        method: "put",
@@ -56,7 +67,13 @@ export const RecipesRoutes = [
        action: controller.putRecipeById,
        validation: [
            param("_id").isMongoId(),
-           body("name").isString()
+           body("name").isString(),
+           body("ingredients").isArray(),
+           body("procedure").isArray(),
+           body("cuisineType").isString(),
+           body("recipeComplexity").isString(),
+           body("spiceLevel").isString(),
+           body("preparationTime").isInt(),
        ]
    },
    {

@@ -37,6 +37,8 @@ export const IngredientsRoutes = [
             body("category")
                 .isString().withMessage("Category must be a string")
                 .isIn(validCategories).withMessage(`Category must be one of: ${validCategories.join(", ")}`),
+            body("quantity").isInt().withMessage("Quantity must be an integer"),
+            body("unit").isString().withMessage("Unit must be a string")
         ]
     },
     {
@@ -53,7 +55,13 @@ export const IngredientsRoutes = [
         route: "/ingredients/:id",
         action: controller.putIngredientById,
         validation: [
-            param("id").isMongoId()
+            param("id").isMongoId(),
+            body("name").isString().notEmpty().withMessage("Name must be a non-empty string"),
+            body("category")
+                .isString().withMessage("Category must be a string")
+                .isIn(validCategories).withMessage(`Category must be one of: ${validCategories.join(", ")}`),
+            body("quantity").isInt().withMessage("Quantity must be an integer"),
+            body("unit").isString().withMessage("Unit must be a string")
         ]
     }, 
     {
