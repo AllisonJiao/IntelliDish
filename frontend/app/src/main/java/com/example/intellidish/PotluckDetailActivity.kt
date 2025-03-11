@@ -297,7 +297,7 @@ class PotluckDetailActivity : AppCompatActivity() {
                         Toast.makeText(this@PotluckDetailActivity, "Failed to update recipes", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     progressBar.visibility = View.GONE
                     generateButton.isEnabled = true
@@ -308,6 +308,9 @@ class PotluckDetailActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Show dialog to choose between camera and gallery
+     */
     private fun showImageSelectionDialog() {
         val options = arrayOf("Take a Photo", "Choose from Gallery")
         AlertDialog.Builder(this)
@@ -321,11 +324,17 @@ class PotluckDetailActivity : AppCompatActivity() {
             .show()
     }
 
+    /**
+     * Open Camera
+     */
     private fun openCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(intent, REQUEST_CAMERA)
     }
 
+    /**
+     * Open Gallery
+     */
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         getImageFromGallery.launch(intent)
@@ -363,6 +372,9 @@ class PotluckDetailActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Send image to backend for ingredient recognition
+     */
     private fun sendImageToBackend(imageUri: Uri) {
         val file = File(imageUri.path ?: return) // Convert URI to File
         val requestBody = MultipartBody.Builder()
@@ -402,6 +414,9 @@ class PotluckDetailActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Fetch recipes from backend using the potluck ingredient names
+     */
     private fun fetchRecipesFromBackend() {
         // Convert potluckIngredients -> list of names
         val ingredientNames = potluckIngredients.map { it.name }
@@ -434,7 +449,7 @@ class PotluckDetailActivity : AppCompatActivity() {
                             ).show()
                         }
                     }
-                } catch (e: IOException) {
+                } catch (e: Exception) {
                     runOnUiThread {
                         Toast.makeText(
                             applicationContext,
@@ -734,7 +749,7 @@ class PotluckDetailActivity : AppCompatActivity() {
                 try {
                     // Quietly refresh without showing loading or toast
                     ingredientAdapter.fetchIngredientsFromServer()
-                } catch (e: IOException) {
+                } catch (e: Exception) {
                     Log.e("PotluckDetail", "Auto-refresh error: ${e.message}")
                 }
                 delay(AUTO_REFRESH_INTERVAL)
@@ -758,7 +773,7 @@ class PotluckDetailActivity : AppCompatActivity() {
                 showLoading()
                 ingredientAdapter.fetchIngredientsFromServer()
                 Toast.makeText(this@PotluckDetailActivity, "Potluck details refreshed", Toast.LENGTH_SHORT).show()
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 Toast.makeText(this@PotluckDetailActivity, "Error refreshing: ${e.message}", Toast.LENGTH_SHORT).show()
             } finally {
                 hideLoading()

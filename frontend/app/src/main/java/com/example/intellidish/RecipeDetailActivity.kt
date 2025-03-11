@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.example.intellidish.models.Recipe
-import java.io.IOException
 
 class RecipeDetailActivity : AppCompatActivity() {
 
@@ -47,7 +46,7 @@ class RecipeDetailActivity : AppCompatActivity() {
                     "${index + 1}. $step"
                 }?.joinToString("\n\n") ?: "No instructions available"
 
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             Toast.makeText(this, "Error displaying recipe details", Toast.LENGTH_SHORT).show()
             finish()
         }

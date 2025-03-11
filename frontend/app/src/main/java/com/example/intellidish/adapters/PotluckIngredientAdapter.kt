@@ -15,12 +15,10 @@ import com.example.intellidish.api.NetworkClient
 import com.example.intellidish.models.PotluckIngredient
 import com.example.intellidish.models.RemoveAddIngredientsRequest
 import com.example.intellidish.utils.NetworkUtils
-import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.IOException
 
 class PotluckIngredientAdapter(
     private val potluckId: String,
@@ -35,7 +33,7 @@ class PotluckIngredientAdapter(
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 fetchIngredientsFromServer()
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 Log.e("PotluckAdapter", "Error in initial fetch: ${e.message}")
             }
         }
@@ -72,7 +70,7 @@ class PotluckIngredientAdapter(
             } else {
                 Log.e("PotluckAdapter", "Failed to fetch potluck details: ${response.errorBody()?.string()}")
             }
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             Log.e("PotluckAdapter", "Error fetching potluck details: ${e.message}")
             throw e
         }
@@ -138,7 +136,7 @@ class PotluckIngredientAdapter(
                         Toast.makeText(context, "Failed to add ingredient", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 Log.e("PotluckAdapter", "Network error adding ingredient: ${e.message}")
             }
         }
@@ -166,7 +164,7 @@ class PotluckIngredientAdapter(
                         Toast.makeText(context, "Failed to remove ingredient", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(context, "Network error removing ingredient", Toast.LENGTH_SHORT).show()
                 }

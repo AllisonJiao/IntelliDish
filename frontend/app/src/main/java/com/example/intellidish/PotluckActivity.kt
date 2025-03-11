@@ -26,7 +26,6 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
-import java.io.IOException
 
 class PotluckActivity : AppCompatActivity() {
 
@@ -76,6 +75,9 @@ class PotluckActivity : AppCompatActivity() {
         btnBack = findViewById(R.id.btn_back)
     }
 
+    /**
+     * Retrieves the logged-in user's email from Google authentication
+     */
     private fun retrieveLoggedInUser() {
         loggedInUserEmail = UserManager.getUserEmail()
         loggedInUserName = UserManager.getUserName()
@@ -86,6 +88,9 @@ class PotluckActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Fetch the logged-in user's ID from the backend using their email
+     */
     private fun fetchUserFromBackend() {
         lifecycleScope.launch {
             try {
@@ -101,45 +106,44 @@ class PotluckActivity : AppCompatActivity() {
                     Log.e("PotluckActivity", "Failed to fetch user from backend")
                     Toast.makeText(this@PotluckActivity, "Failed to retrieve user data", Toast.LENGTH_SHORT).show()
                 }
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 Log.e("PotluckActivity", "Network error fetch friend: ${e.message}")
             }
         }
     }
-
+    /**
+     * Fetch all potlucks for the user and their friends.
+     */
     private fun fetchUserAndFriendsPotlucks() {
         lifecycleScope.launch {
             try {
                 val friendsResponse = potluckApiService.getFriends(loggedInUserId!!)
-                if (!friendsResponse.isSuccessful || friendsResponse.body() == null) {
-                    Log.e("PotluckActivity", "Error fetching friends: ${friendsResponse.errorBody()?.string()}")
-                    return@launch
-                }
+                if (friendsResponse.isSuccessful && friendsResponse.body() != null) {
+                    val friendsList: List<User> = friendsResponse.body()?.get("friends") ?: emptyList()
 
-                val friendsList: List<User> = friendsResponse.body()?.get("friends") ?: emptyList()
+                    // Fetch the user's joined potlucks
+                    val userPotlucksResponse = potluckApiService.getUserJoinedPotlucks(loggedInUserId!!)
+                    allJoinedPotluckList.clear()
+                    if (userPotlucksResponse.isSuccessful) {
+                        allJoinedPotluckList.addAll(userPotlucksResponse.body()?.get("potlucks") ?: emptyList())
+                    } else if (userPotlucksResponse.code() == 404) {
+                        Log.w("PotluckActivity", "User has no potlucks. Skipping user potlucks.")
+                    } else {
+                        Log.e("PotluckActivity", "Error fetching user potlucks: ${userPotlucksResponse.errorBody()?.string()}")
+                    }
 
-                // Fetch the user's joined potlucks
-                val userPotlucksResponse = potluckApiService.getUserJoinedPotlucks(loggedInUserId!!)
-                allJoinedPotluckList.clear()
-                if (userPotlucksResponse.isSuccessful) {
-                    allJoinedPotluckList.addAll(userPotlucksResponse.body()?.get("potlucks") ?: emptyList())
-                } else if (userPotlucksResponse.code() == 404) {
-                    Log.w("PotluckActivity", "User has no potlucks. Skipping user potlucks.")
-                } else {
-                    Log.e("PotluckActivity", "Error fetching user potlucks: ${userPotlucksResponse.errorBody()?.string()}")
-                }
-
-
-                val friendPotluckList = mutableListOf<Potluck>()
-                for (friend in friendsList) {
-                    friend._id?.let { friendId ->
+                    val friendPotluckList = mutableListOf<Potluck>()
+                    for (friend in friendsList) {
+                        if (friend._id == null) continue
+                        
+                        val friendId = friend._id
                         val friendPotlucksResponse = potluckApiService.getUserJoinedPotlucks(friendId)
                         if (friendPotlucksResponse.isSuccessful) {
                             val friendPotlucks = friendPotlucksResponse.body()?.get("potlucks") ?: emptyList()
 
                             if (friendPotlucks.isEmpty()) {
                                 Log.d("PotluckActivity", "Friend ${friend.name} ($friendId) has no potlucks. Skipping.")
-                                return@let
+                                continue
                             }
 
                             // Prevent duplicate potlucks by checking `_id`
@@ -160,18 +164,19 @@ class PotluckActivity : AppCompatActivity() {
                             Log.e("PotluckActivity", "Error fetching potlucks for friend ${friend.name}")
                         }
                     }
+
+                    allPotluckList.clear()
+                    allPotluckList = (allJoinedPotluckList + friendPotluckList)
+                        .distinctBy { it._id }  // Remove duplicates based on `_id`
+                        .toMutableList()  /* Ensure it's a mutable list */
+
+                    searchPotluckList.clear()
+                    searchPotluckList.addAll(allPotluckList)
+                    potluckAdapter.notifyDataSetChanged()
+                } else {
+                    Log.e("PotluckActivity", "Error fetching friends: ${friendsResponse.errorBody()?.string()}")
                 }
-
-                allPotluckList.clear()
-                allPotluckList = (allJoinedPotluckList + friendPotluckList)
-                    .distinctBy { it._id }  // Remove duplicates based on `_id`
-                    .toMutableList()  /* Ensure it's a mutable list */
-
-                searchPotluckList.clear()
-                searchPotluckList.addAll(allPotluckList)
-                potluckAdapter.notifyDataSetChanged()
-
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 Log.e("PotluckActivity", "Network error fetching potlucks: ${e.message}")
             }
         }
@@ -203,6 +208,10 @@ class PotluckActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Adds a touch listener to the RecyclerView so that when an item is tapped,
+     * its background changes to a dark color and the previously selected item resets.
+     */
     private fun setupTouchListener() {
         recyclerPotlucks.addOnItemTouchListener(object : RecyclerView.SimpleOnItemTouchListener() {
             override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
@@ -250,6 +259,9 @@ class PotluckActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * When "Join Potluck" is clicked, join the currently selected potluck.
+     */
     private fun joinPotluck() {
         if (selectedPotluck == null) {
             Toast.makeText(this, "Please select a potluck to join!", Toast.LENGTH_SHORT).show()
@@ -294,7 +306,7 @@ class PotluckActivity : AppCompatActivity() {
                     Log.e("PotluckActivity", "Error joining potluck: ${response.errorBody()?.string()}")
                     Toast.makeText(this@PotluckActivity, "Failed to join potluck!", Toast.LENGTH_SHORT).show()
                 }
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 Log.e("PotluckActivity", "Network error joining potluck: ${e.message}")
                 Toast.makeText(this@PotluckActivity, "Network error joining potluck!", Toast.LENGTH_SHORT).show()
             }

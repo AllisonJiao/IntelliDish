@@ -23,7 +23,6 @@ import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.IOException
 
 class ManageParticipants : AppCompatActivity() {
 
@@ -102,6 +101,9 @@ class ManageParticipants : AppCompatActivity() {
         }
     }
 
+    /**
+     * Fetch initial potluck participants.
+     */
     private fun fetchPotluckParticipants() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
@@ -124,7 +126,7 @@ class ManageParticipants : AppCompatActivity() {
                         Toast.makeText(this@ManageParticipants, "Failed to fetch participants", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@ManageParticipants, "Network error: ${e.message}", Toast.LENGTH_SHORT).show()
                     Log.e("ManageParticipants", "Error fetching participants", e)
@@ -133,6 +135,9 @@ class ManageParticipants : AppCompatActivity() {
         }
     }
 
+    /**
+     * Fetch the user's friends list.
+     */
     private fun fetchUserFriends() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
@@ -145,7 +150,7 @@ class ManageParticipants : AppCompatActivity() {
                         allFriends.addAll(friendsList)
                     }
                 }
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@ManageParticipants, "Failed to fetch friends", Toast.LENGTH_SHORT).show()
                 }
@@ -153,6 +158,9 @@ class ManageParticipants : AppCompatActivity() {
         }
     }
 
+    /**
+     * Filters participants based on search input.
+     */
     private fun filterParticipants(query: String) {
         displayedParticipants.clear()
         if (query.isEmpty()) {
@@ -165,6 +173,9 @@ class ManageParticipants : AppCompatActivity() {
         adapter.notifyDataSetChanged()
     }
 
+    /**
+     * Add a participant by searching their email.
+     */
     private fun addParticipantByEmail(email: String) {
         if (!isValidEmail(email)) {
             Toast.makeText(this, "Enter a valid email!", Toast.LENGTH_SHORT).show()
@@ -180,6 +191,9 @@ class ManageParticipants : AppCompatActivity() {
         addParticipant(friendToAdd)
     }
 
+    /**
+     * Add a participant to the potluck via API.
+     */
     private fun addParticipant(user: User) {
         val requestBody = hashMapOf("participants" to listOf(user._id!!))
         lifecycleScope.launch(Dispatchers.IO) {
@@ -193,7 +207,7 @@ class ManageParticipants : AppCompatActivity() {
                         Toast.makeText(this@ManageParticipants, "Failed to add participant", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@ManageParticipants, "Network error: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
@@ -201,6 +215,9 @@ class ManageParticipants : AppCompatActivity() {
         }
     }
 
+    /**
+     * Remove a participant from the potluck via API.
+     */
     private fun removeParticipant(user: User) {
         val requestBody = hashMapOf("participants" to listOf(user._id!!))
 
@@ -217,7 +234,7 @@ class ManageParticipants : AppCompatActivity() {
                         Toast.makeText(this@ManageParticipants, "Failed to remove ${user.name}", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@ManageParticipants, "Network error: ${e.message}", Toast.LENGTH_SHORT).show()
                     Log.e("ManageParticipants", "Error removing participant", e)

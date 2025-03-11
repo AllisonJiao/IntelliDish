@@ -14,7 +14,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.IOException
 
 class GetRecommendation : AppCompatActivity() {
     private val selectedIngredients = mutableListOf<String>()
@@ -27,14 +26,8 @@ class GetRecommendation : AppCompatActivity() {
         setContentView(binding.root)
         setupLoadingDialog()
 
-        // Connect the generate button click to getRecommendation()
-        binding.btnGenerateRecipe.setOnClickListener {
-            if (selectedIngredients.isEmpty()) {
-                showError("Please select at least one ingredient")
-                return@setOnClickListener
-            }
-            getRecommendation()
-        }
+        // Connect the generate button click to handleGenerateClick()
+        binding.btnGenerateRecipe.setOnClickListener { handleGenerateClick() }
 
         // ... rest of your onCreate code ...
     }
@@ -97,7 +90,7 @@ class GetRecommendation : AppCompatActivity() {
                         showError("Failed to save recipe: ${e.message}")
                     }
                 )
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 showError("Network error: ${e.message}")
             }
         }
@@ -124,11 +117,19 @@ class GetRecommendation : AppCompatActivity() {
                         showError("Failed to generate recipe: ${e.message}")
                     }
                 )
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 hideLoading()
                 showError("Network error: ${e.message}")
             }
         }
+    }
+
+    private fun handleGenerateClick() {
+        if (selectedIngredients.isEmpty()) {
+            showError("Please select at least one ingredient")
+            return
+        }
+        getRecommendation()
     }
 
     // Add method to update selected ingredients

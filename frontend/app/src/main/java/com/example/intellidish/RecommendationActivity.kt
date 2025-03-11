@@ -127,20 +127,7 @@ class RecommendationActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        binding.btnGenerate.setOnClickListener {
-            if (ingredientsList.isEmpty()) {
-                Toast.makeText(this, "Please add at least one ingredient!", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            // Show loading state
-            val progressBar = findViewById<ProgressBar>(R.id.progress_bar)
-            progressBar.visibility = View.VISIBLE
-            generateButton.isEnabled = false
-
-            // First request to generate recipe
-            generateRecipe()
-        }
+        binding.btnGenerate.setOnClickListener { handleGenerateClick() }
 
         addButton.setOnClickListener {
             val inputText = ingredientsInput.text.toString().trim()
@@ -200,6 +187,21 @@ class RecommendationActivity : AppCompatActivity() {
         binding.btnTogglePreferences.setOnClickListener {
             showPreferencesDialog()
         }
+    }
+
+    private fun handleGenerateClick() {
+        if (ingredientsList.isEmpty()) {
+            Toast.makeText(this, "Please add at least one ingredient!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Show loading state
+        val progressBar = findViewById<ProgressBar>(R.id.progress_bar)
+        progressBar.visibility = View.VISIBLE
+        generateButton.isEnabled = false
+
+        // First request to generate recipe
+        generateRecipe()
     }
 
     private fun observeViewModel() {
@@ -380,7 +382,7 @@ class RecommendationActivity : AppCompatActivity() {
                             ).show()
                         }
                     }
-                } catch (e: IOException) {
+                } catch (e: Exception) {
                     runOnUiThread {
                         Toast.makeText(
                             applicationContext,
@@ -445,7 +447,7 @@ class RecommendationActivity : AppCompatActivity() {
                         intent.putExtra("recipe", JSONObject().put("recipes", recipes).toString())
                         startActivity(intent)
                     }
-                } catch (e: IOException) {
+                } catch (e: Exception) {
                     handleError("Error generating recipe: ${e.message}")
                     Log.e("RecommendationActivity", "Error details", e)
                 }

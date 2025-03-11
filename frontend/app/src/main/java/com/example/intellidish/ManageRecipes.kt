@@ -32,7 +32,6 @@ import com.example.intellidish.utils.UserManager
 import com.example.intellidish.models.User
 import com.example.intellidish.models.ApiResponse
 import com.example.intellidish.models.RecipesResponse
-import java.io.IOException
 
 class ManageRecipes : AppCompatActivity() {
 
@@ -142,7 +141,7 @@ class ManageRecipes : AppCompatActivity() {
                             }
                         )
                     }
-                } catch (e: IOException) {
+                } catch (e: Exception) {
                     Log.e("ManageRecipes", "Auto-refresh error: ${e.message}")
                 }
                 delay(AUTO_REFRESH_INTERVAL)
@@ -156,7 +155,7 @@ class ManageRecipes : AppCompatActivity() {
                 showLoading()
                 loadRecipes()
                 Toast.makeText(this@ManageRecipes, "Recipes refreshed", Toast.LENGTH_SHORT).show()
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 Toast.makeText(this@ManageRecipes, "Error refreshing: ${e.message}", Toast.LENGTH_SHORT).show()
             } finally {
                 hideLoading()
@@ -195,7 +194,7 @@ class ManageRecipes : AppCompatActivity() {
                         finish()
                     }
                 }
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Log.e("ManageRecipes", "Error loading recipes: ${e.message}")
                     Toast.makeText(this@ManageRecipes, "Error loading recipes: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -226,7 +225,7 @@ class ManageRecipes : AppCompatActivity() {
                         }
                     }
                 )
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@ManageRecipes, "Error deleting recipe: ${e.message}", Toast.LENGTH_SHORT).show()
                 }

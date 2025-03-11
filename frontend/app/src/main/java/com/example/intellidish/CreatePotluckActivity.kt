@@ -38,7 +38,6 @@ import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.IOException
 
 class CreatePotluckActivity : AppCompatActivity() {
 
@@ -256,6 +255,8 @@ class CreatePotluckActivity : AppCompatActivity() {
         }
     }
 
+
+    // Fetch the full user details (including _id) from the backend.
     private fun fetchUserFromBackend() {
         lifecycleScope.launch {
             try {
@@ -271,7 +272,7 @@ class CreatePotluckActivity : AppCompatActivity() {
                     Log.e("PotluckActivity", "Failed to fetch user from backend")
                     Toast.makeText(this@CreatePotluckActivity, "Failed to retrieve user data", Toast.LENGTH_SHORT).show()
                 }
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 Log.e("PotluckActivity", "Network error fetch friend: ${e.message}")
             }
         }
@@ -295,7 +296,7 @@ class CreatePotluckActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this@CreatePotluckActivity, "Failed to fetch friends", Toast.LENGTH_SHORT).show()
                 }
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 Toast.makeText(this@CreatePotluckActivity, "Network error fetching friends: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
@@ -365,7 +366,7 @@ class CreatePotluckActivity : AppCompatActivity() {
                         Log.e("CreatePotluckActivity", "Error: ${response.errorBody()?.string()}")
                     }
                 }
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Log.e("CreatedPotluckActivity", "Network error: ${e.message}")
                 }
