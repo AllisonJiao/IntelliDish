@@ -20,6 +20,11 @@ const API_BASE_URL = "https://ec2-3-21-30-112.us-east-2.compute.amazonaws.com";
 const agent = new https.Agent({ rejectUnauthorized: false });
 
 describe("Mocked: GET /ingredients", ()=>{
+    // Mocked behavior: IngredientsController.getAllIngredients throws an error
+    // Input: A valid GET request to the /ingredients endpoint
+    // Expected status code: 500
+    // Expected behavior: The error was handled gracefully
+    // Expected output: None
     test("getAllIngredients throws", async()=>{
         const controller = new IngredientsController();
         
