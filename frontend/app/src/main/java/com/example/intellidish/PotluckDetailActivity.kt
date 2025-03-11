@@ -166,7 +166,7 @@ class PotluckDetailActivity : AppCompatActivity() {
 
             // Now set the text to something like "Created on: 2025-02-28"
             textDate.text = "Created on: $formattedDate"
-        } catch (e: ParseException) {
+        } catch (e: IOException) {
             // If parsing fails, just display the original string
             textDate.text = "Created on: $potluckDate"
             e.printStackTrace()
@@ -297,7 +297,7 @@ class PotluckDetailActivity : AppCompatActivity() {
                         Toast.makeText(this@PotluckDetailActivity, "Failed to update recipes", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } catch (e: NetworkException) {
+            } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
                     progressBar.visibility = View.GONE
                     generateButton.isEnabled = true
@@ -434,7 +434,7 @@ class PotluckDetailActivity : AppCompatActivity() {
                             ).show()
                         }
                     }
-                } catch (e: NetworkException) {
+                } catch (e: IOException) {
                     runOnUiThread {
                         Toast.makeText(
                             applicationContext,
@@ -734,7 +734,7 @@ class PotluckDetailActivity : AppCompatActivity() {
                 try {
                     // Quietly refresh without showing loading or toast
                     ingredientAdapter.fetchIngredientsFromServer()
-                } catch (e: RefreshException) {
+                } catch (e: IOException) {
                     Log.e("PotluckDetail", "Auto-refresh error: ${e.message}")
                 }
                 delay(AUTO_REFRESH_INTERVAL)
@@ -758,7 +758,7 @@ class PotluckDetailActivity : AppCompatActivity() {
                 showLoading()
                 ingredientAdapter.fetchIngredientsFromServer()
                 Toast.makeText(this@PotluckDetailActivity, "Potluck details refreshed", Toast.LENGTH_SHORT).show()
-            } catch (e: RefreshException) {
+            } catch (e: IOException) {
                 Toast.makeText(this@PotluckDetailActivity, "Error refreshing: ${e.message}", Toast.LENGTH_SHORT).show()
             } finally {
                 hideLoading()

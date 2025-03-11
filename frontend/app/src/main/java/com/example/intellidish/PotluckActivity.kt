@@ -103,7 +103,7 @@ class PotluckActivity : AppCompatActivity() {
                     Log.e("PotluckActivity", "Failed to fetch user from backend")
                     Toast.makeText(this@PotluckActivity, "Failed to retrieve user data", Toast.LENGTH_SHORT).show()
                 }
-            } catch (e: NetworkExceptions) {
+            } catch (e: IOException) {
                 Log.e("PotluckActivity", "Network error fetch friend: ${e.message}")
             }
         }
@@ -174,7 +174,7 @@ class PotluckActivity : AppCompatActivity() {
                 searchPotluckList.addAll(allPotluckList)
                 potluckAdapter.notifyDataSetChanged()
 
-            } catch (e: NetworkException) {
+            } catch (e: IOException) {
                 Log.e("PotluckActivity", "Network error fetching potlucks: ${e.message}")
             }
         }
@@ -297,7 +297,7 @@ class PotluckActivity : AppCompatActivity() {
                     Log.e("PotluckActivity", "Error joining potluck: ${response.errorBody()?.string()}")
                     Toast.makeText(this@PotluckActivity, "Failed to join potluck!", Toast.LENGTH_SHORT).show()
                 }
-            } catch (e: NetworkException) {
+            } catch (e: IOException) {
                 Log.e("PotluckActivity", "Network error joining potluck: ${e.message}")
                 Toast.makeText(this@PotluckActivity, "Network error joining potluck!", Toast.LENGTH_SHORT).show()
             }

@@ -51,7 +51,7 @@ object NetworkUtils {
                     Result.failure(Exception("API call failed: $errorBody"))
                 }
             }
-        } catch (e: NetworkException) {
+        } catch (e: IOException) {
             val networkError = handleNetworkException(e)
             Result.failure(Exception(getErrorMessage(networkError)))
         }
@@ -71,7 +71,7 @@ object NetworkUtils {
                 val errorBody = response.errorBody()?.string() ?: "Unknown error"
                 Result.failure(Exception("API call failed with code ${response.code()}: $errorBody"))
             }
-        } catch (e: UnknownException) {
+        } catch (e: IOException) {
             Result.failure(e)
         }
     }
@@ -90,7 +90,7 @@ object NetworkUtils {
                 val errorBody = response.errorBody()?.string() ?: "Unknown error"
                 Result.failure(Exception("API call failed with code ${response.code()}: $errorBody"))
             }
-        } catch (e: UnknownException) {
+        } catch (e: IOException) {
             Result.failure(e)
         }
     }

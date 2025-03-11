@@ -55,7 +55,7 @@ class FriendsAdapter(
                     isEnabled = false // Disable button during operation
                     try {
                         onAddFriend(friend)
-                    } catch (e: NetworkException) {
+                    } catch (e: IOException) {
                         context?.let {
                             Toast.makeText(it, 
                                 "Unable to add friend at this time", 

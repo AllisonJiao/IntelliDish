@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
                     context = this@MainActivity
                 )
                 handleSignIn(result) // Handle successful sign-in
-            } catch (e: GetCredentialException) {
+            } catch (e: IOException) {
                 handleFailure(e) // Handle failure cases
             }
         }
@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity() {
                         } else {
                             throw Exception("Failed to check if user exists. Status: ${response.code()}")
                         }
-                    } catch (e: LoginException) {
+                    } catch (e: IOException) {
                         Log.e(TAG, "Error during sign in process", e)
                         withContext(Dispatchers.Main) {
                             Toast.makeText(
@@ -148,7 +148,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
-            } catch (e: GoogleIdTokenParsingException) {
+            } catch (e: IOException) {
                 Log.e(TAG, "Error parsing Google ID token", e)
                 Toast.makeText(this, "Failed to parse Google ID token", Toast.LENGTH_SHORT).show()
             }

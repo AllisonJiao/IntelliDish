@@ -46,7 +46,7 @@ class RecipeDetailActivity : AppCompatActivity() {
                     "${index + 1}. $step"
                 }?.joinToString("\n\n") ?: "No instructions available"
 
-        } catch (e: NetworkException) {
+        } catch (e: IOException) {
             Toast.makeText(this, "Error displaying recipe details", Toast.LENGTH_SHORT).show()
             finish()
         }
