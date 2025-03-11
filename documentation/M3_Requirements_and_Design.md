@@ -27,7 +27,10 @@ Mar 1:
 - Revised Section 4.8 to replace the original main complexity idea with a Levenshtein Distance approach for fuzzy user input matching, ensuring more robust text input searches and enhanced user experience.
 
 Mar 9:
-- Revised Section 3.3 to clarify the flow of "Get Full Recipe Recommendation" and "Get Partial Recipe Recommendation" for testing purposes.
+- Revised Section 3.3 to clarify the flow of "Get Full Recipe Recommendation" and "Get Partial Recipe Recommendation" for E2E testing purposes.
+
+Mar 10:
+- Revised Section 3.3 to clarify the flow of "Manage Friends" for E2E testing purposes.
 
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
@@ -192,17 +195,24 @@ For users like busy university students and employees (who often lack the time, 
             - **1b1**: Display error message that the recipe is already in the user's saved recipes list.
 
 6. **Manage Friends**:
-    - **Description**: Users can add or remove friends, with whom they can PotLuck and share recipes with.
+    - **Description**: Users can add or remove friends, with whom they can PotLuck with.
     - **Primary actor(s)**: User.
     - **Main success scenario**:
-        - **1**. The user enters the username of a user to add as a friend, or the user chooses a user from his/ her existing friend list to remove.
-        - **2**. System asks the user for confirmation of friend removal.
-        - **3**. The user's friend list is updated with the addition/ removal of a friend.
+        - **1**. The user clicks the "Manage Friends" button on the main page to access the "Manage Friends" feature.
+        - **2**. The app displays the following UI components:
+          - 
+        - **3**. The user enters the username of a user to add as a friend, or the user chooses a user from his/ her existing friend list to remove.
+        - **4**. System asks the user for confirmation of friend removal.
+        - **5**. The user's friend list is updated with the addition/ removal of a friend.
     - **Failure scenario(s)**:
-        - **1a**: The friend addition fails because the entered username is invalid/ cannot be found.
-            - **1a1**: Display error message for the user to double check that the entered username for friend addition is correct, and prompt the user to try again. Removal of friends do not fail.
-        - **1b**: The user attempts to add themselves as a friend.
-            - **1b1**: Display error message that the user cannot add himself/ herself as a friend.
+        - **3a**: The friend addition fails because the entered username is invalid/ cannot be found.
+            - **3a1**: Display error message for the user to double check that the entered username for friend addition is correct, and prompt the user to try again. Removal of friends do not fail.
+        - **3b**: The user attempts to add themselves as a friend.
+            - **3b1**: Display error message that the user cannot add himself/ herself as a friend.
+        - **3c**: The user attempts to add an existing friend as a friend again.
+            - **3c1**: Display error message that the user is already friends with the existing friend.
+        - **5a**: The user's friend list cannot be updated due to server issues.
+            - **5a1**: Display error message that there are backend server issues.
 
 ### **3.4. Screen Mockups**
 These screen mockups illustrate the user interfaces for the Full Recipe Recommendation, Partial Recipe Recommendation, and Participate in PotLuck use cases.
