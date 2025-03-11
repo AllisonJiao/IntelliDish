@@ -16,6 +16,7 @@ object NetworkClient {
 
     private val gson = GsonBuilder()
         .setLenient()
+        .serializeNulls()  // Include null fields
         .create()
 
     // Create a custom trust manager that trusts the server certificate

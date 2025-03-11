@@ -26,10 +26,18 @@ data class Recipe(
     val calories: Int = 0,
     @SerializedName("price")
     val price: Double = 0.0,
+    @SerializedName("spiceLevel")
+    val spiceLevel: String = SpiceLevels.NO_SPICE.value,
+    @SerializedName("nutritionLevel")
+    val nutritionLevel: String = NutritionLevels.MEDIUM.value,
+    @SerializedName("userId")
     val userId: String = "",
+    @SerializedName("createdAt")
     val createdAt: String = "",
+    @SerializedName("updatedAt")
     val updatedAt: String = "",
     // For backward compatibility
+    @SerializedName("instructions")
     val instructions: List<String>? = procedure
 ) : Parcelable {
     // For backward compatibility
@@ -48,11 +56,41 @@ data class Recipe(
                 preparationTime = json.optInt("preparationTime", 0),
                 calories = json.optInt("calories", 0),
                 price = json.optDouble("price", 0.0),
+                spiceLevel = json.optString("spiceLevel", SpiceLevels.NO_SPICE.value),
+                nutritionLevel = json.optString("nutritionLevel", NutritionLevels.MEDIUM.value),
                 userId = json.optString("userId", ""),
                 createdAt = json.optString("createdAt", ""),
                 updatedAt = json.optString("updatedAt", "")
             )
         }
+    }
+
+    enum class SpiceLevels(val value: String) {
+        DONT_CARE("Don't Care"),
+        NO_SPICE("No Spice"),
+        MILD_SPICE("Mild Spice"),
+        LOW_SPICE("Low Spice"),
+        MEDIUM_SPICE("Medium Spice"),
+        HIGH_SPICE("High Spice"),
+        EXTREME_SPICE("Extreme Spice")
+    }
+
+    enum class NutritionLevels(val value: String) {
+        DONT_CARE("Don't Care"),
+        VERY_LOW("Very Low"),
+        LOW("Low"),
+        MEDIUM("Medium"),
+        HIGH("High"),
+        VERY_HIGH("Very High")
+    }
+
+    enum class RecipeComplexityLevels(val value: String) {
+        DONT_CARE("Don't Care"),
+        VERY_EASY("Very Easy"),
+        EASY("Easy"),
+        MODERATE("Moderate"),
+        CHALLENGING("Challenging"),
+        COMPLEX("Complex")
     }
 }
 
