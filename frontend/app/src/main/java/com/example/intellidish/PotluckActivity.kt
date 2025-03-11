@@ -75,9 +75,6 @@ class PotluckActivity : AppCompatActivity() {
         btnBack = findViewById(R.id.btn_back)
     }
 
-    /**
-     * Retrieves the logged-in user's email from Google authentication
-     */
     private fun retrieveLoggedInUser() {
         loggedInUserEmail = UserManager.getUserEmail()
         loggedInUserName = UserManager.getUserName()
@@ -111,9 +108,7 @@ class PotluckActivity : AppCompatActivity() {
             }
         }
     }
-    /**
-     * Fetch all potlucks for the user and their friends.
-     */
+
     private fun fetchUserAndFriendsPotlucks() {
 
         lifecycleScope.launch {
@@ -211,10 +206,6 @@ class PotluckActivity : AppCompatActivity() {
         })
     }
 
-    /**
-     * Adds a touch listener to the RecyclerView so that when an item is tapped,
-     * its background changes to a dark color and the previously selected item resets.
-     */
     private fun setupTouchListener() {
         recyclerPotlucks.addOnItemTouchListener(object : RecyclerView.SimpleOnItemTouchListener() {
             override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
@@ -262,9 +253,6 @@ class PotluckActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * When "Join Potluck" is clicked, join the currently selected potluck.
-     */
     private fun joinPotluck() {
         if (selectedPotluck == null) {
             Toast.makeText(this, "Please select a potluck to join!", Toast.LENGTH_SHORT).show()

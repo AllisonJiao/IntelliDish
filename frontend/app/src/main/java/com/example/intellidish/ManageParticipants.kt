@@ -101,9 +101,6 @@ class ManageParticipants : AppCompatActivity() {
         }
     }
 
-    /**
-     * Fetch initial potluck participants.
-     */
     private fun fetchPotluckParticipants() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
@@ -135,9 +132,6 @@ class ManageParticipants : AppCompatActivity() {
         }
     }
 
-    /**
-     * Fetch the user's friends list.
-     */
     private fun fetchUserFriends() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
@@ -158,9 +152,6 @@ class ManageParticipants : AppCompatActivity() {
         }
     }
 
-    /**
-     * Filters participants based on search input.
-     */
     private fun filterParticipants(query: String) {
         displayedParticipants.clear()
         if (query.isEmpty()) {
@@ -173,9 +164,6 @@ class ManageParticipants : AppCompatActivity() {
         adapter.notifyDataSetChanged()
     }
 
-    /**
-     * Add a participant by searching their email.
-     */
     private fun addParticipantByEmail(email: String) {
         if (!isValidEmail(email)) {
             Toast.makeText(this, "Enter a valid email!", Toast.LENGTH_SHORT).show()
@@ -191,9 +179,6 @@ class ManageParticipants : AppCompatActivity() {
         addParticipant(friendToAdd)
     }
 
-    /**
-     * Add a participant to the potluck via API.
-     */
     private fun addParticipant(user: User) {
         val requestBody = hashMapOf("participants" to listOf(user._id!!))
         lifecycleScope.launch(Dispatchers.IO) {
@@ -215,9 +200,6 @@ class ManageParticipants : AppCompatActivity() {
         }
     }
 
-    /**
-     * Remove a participant from the potluck via API.
-     */
     private fun removeParticipant(user: User) {
         val requestBody = hashMapOf("participants" to listOf(user._id!!))
 

@@ -255,8 +255,6 @@ class CreatePotluckActivity : AppCompatActivity() {
         }
     }
 
-
-    // Fetch the full user details (including _id) from the backend.
     private fun fetchUserFromBackend() {
         lifecycleScope.launch {
             try {
