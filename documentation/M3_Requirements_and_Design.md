@@ -200,7 +200,9 @@ For users like busy university students and employees (who often lack the time, 
     - **Main success scenario**:
         - **1**. The user clicks the "Manage Friends" button on the main page to access the "Manage Friends" feature.
         - **2**. The app displays the following UI components:
-          - 
+          - Text Field for friend search by email.
+          - Add Friend (button)
+          - Friend List, or text saying there are currently no friends.
         - **3**. The user enters the username of a user to add as a friend, or the user chooses a user from his/ her existing friend list to remove.
         - **4**. System asks the user for confirmation of friend removal.
         - **5**. The user's friend list is updated with the addition/ removal of a friend.
