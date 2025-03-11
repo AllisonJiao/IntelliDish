@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - branch_allison_edward
 
 jobs:
   deploy:
