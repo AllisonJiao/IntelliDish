@@ -92,71 +92,87 @@ class MainActivity : AppCompatActivity() {
             try {
                 val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
                 Log.d(TAG, "Received Google ID token: ${googleIdTokenCredential.idToken.take(10)}...")
-                
-                lifecycleScope.launch {
-                    try {
-                        val userEmail = googleIdTokenCredential.id
-                        val displayName = googleIdTokenCredential.displayName ?: "Unknown User"
-
-                        // Try to get existing user first
-                        val response = NetworkClient.apiService.getUserByEmail(userEmail)
-                        if (response.isSuccessful && response.body() != null) {
-                            // User exists, save info
-                            val user = response.body()!!
-                            UserManager.saveUserInfo(userEmail, displayName, user._id!!)
-                            Log.d(TAG, "Existing user found")
-                            navigateToHomePage()
-                        } else if (response.code() == 404) {
-                            // User doesn't exist, create new user
-                            val newUser = User(
-                                _id = null,
-                                name = displayName,
-                                email = userEmail,
-                                friends = emptyList(),
-                                recipes = emptyList(),
-                                ingredients = emptyList(),
-                                potluck = emptyList()
-                            )
-                            
-                            val createResponse = NetworkClient.apiService.createUser(newUser)
-                            if (createResponse.isSuccessful) {
-                                val responseText = createResponse.body() ?: ""
-                                val idMatch = Regex("Created user with id: (.+)").find(responseText)
-                                val userId = idMatch?.groupValues?.get(1)
-                                
-                                if (userId != null) {
-                                    UserManager.saveUserInfo(userEmail, displayName, userId)
-                                    Log.d(TAG, "Created new user with ID: $userId")
-                                    navigateToHomePage()
-                                } else {
-                                    throw IllegalStateException("Failed to parse user ID from response")
-                                }
-                            } else {
-                                val errorBody = createResponse.errorBody()?.string() ?: "Unknown error"
-                                throw IllegalArgumentException("Failed to create user: $errorBody")
-                            }
-                        } else {
-                            throw IllegalStateException("Failed to check if user exists. Status: ${response.code()}")
-                        }
-                    } catch (e: IOException) {
-                        Log.e(TAG, "Error during sign in process", e)
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(
-                                this@MainActivity,
-                                "Failed to sign in: ${e.message}",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
-                }
+                processUserSignIn(googleIdTokenCredential)
             } catch (e: GoogleIdTokenParsingException) {
-                Log.e(TAG, "Error parsing Google ID token", e)
-                Toast.makeText(this, "Failed to parse Google ID token", Toast.LENGTH_SHORT).show()
+                handleSignInError("Error parsing Google ID token", e)
             }
         } else {
-            Log.e(TAG, "Unexpected credential type")
-            Toast.makeText(this, "Invalid credential type", Toast.LENGTH_SHORT).show()
+            handleSignInError("Unexpected credential type", null)
         }
+    }
+
+    private fun processUserSignIn(googleIdTokenCredential: GoogleIdTokenCredential) {
+        lifecycleScope.launch {
+            try {
+                val userEmail = googleIdTokenCredential.id
+                val displayName = googleIdTokenCredential.displayName ?: "Unknown User"
+
+                val response = NetworkClient.apiService.getUserByEmail(userEmail)
+                if (response.isSuccessful && response.body() != null) {
+                    handleExistingUser(response.body()!!, userEmail, displayName)
+                } else if (response.code() == 404) {
+                    handleNewUser(userEmail, displayName)
+                } else {
+                    throw IllegalStateException("Failed to check if user exists. Status: ${response.code()}")
+                }
+            } catch (e: IOException) {
+                handleNetworkError(e)
+            }
+        }
+    }
+
+    private suspend fun handleExistingUser(user: User, email: String, displayName: String) {
+        UserManager.saveUserInfo(email, displayName, user._id!!)
+        Log.d(TAG, "Existing user found")
+        navigateToHomePage()
+    }
+
+    private suspend fun handleNewUser(email: String, displayName: String) {
+        val newUser = User(
+            _id = null,
+            name = displayName,
+            email = email,
+            friends = emptyList(),
+            recipes = emptyList(),
+            ingredients = emptyList(),
+            potluck = emptyList()
+        )
+
+        val createResponse = NetworkClient.apiService.createUser(newUser)
+        if (createResponse.isSuccessful) {
+            val userId = extractUserId(createResponse.body() ?: "")
+            if (userId != null) {
+                UserManager.saveUserInfo(email, displayName, userId)
+                Log.d(TAG, "Created new user with ID: $userId")
+                navigateToHomePage()
+            } else {
+                throw IllegalStateException("Failed to parse user ID from response")
+            }
+        } else {
+            val errorBody = createResponse.errorBody()?.string() ?: "Unknown error"
+            throw IllegalArgumentException("Failed to create user: $errorBody")
+        }
+    }
+
+    private fun extractUserId(responseText: String): String? {
+        val idMatch = Regex("Created user with id: (.+)").find(responseText)
+        return idMatch?.groupValues?.get(1)
+    }
+
+    private suspend fun handleNetworkError(e: IOException) {
+        Log.e(TAG, "Error during sign-in process", e)
+        withContext(Dispatchers.Main) {
+            Toast.makeText(
+                this@MainActivity,
+                "Failed to sign in: ${e.message}",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
+    private fun handleSignInError(message: String, e: Exception?) {
+        Log.e(TAG, message, e)
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun navigateToHomePage() {

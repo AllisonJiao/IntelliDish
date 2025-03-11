@@ -131,120 +131,76 @@ class RecipeResultsActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                // Check if the recipe already has an ID
                 if (recipe._id != null) {
-                    // Recipe already exists, just add it to favorites
-                    val addResult = NetworkUtils.safeApiCallWithWrapper<User> {
-                        NetworkClient.apiService.addRecipeToUser(
-                            userId,
-                            mapOf("_id" to recipe._id)
-                        )
-                    }
-
-                    addResult.fold(
-                        onSuccess = { _ ->
-                            withContext(Dispatchers.Main) {
-                                Toast.makeText(
-                                    this@RecipeResultsActivity,
-                                    "Recipe added to favorites!",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                finish()
-                            }
-                        },
-                        onFailure = { error ->
-                            withContext(Dispatchers.Main) {
-//                                Toast.makeText(
-//                                    this@RecipeResultsActivity,
-//                                    "Failed to add recipe to favorites: ${error.message}",
-//                                    Toast.LENGTH_SHORT
-//                                ).show()
-                            }
-                        }
-                    )
+                    addRecipeToFavorites(recipe._id)
                 } else {
-                    // Recipe doesn't have an ID, create a new one
-                    val createResult = NetworkUtils.safeApiCallDirect<CreateRecipeResponse> {
-                        NetworkClient.apiService.createRecipe(
-                            Recipe(
-                                name = recipe.name,
-                                ingredients = recipe.ingredients,
-                                procedure = recipe.procedure,
-                                cuisineType = recipe.cuisineType,
-                                recipeComplexity = recipe.recipeComplexity,
-                                preparationTime = recipe.preparationTime,
-                                calories = recipe.calories,
-                                price = recipe.price.toDouble(),
-                                spiceLevel = "No Spice",
-                                nutritionLevel = "Medium"
-                            )
-                        )
-                    }
-
-                    createResult.fold(
-                        onSuccess = { response ->
-                            // Extract the recipeId from the response
-                            val recipeId = response.recipeId
-                            if (recipeId != null) {
-                                // Now add the recipe to user's favorites with the correct ID
-                                val addResult = NetworkUtils.safeApiCallWithWrapper<User> {
-                                    NetworkClient.apiService.addRecipeToUser(
-                                        userId,
-                                        mapOf("_id" to recipeId)
-                                    )
-                                }
-
-                                addResult.fold(
-                                    onSuccess = { _ ->
-                                        withContext(Dispatchers.Main) {
-                                            Toast.makeText(
-                                                this@RecipeResultsActivity,
-                                                "Recipe added to favorites!",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                            finish()
-                                        }
-                                    },
-                                    onFailure = { error ->
-                                        withContext(Dispatchers.Main) {
-//                                            Toast.makeText(
-//                                                this@RecipeResultsActivity,
-//                                                "Failed to add recipe to favorites: ${error.message}",
-//                                                Toast.LENGTH_SHORT
-//                                            ).show()
-                                        }
-                                    }
-                                )
-                            } else {
-                                withContext(Dispatchers.Main) {
-                                    Toast.makeText(
-                                        this@RecipeResultsActivity,
-                                        "Failed to get recipe ID from server",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
-                        },
-                        onFailure = { error ->
-                            withContext(Dispatchers.Main) {
-                                Toast.makeText(
-                                    this@RecipeResultsActivity,
-                                    "Failed to create recipe: ${error.message}",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-                    )
+                    createAndAddRecipe(recipe)
                 }
             } catch (e: IOException) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        this@RecipeResultsActivity,
-                        "Error: ${e.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                showToast("Error: ${e.message}")
             }
         }
     }
+
+    private suspend fun addRecipeToFavorites(recipeId: String) {
+        val addResult = NetworkUtils.safeApiCallWithWrapper<User> {
+            NetworkClient.apiService.addRecipeToUser(userId, mapOf("_id" to recipeId))
+        }
+
+        addResult.fold(
+            onSuccess = {
+                withContext(Dispatchers.Main) {
+                    showToast("Recipe added to favorites!")
+                    finishActivity()
+                }
+            },
+            onFailure = {
+                // Uncomment to show error toast if needed
+                // showToast("Failed to add recipe to favorites: ${it.message}")
+            }
+        )
+    }
+
+    private suspend fun createAndAddRecipe(recipe: Recipe) {
+        val createResult = NetworkUtils.safeApiCallDirect<CreateRecipeResponse> {
+            NetworkClient.apiService.createRecipe(
+                Recipe(
+                    name = recipe.name,
+                    ingredients = recipe.ingredients,
+                    procedure = recipe.procedure,
+                    cuisineType = recipe.cuisineType,
+                    recipeComplexity = recipe.recipeComplexity,
+                    preparationTime = recipe.preparationTime,
+                    calories = recipe.calories,
+                    price = recipe.price.toDouble(),
+                    spiceLevel = "No Spice",
+                    nutritionLevel = "Medium"
+                )
+            )
+        }
+
+        createResult.fold(
+            onSuccess = { response ->
+                response.recipeId?.let { recipeId ->
+                    addRecipeToFavorites(recipeId)
+                } ?: showToast("Failed to get recipe ID from server")
+            },
+            onFailure = {
+                showToast("Failed to create recipe: ${it.message}")
+            }
+        )
+    }
+
+    private suspend fun showToast(message: String) {
+        withContext(Dispatchers.Main) {
+            Toast.makeText(this@RecipeResultsActivity, message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private suspend fun finishActivity() {
+        withContext(Dispatchers.Main) {
+            finish()
+        }
+    }
+
 } 

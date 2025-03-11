@@ -155,30 +155,36 @@ class PotluckActivity : AppCompatActivity() {
 
     private suspend fun fetchFriendsPotlucks(friendsList: List<User>): List<Potluck> {
         val friendPotluckList = mutableListOf<Potluck>()
+
         for (friend in friendsList) {
-            friend._id?.let { friendId ->
-                val friendPotlucks = fetchUserPotlucks(friendId)
+            val friendId = friend._id ?: continue  // Skip if friend ID is null
 
-                if (friendPotlucks.isEmpty()) {
-                    Log.d("PotluckActivity", "Friend ${friend.name} ($friendId) has no potlucks. Skipping.")
-                    return@let
-                }
-
-                for (potluck in friendPotlucks) {
-                    if (potluck._id != null && potluck.name != null) {
-                        if (friendPotluckList.none { it._id == potluck._id }) {
-                            friendPotluckList.add(potluck)
-                        } else {
-                            Log.d("PotluckActivity", "Skipping duplicate potluck: ${potluck.name}")
-                        }
-                    } else {
-                        Log.e("PotluckActivity", "Skipping invalid potluck: $potluck")
-                    }
-                }
+            val friendPotlucks = fetchUserPotlucks(friendId)
+            if (friendPotlucks.isEmpty()) {
+                Log.d("PotluckActivity", "Friend ${friend.name} ($friendId) has no potlucks. Skipping.")
+                continue  // Skip the rest of the loop for this friend
             }
+
+            addUniquePotlucks(friendPotlucks, friendPotluckList)
         }
+
         return friendPotluckList
     }
+
+    private fun addUniquePotlucks(friendPotlucks: List<Potluck>, friendPotluckList: MutableList<Potluck>) {
+        for (potluck in friendPotlucks) {
+            if (potluck._id != null && potluck.name != null) {
+                if (friendPotluckList.none { it._id == potluck._id }) {
+                    friendPotluckList.add(potluck)
+                } else {
+                    Log.d("PotluckActivity", "Skipping duplicate potluck: ${potluck.name}")
+                }
+            } else {
+                Log.e("PotluckActivity", "Skipping invalid potluck: $potluck")
+            }
+        }
+    }
+
 
     private fun updatePotluckLists(userPotlucks: List<Potluck>, friendPotlucks: List<Potluck>) {
         allJoinedPotluckList.clear()

@@ -96,26 +96,33 @@ class ManageFriends : AppCompatActivity() {
         })
 
         binding.addFriendButton.setOnClickListener {
-            val email = binding.searchInput.text.toString().trim()
-            if (isValidEmail(email)) {
-                if (email == currentUser?.email) {
-                    showErrorDialog("Invalid Action", "You cannot add yourself as a friend")
-                    return@setOnClickListener
-                }
-                if (friends.none { it.email == email }) {
-                    searchUser(email)
-                } else {
-                    showErrorDialog("Already Friends", "You are already friends with this user")
-                }
-            } else {
-                showErrorDialog("Invalid Email", "Please enter a valid email address")
-            }
+            handleAddFriendClick()
         }
 
         binding.backButton.setOnClickListener { finish() }
-        
-        binding.btnRefresh.setOnClickListener { 
+
+        binding.btnRefresh.setOnClickListener {
             refreshFriendsList()
+        }
+    }
+
+    private fun handleAddFriendClick() {
+        val email = binding.searchInput.text.toString().trim()
+
+        if (!isValidEmail(email)) {
+            showErrorDialog("Invalid Email", "Please enter a valid email address")
+            return
+        }
+
+        if (email == currentUser?.email) {
+            showErrorDialog("Invalid Action", "You cannot add yourself as a friend")
+            return
+        }
+
+        if (friends.none { it.email == email }) {
+            searchUser(email)
+        } else {
+            showErrorDialog("Already Friends", "You are already friends with this user")
         }
     }
 
@@ -273,34 +280,18 @@ class ManageFriends : AppCompatActivity() {
     private fun removeFriend(user: User) {
         lifecycleScope.launch {
             try {
-                // Check if we have a valid current user
-                val currentUserId = currentUser?._id
-                if (currentUserId == null) {
-                    if (!loadCurrentUser()) {
-                        return@launch
-                    }
-                }
-
-                // Check again after potential reload
-                val userId = currentUser?._id
-                val friendId = user._id
-                if (userId == null || friendId == null) {
-                    showErrorDialog("Error", "Invalid user information")
-                    return@launch
-                }
+                val userId = getCurrentUserId() ?: return@launch
+                val friendId = user._id ?: return@launch
 
                 showLoading()
                 val response = NetworkClient.apiService.deleteFriend(
                     userId = userId,
                     friendId = mapOf("_id" to friendId)
                 )
-                
+
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful && response.body() != null) {
-                        val position = friends.indexOf(user)
-                        friends.remove(user)
-                        friendsCache.remove(user)
-                        adapter.notifyItemRemoved(position)
+                        removeFriendFromList(user)
                         Toast.makeText(this@ManageFriends, "Friend removed", Toast.LENGTH_SHORT).show()
                         loadFriends()
                     } else {
@@ -310,11 +301,25 @@ class ManageFriends : AppCompatActivity() {
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
-//                    showErrorDialog("Network Error", "Unable to connect to server")
                     hideLoading()
                 }
             }
         }
+    }
+
+    private suspend fun getCurrentUserId(): String? {
+        val currentUserId = currentUser?._id
+        if (currentUserId == null && !loadCurrentUser()) {
+            return null
+        }
+        return currentUser?._id
+    }
+
+    private fun removeFriendFromList(user: User) {
+        val position = friends.indexOf(user)
+        friends.remove(user)
+        friendsCache.remove(user)
+        adapter.notifyItemRemoved(position)
     }
 
     private fun filterFriends(query: String) {

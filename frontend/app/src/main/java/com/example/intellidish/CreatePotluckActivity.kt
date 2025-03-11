@@ -81,19 +81,32 @@ class CreatePotluckActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_create_potluck)
+
         fetchUserFromBackend()
+        logUserDetails()
+        configureEdgeToEdgeInsets()
+        initializeUIElements()
+        setupRecyclerViews()
+        setupExpandCollapseSections()
+        setupIngredientActions()
+        setupParticipantActions()
+        setupButtons()
+    }
+
+    private fun logUserDetails() {
         Log.d("CreatePotluckActivity", "Logged-in User: $currentLoggedInUser")
         Log.d("CreatePotluckActivity", "Logged-in User ID: $currentLoggedInUserId")
+    }
 
-
-        // Apply window insets for edge-to-edge.
+    private fun configureEdgeToEdgeInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
 
-        // Initialize UI elements.
+    private fun initializeUIElements() {
         btnBack = findViewById(R.id.btn_back)
         btnCreatePotluck = findViewById(R.id.btn_create_potluck)
         btnAddParticipant = findViewById(R.id.btn_add_participant)
@@ -109,58 +122,67 @@ class CreatePotluckActivity : AppCompatActivity() {
         ingredientsContent = findViewById(R.id.ingredients_content)
         ingredientsInput = findViewById(R.id.ingredients_input)
         ingredientsRecyclerView = findViewById(R.id.recycler_ingredients)
+    }
 
-        // Setup RecyclerView for ingredients.
+    private fun setupRecyclerViews() {
         ingredientAdapter = IngredientAdapter(currentUserIngredients)
         ingredientsRecyclerView.layoutManager = LinearLayoutManager(this)
         ingredientsRecyclerView.adapter = ingredientAdapter
 
-        // Setup RecyclerView for friends.
         friendsAdapter = SelectableFriendAdapter(displayedFriends) { friend ->
             selectedFriend = friend
         }
         friendsRecyclerView.layoutManager = LinearLayoutManager(this)
         friendsRecyclerView.adapter = friendsAdapter
 
-        // Setup RecyclerView for added participants.
         addedParticipantAdapter = AddedParticipantAdapter(addedParticipants) { user ->
-            // When remove is clicked, remove the friend and update the list.
             addedParticipants.remove(user)
             addedParticipantAdapter.updateList(addedParticipants)
         }
         addedParticipantsRecyclerView.layoutManager = LinearLayoutManager(this)
         addedParticipantsRecyclerView.adapter = addedParticipantAdapter
+    }
 
-        // Setup expand/collapse for sections.
+    private fun setupExpandCollapseSections() {
         setupExpandCollapse(ingredientsHeader, ingredientsContent)
         setupExpandCollapse(participantsHeader, participantsContent)
+    }
 
-        // Add ingredient functionality.
+    private fun setupIngredientActions() {
         findViewById<MaterialButton>(R.id.btn_add_ingredient).setOnClickListener {
-            val inputText = ingredientsInput.text.toString().trim()
-            if (inputText.isNotEmpty()) {
-                inputText.split(",").forEach { ingredient ->
-                    val trimmed = ingredient.trim()
-                    if (trimmed.isNotEmpty()) {
-                        currentUserIngredients.add(trimmed)
-                    }
-                }
-                ingredientAdapter.notifyDataSetChanged()
-                ingredientsInput.text.clear()
-                ingredientsRecyclerView.smoothScrollToPosition(currentUserIngredients.size - 1)
-                Toast.makeText(this, "Ingredient(s) added", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Please enter an ingredient", Toast.LENGTH_SHORT).show()
-            }
+            addIngredient()
         }
 
         findViewById<MaterialButton>(R.id.btn_clear_ingredients).setOnClickListener {
-            currentUserIngredients.clear()
-            ingredientAdapter.notifyDataSetChanged()
-            Toast.makeText(this, "Ingredients cleared", Toast.LENGTH_SHORT).show()
+            clearIngredients()
         }
+    }
 
-        // Setup friend search.
+    private fun addIngredient() {
+        val inputText = ingredientsInput.text.toString().trim()
+        if (inputText.isNotEmpty()) {
+            inputText.split(",").forEach { ingredient ->
+                val trimmed = ingredient.trim()
+                if (trimmed.isNotEmpty()) {
+                    currentUserIngredients.add(trimmed)
+                }
+            }
+            ingredientAdapter.notifyDataSetChanged()
+            ingredientsInput.text.clear()
+            ingredientsRecyclerView.smoothScrollToPosition(currentUserIngredients.size - 1)
+            showToast("Ingredient(s) added")
+        } else {
+            showToast("Please enter an ingredient")
+        }
+    }
+
+    private fun clearIngredients() {
+        currentUserIngredients.clear()
+        ingredientAdapter.notifyDataSetChanged()
+        showToast("Ingredients cleared")
+    }
+
+    private fun setupParticipantActions() {
         searchParticipantsInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 filterFriends(s.toString().trim())
@@ -169,26 +191,34 @@ class CreatePotluckActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        // When add-participant button is clicked.
         btnAddParticipant.setOnClickListener {
-            selectedFriend?.let { friend ->
-                if (addedParticipants.any { it._id == friend._id }) {
-                    Toast.makeText(this, "${friend.name} is already added!", Toast.LENGTH_SHORT).show()
-                } else {
-                    addedParticipants.add(friend)
-                    addedParticipantAdapter.notifyItemInserted(addedParticipants.size - 1)
-                    Toast.makeText(this, "${friend.name} added to participants", Toast.LENGTH_SHORT).show()
-                }
-                selectedFriend = null
-                friendsAdapter.clearSelection()
-            } ?: run {
-                Toast.makeText(this, "Please select a friend to add", Toast.LENGTH_SHORT).show()
-            }
+            addParticipant()
         }
+    }
 
+    private fun addParticipant() {
+        selectedFriend?.let { friend ->
+            if (addedParticipants.any { it._id == friend._id }) {
+                showToast("${friend.name} is already added!")
+            } else {
+                addedParticipants.add(friend)
+                addedParticipantAdapter.notifyItemInserted(addedParticipants.size - 1)
+                showToast("${friend.name} added to participants")
+            }
+            selectedFriend = null
+            friendsAdapter.clearSelection()
+        } ?: run {
+            showToast("Please select a friend to add")
+        }
+    }
+
+    private fun setupButtons() {
         btnCreatePotluck.setOnClickListener { createPotluck() }
         btnBack.setOnClickListener { finish() }
+    }
 
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun filterFriends(query: String) {

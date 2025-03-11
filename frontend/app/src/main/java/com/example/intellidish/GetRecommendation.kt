@@ -29,14 +29,18 @@ class GetRecommendation : AppCompatActivity() {
 
         // Connect the generate button click to getRecommendation()
         binding.btnGenerateRecipe.setOnClickListener {
-            if (selectedIngredients.isEmpty()) {
-                showError("Please select at least one ingredient")
-                return@setOnClickListener
-            }
-            getRecommendation()
+            handleGenerateRecipeClick()
         }
 
         // ... rest of your onCreate code ...
+    }
+
+    private fun handleGenerateRecipeClick() {
+        if (selectedIngredients.isEmpty()) {
+            showError("Please select at least one ingredient")
+        } else {
+            getRecommendation()
+        }
     }
 
     private fun setupLoadingDialog() {
