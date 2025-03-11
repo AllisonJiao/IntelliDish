@@ -3,6 +3,8 @@ import { body, param, query } from "express-validator";
 
 const controller = new IngredientsController();
 
+const validCategories = ["Vegetables", "Fruit", "Whole Grains", "Meats", "Eggs", "Dairy", "Condiments", "Others"];
+
 export const IngredientsRoutes = [
     {
         method: "get",
@@ -31,8 +33,10 @@ export const IngredientsRoutes = [
         route: "/ingredients",
         action: controller.postNewIngredient,
         validation: [
-            body("name").isString(),
-            body("category").isString(),
+            body("name").isString().notEmpty().withMessage("Name must be a non-empty string"),
+            body("category")
+                .isString().withMessage("Category must be a string")
+                .isIn(validCategories).withMessage(`Category must be one of: ${validCategories.join(", ")}`),
         ]
     },
     {

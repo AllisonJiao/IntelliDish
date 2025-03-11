@@ -1,12 +1,11 @@
 import {describe, expect, test} from '@jest/globals';
 import request from "supertest";
-import https from "https";
-import { IngredientsController } from "../controllers/IngredientsController";
+import { IngredientsController } from "../../controllers/IngredientsController";
 import { Request, Response, NextFunction } from "express";
-import app from "../index";
+import app from "../../index";
 
 // Mock the controller at the module level, before any imports
-jest.mock("../controllers/IngredientsController", () => {
+jest.mock("../../controllers/IngredientsController", () => {
     return {
         IngredientsController: jest.fn().mockImplementation(() => ({
             getAllIngredients: jest.fn().mockImplementation(async (req: Request, res: Response, next: NextFunction) => {
@@ -15,9 +14,6 @@ jest.mock("../controllers/IngredientsController", () => {
         }))
     };
 });
-
-const API_BASE_URL = "https://ec2-3-21-30-112.us-east-2.compute.amazonaws.com"; 
-const agent = new https.Agent({ rejectUnauthorized: false });
 
 describe("Mocked: GET /ingredients", ()=>{
     // Mocked behavior: IngredientsController.getAllIngredients throws an error

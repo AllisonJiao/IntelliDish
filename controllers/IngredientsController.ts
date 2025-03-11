@@ -223,7 +223,7 @@ export class IngredientsController {
 
     async putIngredientById(req: Request, res: Response, nextFunction: NextFunction) {
         try {
-            const ingredientId = req.params._id;
+            const ingredientId = req.params.id;
             const updateData = req.body;
     
             if (!mongoose.Types.ObjectId.isValid(ingredientId)) {
