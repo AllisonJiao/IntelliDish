@@ -56,8 +56,11 @@ export const RecipesRoutes = [
    {
        method: "post",
        route: "/recipes/AI",
-       action: controller.postNewRecipeFromAI,
-       validation: []
+       validation: [
+           body("ingredients").isArray({ min: 1 }).withMessage("Ingredients must be a non-empty array"),
+           body("ingredients.*").isString().withMessage("Each ingredient must be a string")
+       ],
+       action: controller.postNewRecipeFromAI
    },
    {
        method: "put",
