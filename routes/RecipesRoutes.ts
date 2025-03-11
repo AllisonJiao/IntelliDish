@@ -57,9 +57,7 @@ export const RecipesRoutes = [
        method: "post",
        route: "/recipes/AI",
        action: controller.postNewRecipeFromAI,
-       validation: [
-           body("name").isString(),
-       ]
+       validation: []
    },
    {
        method: "put",
