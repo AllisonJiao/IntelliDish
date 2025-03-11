@@ -10,7 +10,15 @@ describe("Unmocked: PUT /recipes/:_id", () => {
     test("putRecipeById with invalid ID", async () => {
         const res = await request(API_BASE_URL)
             .put('/recipes/invalid-id')
-            .send({ name: "Updated Recipe" })
+            .send({
+                name: "Updated Recipe",
+                ingredients: ["ingredient1"],
+                procedure: ["step1"],
+                cuisineType: "Italian",
+                recipeComplexity: "Easy",
+                spiceLevel: "Medium Spice",
+                preparationTime: 30
+            })
             .agent(agent);
         
         expect(res.status).toBe(400);
@@ -22,7 +30,15 @@ describe("Unmocked: PUT /recipes/:_id", () => {
         
         const res = await request(API_BASE_URL)
             .put(`/recipes/${nonExistentId}`)
-            .send({ name: "Updated Recipe" })
+            .send({
+                name: "Updated Recipe",
+                ingredients: ["ingredient1"],
+                procedure: ["step1"],
+                cuisineType: "Italian",
+                recipeComplexity: "Easy",
+                spiceLevel: "Medium Spice",
+                preparationTime: 30
+            })
             .agent(agent);
         
         expect(res.status).toBe(404);

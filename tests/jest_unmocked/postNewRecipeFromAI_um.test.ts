@@ -13,6 +13,6 @@ describe("Unmocked: POST /recipes/AI", () => {
             .agent(agent);
         
         expect(res.status).toBe(400);
-        expect(res.body).toHaveProperty('error');
+        expect(res.body).toHaveProperty('errors');
     }, 15000);
 }); 

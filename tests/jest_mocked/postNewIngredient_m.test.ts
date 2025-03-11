@@ -41,8 +41,10 @@ describe("Mocked: POST /ingredients", () => {
         const res = await request(app)
             .post('/ingredients')
             .send({
-                name: "tomato",
-                category: "Vegetables"
+                name: "Test Ingredient",
+                category: "Vegetables",
+                quantity: 1,
+                unit: "kg"
             })
             .expect(500);
     });

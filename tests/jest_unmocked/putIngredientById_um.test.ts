@@ -10,7 +10,12 @@ describe("Unmocked: PUT /ingredients/:id", () => {
     test("putIngredientById with invalid ID", async () => {
         const res = await request(API_BASE_URL)
             .put('/ingredients/invalid-id')
-            .send({ name: "Updated Tomato" })
+            .send({
+                name: "Updated Tomato",
+                category: "Vegetables",
+                quantity: 1,
+                unit: "kg"
+            })
             .agent(agent);
         
         expect(res.status).toBe(400);
@@ -22,9 +27,15 @@ describe("Unmocked: PUT /ingredients/:id", () => {
         
         const res = await request(API_BASE_URL)
             .put(`/ingredients/${nonExistentId}`)
-            .send({ name: "Updated Tomato" })
+            .send({
+                name: "Updated Tomato",
+                category: "Vegetables",
+                quantity: 1,
+                unit: "kg"
+            })
             .agent(agent);
         
         expect(res.status).toBe(404);
+        expect(res.body).toHaveProperty('error');
     });
 }); 

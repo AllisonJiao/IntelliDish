@@ -19,6 +19,66 @@ jest.mock("../../controllers/IngredientsController", () => {
     };
 });
 
+jest.mock('express-validator', () => {
+    const chainable = () => {
+        const chain = {
+            isString: () => chain,
+            isInt: () => chain,
+            isArray: () => chain,
+            isIn: () => chain,
+            matches: () => chain,
+            notEmpty: () => chain,
+            isMongoId: () => chain,
+            withMessage: () => chain,
+            isEmail: () => chain,
+            optional: () => chain
+        };
+        return chain;
+    };
+
+    const validationFn = (req: any, res: any, next: any) => { next(); };
+
+    return {
+        body: () => {
+            const chain = chainable();
+            return Object.assign(validationFn, chain);
+        },
+        param: () => {
+            const chain = chainable();
+            return Object.assign(validationFn, chain);
+        },
+        query: () => {
+            const chain = chainable();
+            return Object.assign(validationFn, chain);
+        },
+        validationResult: () => ({ isEmpty: () => true, array: () => [] })
+    };
+});
+
+const mockedController = new IngredientsController();
+
+jest.mock('../../routes/IngredientsRoutes', () => ({
+    IngredientsRoutes: [
+        {
+            method: "put",
+            route: "/ingredients/:id",
+            validation: [(req: any, res: any, next: any) => next()],
+            action: (req: any, res: any, next: any) => {
+                const controller = new IngredientsController();
+                return controller.putIngredientById(req, res, next);
+            }
+        }
+    ]
+}));
+
+jest.mock('../../routes/RecipesRoutes', () => ({
+    RecipesRoutes: []
+}));
+
+jest.mock('../../routes/UsersRoutes', () => ({
+    UsersRoutes: []
+}));
+
 describe("Mocked: PUT /ingredients/:id", () => {
     test("putIngredientById throws with invalid ID", async () => {
         const controller = new IngredientsController();
@@ -39,12 +99,17 @@ describe("Mocked: PUT /ingredients/:id", () => {
         expect(mockRes.status).toHaveBeenCalledWith(400);
     });
 
-    test("putIngredientById throws with valid ID", async () => {
+    test("putIngredientById throws with valid ID format", async () => {
         const validId = new mongoose.Types.ObjectId().toString();
         
         const res = await request(app)
             .put(`/ingredients/${validId}`)
-            .send({ name: "Updated Tomato" })
+            .send({
+                name: "Updated Tomato",
+                category: "Vegetables",
+                quantity: 1,
+                unit: "kg"
+            })
             .expect(500);
     });
 }); 

@@ -19,6 +19,75 @@ jest.mock("../../controllers/RecipesController", () => {
     };
 });
 
+jest.mock('express-validator', () => {
+    const chainable = () => {
+        const chain = {
+            isString: () => chain,
+            isInt: () => chain,
+            isArray: () => chain,
+            isIn: () => chain,
+            matches: () => chain,
+            notEmpty: () => chain,
+            isMongoId: () => chain,
+            withMessage: () => chain,
+            isEmail: () => chain,
+            optional: () => chain
+        };
+        return chain;
+    };
+
+    const validationFn = (req: any, res: any, next: any) => { next(); };
+
+    return {
+        body: () => {
+            const chain = chainable();
+            return Object.assign(validationFn, chain);
+        },
+        param: () => {
+            const chain = chainable();
+            return Object.assign(validationFn, chain);
+        },
+        query: () => {
+            const chain = chainable();
+            return Object.assign(validationFn, chain);
+        },
+        validationResult: () => ({ isEmpty: () => true, array: () => [] })
+    };
+});
+
+const mockedController = new RecipesController();
+
+jest.mock('../../routes/RecipesRoutes', () => ({
+    RecipesRoutes: [
+        {
+            method: "post",
+            route: "/recipes",
+            validation: [(req: any, res: any, next: any) => next()],
+            action: (req: any, res: any, next: any) => {
+                const controller = new RecipesController();
+                return controller.postNewRecipe(req, res, next);
+            }
+        },
+        {
+            method: "put",
+            route: "/recipes/:_id",
+            validation: [(req: any, res: any, next: any) => next()],
+            action: (req: any, res: any, next: any) => {
+                const controller = new RecipesController();
+                return controller.putRecipeById(req, res, next);
+            }
+        }
+    ]
+}));
+
+jest.mock('../../routes/IngredientsRoutes', () => ({
+    IngredientsRoutes: []
+}));
+
+jest.mock('../../routes/UsersRoutes', () => ({
+    UsersRoutes: []
+}));
+
 describe("Mocked: POST /recipes", () => {
     test("postNewRecipe throws with missing name", async () => {
         const controller = new RecipesController();
