@@ -58,7 +58,7 @@ class RecipeResultsActivity : AppCompatActivity() {
                 }
                 
                 displayRecipes()
-            } catch (e: Exception) {
+            } catch (e: IOException) {
                 Toast.makeText(this, "Error loading recipes: ${e.message}", Toast.LENGTH_LONG).show()
                 Log.e("RecipeResultsActivity", "Error parsing recipes", e)
                 finish()
@@ -202,7 +202,7 @@ class RecipeResultsActivity : AppCompatActivity() {
                         }
                     }
                 )
-            } catch (e: Exception) {
+            } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         this@RecipeResultsActivity,

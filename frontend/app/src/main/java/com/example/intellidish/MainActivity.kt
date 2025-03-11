@@ -33,6 +33,7 @@ import com.example.intellidish.models.User
 import com.example.intellidish.utils.UserManager
 import kotlinx.coroutines.withContext
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
 
@@ -128,16 +129,16 @@ class MainActivity : AppCompatActivity() {
                                     Log.d(TAG, "Created new user with ID: $userId")
                                     navigateToHomePage()
                                 } else {
-                                    throw Exception("Failed to parse user ID from response")
+                                    throw IllegalStateException("Failed to parse user ID from response")
                                 }
                             } else {
                                 val errorBody = createResponse.errorBody()?.string() ?: "Unknown error"
-                                throw Exception("Failed to create user: $errorBody")
+                                throw IllegalArgumentException("Failed to create user: $errorBody")
                             }
                         } else {
-                            throw Exception("Failed to check if user exists. Status: ${response.code()}")
+                            throw IllegalStateException("Failed to check if user exists. Status: ${response.code()}")
                         }
-                    } catch (e: Exception) {
+                    } catch (e: IOException) {
                         Log.e(TAG, "Error during sign in process", e)
                         withContext(Dispatchers.Main) {
                             Toast.makeText(

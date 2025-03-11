@@ -28,6 +28,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.*
+import java.io.IOException
 
 class ManageFriends : AppCompatActivity() {
 
@@ -73,7 +74,7 @@ class ManageFriends : AppCompatActivity() {
                         finish()
                     }
                 }
-            } catch (e: Exception) {
+            } catch (e: IOException) {
                 Log.e("ManageFriends", "Error in onCreate", e)
                 withContext(Dispatchers.Main) {
                     showErrorDialog("Error", "An unexpected error occurred")
@@ -96,18 +97,18 @@ class ManageFriends : AppCompatActivity() {
 
         binding.addFriendButton.setOnClickListener {
             val email = binding.searchInput.text.toString().trim()
-            if (email == currentUser?.email) {
-                showErrorDialog("Invalid Action", "You cannot add yourself as a friend")
-                return@setOnClickListener
-            }
-            if (!isValidEmail(email)) {
-                showErrorDialog("Invalid Email", "Please enter a valid email address")
-                return@setOnClickListener
-            }
-            if (friends.none { it.email == email }) {
-                searchUser(email)
+            if (isValidEmail(email)) {
+                if (email == currentUser?.email) {
+                    showErrorDialog("Invalid Action", "You cannot add yourself as a friend")
+                    return@setOnClickListener
+                }
+                if (friends.none { it.email == email }) {
+                    searchUser(email)
+                } else {
+                    showErrorDialog("Already Friends", "You are already friends with this user")
+                }
             } else {
-                showErrorDialog("Already Friends", "You are already friends with this user")
+                showErrorDialog("Invalid Email", "Please enter a valid email address")
             }
         }
 
@@ -156,7 +157,7 @@ class ManageFriends : AppCompatActivity() {
                         }
                     }
                 )
-            } catch (e: Exception) {
+            } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
                     showErrorDialog(
                         "Network Error", 
@@ -186,7 +187,7 @@ class ManageFriends : AppCompatActivity() {
                     false
                 }
             )
-        } catch (e: Exception) {
+        } catch (e: IOException) {
             Log.e("ManageFriends", "Error loading current user", e)
             return false
         }
@@ -225,7 +226,7 @@ class ManageFriends : AppCompatActivity() {
                 } ?: run {
                     showErrorDialog("Error", "User information not available")
                 }
-            } catch (e: Exception) {
+            } catch (e: IOException) {
                 Log.e("ManageFriends", "Error loading friends", e)
                 withContext(Dispatchers.Main) {
                     showErrorDialog("Error", "Failed to load friends list")
@@ -261,7 +262,7 @@ class ManageFriends : AppCompatActivity() {
                 } ?: run {
                     showErrorDialog("Error", "User information not available")
                 }
-            } catch (e: Exception) {
+            } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
 //                    showErrorDialog("Network Error", "Unable to connect to server")
                 }
@@ -307,7 +308,7 @@ class ManageFriends : AppCompatActivity() {
                     }
                     hideLoading()
                 }
-            } catch (e: Exception) {
+            } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
 //                    showErrorDialog("Network Error", "Unable to connect to server")
                     hideLoading()
@@ -437,7 +438,7 @@ class ManageFriends : AppCompatActivity() {
                             }
                         )
                     }
-                } catch (e: Exception) {
+                } catch (e: IOException) {
                     Log.e("ManageFriends", "Auto-refresh error: ${e.message}")
                 }
                 delay(AUTO_REFRESH_INTERVAL)
@@ -451,7 +452,7 @@ class ManageFriends : AppCompatActivity() {
                 showLoading()
                 loadFriends()
                 Toast.makeText(this@ManageFriends, "Friends list refreshed", Toast.LENGTH_SHORT).show()
-            } catch (e: Exception) {
+            } catch (e: IOException) {
                 Toast.makeText(this@ManageFriends, "Error refreshing: ${e.message}", Toast.LENGTH_SHORT).show()
             } finally {
                 hideLoading()

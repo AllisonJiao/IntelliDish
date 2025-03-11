@@ -13,6 +13,7 @@ import com.example.intellidish.R
 import com.example.intellidish.models.User
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.io.IOException
 
 class FriendsAdapter(
     private val friends: List<User>,
@@ -55,7 +56,7 @@ class FriendsAdapter(
                     isEnabled = false // Disable button during operation
                     try {
                         onAddFriend(friend)
-                    } catch (e: Exception) {
+                    } catch (e: IOException) {
                         context?.let {
                             Toast.makeText(it, 
                                 "Unable to add friend at this time", 
