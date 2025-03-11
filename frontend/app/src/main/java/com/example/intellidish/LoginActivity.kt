@@ -6,9 +6,14 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.intellidish.api.NetworkClient
+import com.example.intellidish.utils.NetworkUtils
 import com.example.intellidish.utils.UserManager
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.Dispatchers
+import java.io.IOException
 
 class LoginActivity : AppCompatActivity() {
     private fun handleSignInResult(account: GoogleSignInAccount) {

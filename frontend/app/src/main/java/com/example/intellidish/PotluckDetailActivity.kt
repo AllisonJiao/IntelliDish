@@ -166,7 +166,7 @@ class PotluckDetailActivity : AppCompatActivity() {
 
             // Now set the text to something like "Created on: 2025-02-28"
             textDate.text = "Created on: $formattedDate"
-        } catch (e: IOException) {
+        } catch (e: ParseException) {
             // If parsing fails, just display the original string
             textDate.text = "Created on: $potluckDate"
             e.printStackTrace()

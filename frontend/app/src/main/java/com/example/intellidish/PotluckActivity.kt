@@ -26,6 +26,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class PotluckActivity : AppCompatActivity() {
 
@@ -85,9 +86,6 @@ class PotluckActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Fetch the logged-in user's ID from the backend using their email
-     */
     private fun fetchUserFromBackend() {
         lifecycleScope.launch {
             try {
@@ -110,7 +108,6 @@ class PotluckActivity : AppCompatActivity() {
     }
 
     private fun fetchUserAndFriendsPotlucks() {
-
         lifecycleScope.launch {
             try {
                 val friendsResponse = potluckApiService.getFriends(loggedInUserId!!)

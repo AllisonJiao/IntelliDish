@@ -1,5 +1,6 @@
 package com.example.intellidish.utils
 
+import android.util.Log
 import com.example.intellidish.api.NetworkError
 import com.example.intellidish.models.ApiResponse
 import kotlinx.coroutines.Dispatchers
@@ -8,6 +9,7 @@ import retrofit2.HttpException
 import retrofit2.Response
 import javax.net.ssl.SSLHandshakeException
 import javax.net.ssl.SSLPeerUnverifiedException
+import java.io.IOException
 import java.net.SocketTimeoutException
 
 object NetworkUtils {

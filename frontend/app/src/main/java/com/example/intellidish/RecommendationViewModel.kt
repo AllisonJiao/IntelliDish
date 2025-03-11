@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import com.example.intellidish.models.Recipe
 import com.example.intellidish.models.Result
 import com.example.intellidish.models.RecipeGenerationRequest
+import java.io.IOException
 
 class RecommendationViewModel : ViewModel() {
     private val _recipes = MutableLiveData<Result<List<Recipe>>>()

@@ -32,6 +32,7 @@ import com.example.intellidish.utils.UserManager
 import com.example.intellidish.models.User
 import com.example.intellidish.models.ApiResponse
 import com.example.intellidish.models.RecipesResponse
+import java.io.IOException
 
 class ManageRecipes : AppCompatActivity() {
 

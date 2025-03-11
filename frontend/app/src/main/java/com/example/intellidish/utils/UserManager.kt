@@ -7,6 +7,7 @@ import com.example.intellidish.api.NetworkClient
 import com.example.intellidish.models.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.IOException
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -127,7 +128,7 @@ object UserManager {
                         }.map { response ->
                             val idMatch = Regex("Created user with id: (.+)").find(response)
                             val userId = idMatch?.groupValues?.get(1)
-                                ?: throw Exception("Failed to parse user ID from response")
+                                ?: throw IllegalStateException("Failed to parse user ID from response")
                             newUser.copy(_id = userId)
                         }
                     }

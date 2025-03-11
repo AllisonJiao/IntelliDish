@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.example.intellidish.models.Recipe
+import java.io.IOException
 
 class RecipeDetailActivity : AppCompatActivity() {
 

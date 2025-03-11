@@ -15,10 +15,12 @@ import com.example.intellidish.api.NetworkClient
 import com.example.intellidish.models.PotluckIngredient
 import com.example.intellidish.models.RemoveAddIngredientsRequest
 import com.example.intellidish.utils.NetworkUtils
+import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.IOException
 
 class PotluckIngredientAdapter(
     private val potluckId: String,
