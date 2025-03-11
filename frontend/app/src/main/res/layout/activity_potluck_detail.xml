@@ -208,6 +208,15 @@
                     android:textAllCaps="false" />
             </LinearLayout>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_delete_or_leave"
+                android:backgroundTint="@android:color/holo_red_light"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Leave This Potluck"
+                android:textColor="@color/white" />
+
             <!-- Progress Bar -->
             <ProgressBar
                 android:id="@+id/progress_bar"

@@ -64,6 +64,7 @@ class PotluckDetailActivity : AppCompatActivity() {
     private lateinit var btnTogglePreferences: MaterialButton
     private lateinit var btnBack: ExtendedFloatingActionButton
     private lateinit var btnRefresh: ExtendedFloatingActionButton
+    private lateinit var btnDeleteOrLeave: MaterialButton
 
     private var selectedImageUri: Uri? = null
     private lateinit var preferencesManager: PreferencesManager
@@ -122,6 +123,8 @@ class PotluckDetailActivity : AppCompatActivity() {
         btnBack = findViewById(R.id.btn_back)
         btnRefresh = findViewById(R.id.btn_refresh)
 
+        btnDeleteOrLeave = findViewById(R.id.btn_delete_or_leave)
+
         preferencesManager = PreferencesManager(this)
     }
 
@@ -174,6 +177,15 @@ class PotluckDetailActivity : AppCompatActivity() {
         // If current user is the potluck owner, show Add/Remove participant
         if (currentUser.equals(potluckOwner, ignoreCase = true)) {
             layoutHostButtons.visibility = View.VISIBLE
+        }
+
+        // Show Delete if Owner, Leave if Participant
+        if (currentUser.equals(potluckOwner, ignoreCase = true)) {
+            btnDeleteOrLeave.text = "Delete This Potluck"
+            btnDeleteOrLeave.setOnClickListener { deletePotluck() }
+        } else {
+            btnDeleteOrLeave.text = "Leave This Potluck"
+            btnDeleteOrLeave.setOnClickListener { leavePotluck() }
         }
     }
 
@@ -784,6 +796,62 @@ class PotluckDetailActivity : AppCompatActivity() {
                 hideLoading()
             }
         }
+    }
+
+    private fun deletePotluck() {
+        AlertDialog.Builder(this)
+            .setTitle("Delete Potluck?")
+            .setMessage("Are you sure you want to permanently delete $potluckName?")
+            .setPositiveButton("Yes") { _, _ ->
+                lifecycleScope.launch {
+                    try {
+                        val response = NetworkClient.apiService.deletePotluck(potluckId)
+                        if (response.isSuccessful) {
+                            Toast.makeText(this@PotluckDetailActivity, "Potluck deleted!", Toast.LENGTH_SHORT).show()
+                            finish() // Close activity after deleting
+                        } else {
+                            Toast.makeText(this@PotluckDetailActivity, "Failed to delete potluck", Toast.LENGTH_SHORT).show()
+                        }
+                    } catch (e: IOException) {
+                        Toast.makeText(this@PotluckDetailActivity, "Network error", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun leavePotluck() {
+        AlertDialog.Builder(this)
+            .setTitle("Leave Potluck?")
+            .setMessage("Are you sure you want to leave $potluckName?")
+            .setPositiveButton("Yes") { _, _ ->
+                val requestBody = hashMapOf("participants" to listOf(currentUserId))
+
+                lifecycleScope.launch(Dispatchers.IO) {
+                    try {
+                        Log.d("LeavePotluck", "Request body: $requestBody")
+                        val response = NetworkClient.apiService.removePotluckParticipant(potluckId, requestBody)
+
+                        withContext(Dispatchers.Main) {
+                            if (response.isSuccessful && response.body() != null) {
+                                Toast.makeText(this@PotluckDetailActivity, "You have left the potluck!", Toast.LENGTH_SHORT).show()
+                                finish() // Close activity after leaving
+                            } else {
+                                Toast.makeText(this@PotluckDetailActivity, "Failed to leave potluck", Toast.LENGTH_SHORT).show()
+                                Log.e("LeavePotluck", "Response error: ${response.errorBody()?.string()}")
+                            }
+                        }
+                    } catch (e: IOException) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@PotluckDetailActivity, "Network error: ${e.message}", Toast.LENGTH_SHORT).show()
+                            Log.e("LeavePotluck", "Error leaving potluck", e)
+                        }
+                    }
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     private fun showLoading() {

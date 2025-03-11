@@ -817,8 +817,11 @@ export class UsersController {
                 return res.status(404).json({ error: "Potluck session not found." });
             }
     
-            // Remove potluck session from the host's list
-            await UserModel.updateOne({ _id: potluck.host }, { $pull: { potluck: id } });
+            //Remove potluck session from all participants' list:
+            await UserModel.updateMany(
+                { _id: { $in: potluck.participants } }, // Find all participants
+                { $pull: { potluck: id } } // Remove potluck ID from their list
+            );
     
             // Delete the potluck session
             await PotluckModel.deleteOne({ _id: id });
