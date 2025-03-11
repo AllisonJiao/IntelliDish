@@ -380,7 +380,7 @@ class RecommendationActivity : AppCompatActivity() {
                             ).show()
                         }
                     }
-                } catch (e: Exception) {
+                } catch (e: ResponseException) {
                     runOnUiThread {
                         Toast.makeText(
                             applicationContext,
@@ -445,7 +445,7 @@ class RecommendationActivity : AppCompatActivity() {
                         intent.putExtra("recipe", JSONObject().put("recipes", recipes).toString())
                         startActivity(intent)
                     }
-                } catch (e: Exception) {
+                } catch (e: NetworkException) {
                     handleError("Error generating recipe: ${e.message}")
                     Log.e("RecommendationActivity", "Error details", e)
                 }

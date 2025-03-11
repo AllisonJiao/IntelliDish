@@ -132,7 +132,7 @@ object UserManager {
                         }
                     }
                 )
-            } catch (e: Exception) {
+            } catch (e: UnknownException) {
                 Result.failure(e)
             }
         }

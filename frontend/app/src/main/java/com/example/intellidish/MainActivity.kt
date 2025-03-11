@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity() {
                         } else {
                             throw Exception("Failed to check if user exists. Status: ${response.code()}")
                         }
-                    } catch (e: Exception) {
+                    } catch (e: LoginException) {
                         Log.e(TAG, "Error during sign in process", e)
                         withContext(Dispatchers.Main) {
                             Toast.makeText(

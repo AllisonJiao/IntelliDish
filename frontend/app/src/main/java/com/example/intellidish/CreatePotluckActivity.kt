@@ -270,7 +270,7 @@ class CreatePotluckActivity : AppCompatActivity() {
                     Log.e("PotluckActivity", "Failed to fetch user from backend")
                     Toast.makeText(this@CreatePotluckActivity, "Failed to retrieve user data", Toast.LENGTH_SHORT).show()
                 }
-            } catch (e: Exception) {
+            } catch (e: NetworkException) {
                 Log.e("PotluckActivity", "Network error fetch friend: ${e.message}")
             }
         }
@@ -294,7 +294,7 @@ class CreatePotluckActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this@CreatePotluckActivity, "Failed to fetch friends", Toast.LENGTH_SHORT).show()
                 }
-            } catch (e: Exception) {
+            } catch (e: NetworkException) {
                 Toast.makeText(this@CreatePotluckActivity, "Network error fetching friends: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
@@ -364,7 +364,7 @@ class CreatePotluckActivity : AppCompatActivity() {
                         Log.e("CreatePotluckActivity", "Error: ${response.errorBody()?.string()}")
                     }
                 }
-            } catch (e: Exception) {
+            } catch (e: NetworkException) {
                 withContext(Dispatchers.Main) {
                     Log.e("CreatedPotluckActivity", "Network error: ${e.message}")
                 }

@@ -141,7 +141,7 @@ class ManageRecipes : AppCompatActivity() {
                             }
                         )
                     }
-                } catch (e: Exception) {
+                } catch (e: RefreshException) {
                     Log.e("ManageRecipes", "Auto-refresh error: ${e.message}")
                 }
                 delay(AUTO_REFRESH_INTERVAL)
@@ -155,7 +155,7 @@ class ManageRecipes : AppCompatActivity() {
                 showLoading()
                 loadRecipes()
                 Toast.makeText(this@ManageRecipes, "Recipes refreshed", Toast.LENGTH_SHORT).show()
-            } catch (e: Exception) {
+            } catch (e: RefreshException) {
                 Toast.makeText(this@ManageRecipes, "Error refreshing: ${e.message}", Toast.LENGTH_SHORT).show()
             } finally {
                 hideLoading()
@@ -194,7 +194,7 @@ class ManageRecipes : AppCompatActivity() {
                         finish()
                     }
                 }
-            } catch (e: Exception) {
+            } catch (e: NetworkException) {
                 withContext(Dispatchers.Main) {
                     Log.e("ManageRecipes", "Error loading recipes: ${e.message}")
                     Toast.makeText(this@ManageRecipes, "Error loading recipes: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -225,7 +225,7 @@ class ManageRecipes : AppCompatActivity() {
                         }
                     }
                 )
-            } catch (e: Exception) {
+            } catch (e: DeletionException) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@ManageRecipes, "Error deleting recipe: ${e.message}", Toast.LENGTH_SHORT).show()
                 }

@@ -34,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
                         Toast.LENGTH_LONG
                     ).show()
                 }
-            } catch (e: Exception) {
+            } catch (e: LoginException) {
                 Log.e("LoginActivity", "Error during sign in", e)
                 Toast.makeText(
                     this@LoginActivity,

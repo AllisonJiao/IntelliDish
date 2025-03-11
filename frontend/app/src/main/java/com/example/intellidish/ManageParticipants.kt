@@ -123,7 +123,7 @@ class ManageParticipants : AppCompatActivity() {
                         Toast.makeText(this@ManageParticipants, "Failed to fetch participants", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } catch (e: Exception) {
+            } catch (e: NetworkException) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@ManageParticipants, "Network error: ${e.message}", Toast.LENGTH_SHORT).show()
                     Log.e("ManageParticipants", "Error fetching participants", e)
@@ -144,7 +144,7 @@ class ManageParticipants : AppCompatActivity() {
                         allFriends.addAll(friendsList)
                     }
                 }
-            } catch (e: Exception) {
+            } catch (e: NetworkException) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@ManageParticipants, "Failed to fetch friends", Toast.LENGTH_SHORT).show()
                 }
@@ -192,7 +192,7 @@ class ManageParticipants : AppCompatActivity() {
                         Toast.makeText(this@ManageParticipants, "Failed to add participant", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } catch (e: Exception) {
+            } catch (e: NetworkException) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@ManageParticipants, "Network error: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
@@ -216,7 +216,7 @@ class ManageParticipants : AppCompatActivity() {
                         Toast.makeText(this@ManageParticipants, "Failed to remove ${user.name}", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } catch (e: Exception) {
+            } catch (e: NetworkException) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@ManageParticipants, "Network error: ${e.message}", Toast.LENGTH_SHORT).show()
                     Log.e("ManageParticipants", "Error removing participant", e)

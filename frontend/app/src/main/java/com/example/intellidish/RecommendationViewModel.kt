@@ -27,7 +27,7 @@ class RecommendationViewModel : ViewModel() {
                 
                 val response = recipeService.generateRecipes(request)
                 _recipes.value = Result.Success(response)
-            } catch (e: Exception) {
+            } catch (e: NetworkException) {
                 _recipes.value = Result.Error(e)
             }
         }

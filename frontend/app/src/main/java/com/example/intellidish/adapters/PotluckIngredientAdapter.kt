@@ -33,7 +33,7 @@ class PotluckIngredientAdapter(
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 fetchIngredientsFromServer()
-            } catch (e: Exception) {
+            } catch (e: NetworkException) {
                 Log.e("PotluckAdapter", "Error in initial fetch: ${e.message}")
             }
         }
@@ -70,7 +70,7 @@ class PotluckIngredientAdapter(
             } else {
                 Log.e("PotluckAdapter", "Failed to fetch potluck details: ${response.errorBody()?.string()}")
             }
-        } catch (e: Exception) {
+        } catch (e: NetworkException) {
             Log.e("PotluckAdapter", "Error fetching potluck details: ${e.message}")
             throw e
         }
@@ -136,7 +136,7 @@ class PotluckIngredientAdapter(
                         Toast.makeText(context, "Failed to add ingredient", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } catch (e: Exception) {
+            } catch (e: NetworkException) {
                 Log.e("PotluckAdapter", "Network error adding ingredient: ${e.message}")
             }
         }
@@ -164,7 +164,7 @@ class PotluckIngredientAdapter(
                         Toast.makeText(context, "Failed to remove ingredient", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } catch (e: Exception) {
+            } catch (e: NetworkException) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(context, "Network error removing ingredient", Toast.LENGTH_SHORT).show()
                 }

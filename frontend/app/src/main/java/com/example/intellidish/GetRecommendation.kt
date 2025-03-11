@@ -96,7 +96,7 @@ class GetRecommendation : AppCompatActivity() {
                         showError("Failed to save recipe: ${e.message}")
                     }
                 )
-            } catch (e: Exception) {
+            } catch (e: NetworkException) {
                 showError("Network error: ${e.message}")
             }
         }
@@ -123,7 +123,7 @@ class GetRecommendation : AppCompatActivity() {
                         showError("Failed to generate recipe: ${e.message}")
                     }
                 )
-            } catch (e: Exception) {
+            } catch (e: NetworkException) {
                 hideLoading()
                 showError("Network error: ${e.message}")
             }

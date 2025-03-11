@@ -73,7 +73,7 @@ class ManageFriends : AppCompatActivity() {
                         finish()
                     }
                 }
-            } catch (e: Exception) {
+            } catch (e: onCreateException) {
                 Log.e("ManageFriends", "Error in onCreate", e)
                 withContext(Dispatchers.Main) {
                     showErrorDialog("Error", "An unexpected error occurred")
@@ -156,7 +156,7 @@ class ManageFriends : AppCompatActivity() {
                         }
                     }
                 )
-            } catch (e: Exception) {
+            } catch (e: NetworkException) {
                 withContext(Dispatchers.Main) {
                     showErrorDialog(
                         "Network Error", 
@@ -186,7 +186,7 @@ class ManageFriends : AppCompatActivity() {
                     false
                 }
             )
-        } catch (e: Exception) {
+        } catch (e: LoadingException) {
             Log.e("ManageFriends", "Error loading current user", e)
             return false
         }
@@ -225,7 +225,7 @@ class ManageFriends : AppCompatActivity() {
                 } ?: run {
                     showErrorDialog("Error", "User information not available")
                 }
-            } catch (e: Exception) {
+            } catch (e: LoadingException) {
                 Log.e("ManageFriends", "Error loading friends", e)
                 withContext(Dispatchers.Main) {
                     showErrorDialog("Error", "Failed to load friends list")
@@ -261,7 +261,7 @@ class ManageFriends : AppCompatActivity() {
                 } ?: run {
                     showErrorDialog("Error", "User information not available")
                 }
-            } catch (e: Exception) {
+            } catch (e: NetworkException) {
                 withContext(Dispatchers.Main) {
 //                    showErrorDialog("Network Error", "Unable to connect to server")
                 }
@@ -307,7 +307,7 @@ class ManageFriends : AppCompatActivity() {
                     }
                     hideLoading()
                 }
-            } catch (e: Exception) {
+            } catch (e: NetworkException) {
                 withContext(Dispatchers.Main) {
 //                    showErrorDialog("Network Error", "Unable to connect to server")
                     hideLoading()
@@ -437,7 +437,7 @@ class ManageFriends : AppCompatActivity() {
                             }
                         )
                     }
-                } catch (e: Exception) {
+                } catch (e: RefreshException) {
                     Log.e("ManageFriends", "Auto-refresh error: ${e.message}")
                 }
                 delay(AUTO_REFRESH_INTERVAL)
@@ -451,7 +451,7 @@ class ManageFriends : AppCompatActivity() {
                 showLoading()
                 loadFriends()
                 Toast.makeText(this@ManageFriends, "Friends list refreshed", Toast.LENGTH_SHORT).show()
-            } catch (e: Exception) {
+            } catch (e: RefreshException) {
                 Toast.makeText(this@ManageFriends, "Error refreshing: ${e.message}", Toast.LENGTH_SHORT).show()
             } finally {
                 hideLoading()
