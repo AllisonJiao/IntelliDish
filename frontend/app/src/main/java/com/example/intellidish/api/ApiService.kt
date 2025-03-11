@@ -45,7 +45,7 @@ interface ApiService {
     suspend fun deleteFriend(
         @Path("userId") userId: String,
         @Body friendId: Map<String, String>
-    ): Response<String>
+    ): Response<ResponseBody>
     
     @GET("ingredients")
     suspend fun getAllIngredients(): Response<ApiResponse<List<Ingredient>>>

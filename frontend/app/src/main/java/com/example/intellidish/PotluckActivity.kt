@@ -108,6 +108,12 @@ class PotluckActivity : AppCompatActivity() {
     }
 
     private fun fetchUserAndFriendsPotlucks() {
+        if (loggedInUserId == null) {
+            Log.e("PotluckActivity", "User ID is null, fetching user from backend first")
+            fetchUserFromBackend()
+            return
+        }
+
         lifecycleScope.launch {
             try {
                 val friendsResponse = potluckApiService.getFriends(loggedInUserId!!)

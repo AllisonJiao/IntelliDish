@@ -296,7 +296,7 @@ class ManageFriends : AppCompatActivity() {
                 )
                 
                 withContext(Dispatchers.Main) {
-                    if (response.isSuccessful) {
+                    if (response.isSuccessful && response.body() != null) {
                         val position = friends.indexOf(user)
                         friends.remove(user)
                         friendsCache.remove(user)
