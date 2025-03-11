@@ -149,13 +149,16 @@ _(Placeholder for screenshots of Codacyâ€™s Issues page)_
 
 ### 5.4. Justifications for Unfixed Issues
 
-- **Code Pattern: [Usage of Deprecated Modules](#)**
+- **Code Pattern: [One method should have one responsibility](#)**
 
-  1. **Issue**
+  1. **The function handleSignIn is too long (65). The maximum length is 60.**
 
-     - **Location in Git:** [`src/services/chatService.js#L31`](#)
-     - **Justification:** ...
+     - **Location in Git:** [frontend/app/src/main/java/com/example/intellidish/MainActivity.kt](#)
+     - **Justification:** Around half of the code in this function is error handling, not because the function has too many responsibilities.
 
-  2. ...
+  1. **The function showPreferencesDialog is too long (61). The maximum length is 60.**
+
+     - **Location in Git:** [frontend/app/src/main/java/com/example/intellidish/MainActivity.kt](#)
+     - **Justification:** Around half of the code in this function is error handling and bracketing conventions where a single closing bracket counts as an entire line for Codacy.
 
 - ...
