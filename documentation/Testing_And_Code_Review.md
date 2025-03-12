@@ -250,7 +250,17 @@ _(Placeholder for Jest coverage screenshot without mocks)_
 
     | **Scenario Steps** | **Test Case Steps** |
     | ------------------ | ------------------- |
-    | ...                | ...                 |
+    | 1. The user clicks the "Manage Friends" button on the main page to access the "Manage Friends" feature. | ... |
+    | 2. The app displays the following UI components:<br> - Text Field for friend search by email.<br> - Add Friend (button)<br> - Friend List, or text saying there are currently no friends. | ... |
+    | 3a. The friend addition fails because the entered username is invalid/ cannot be found. | ... |
+    | 3a1. Display error message for the user to double check that the entered username for friend addition is correct, and prompt the user to try again. Removal of friends do not fail. | ... |
+    | 3b. The user attempts to add themselves as a friend. | ... |
+    | 3b1. Display error message that the user cannot add himself/ herself as a friend. | ... |
+    | 3. The user enters the username of a user to add as a friend, or the user chooses a user from his/ her existing friend list to remove. | ... |
+    | 3c. The user attempts to add an existing friend as a friend again. | ... |
+    | 3c1. Display error message that the user is already friends with the existing friend. | ... |
+    | 4. System asks the user for confirmation of friend removal. | ... |
+    | 5. The user's friend list is updated with the addition/ removal of a friend. | ... |
 
   - **Test Logs:**
     ```
