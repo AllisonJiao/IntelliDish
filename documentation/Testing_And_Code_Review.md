@@ -398,6 +398,63 @@ _(Placeholder for screenshots of Codacyâ€™s Issues page)_
 
 | **Category**        | **Code Pattern**                   | **Issue**                                       | **Location in Git**                               |
 |----------------|--------------------------------|---------------------------------------------|-----------------------------------------------|
+|Error Prone |Too many functions inside a/an file/class/object/interface |Class 'ManageRecipes' with '19' functions detected. Defined threshold inside classes is set to '11' |frontend/app/src/main/java/com/example/intellidish/
+ManageRecipes.kt
+|Error Prone |Too many functions inside a/an file/class/object/interface |Class 'PreferencesManager' with '23' functions detected. Defined threshold inside classes is set to '11' |frontend/app/src/main/java/com/example/intellidish/utils/
+PreferencesManager.kt
+|Error Prone |Too many functions inside a/an file/class/object/interface |Class 'CreatePotluckActivity' with '20' functions detected. Defined threshold inside classes is set to '11' |frontend/app/src/main/java/com/example/intellidish/
+CreatePotluckActivity.kt
+|Error Prone |Too many functions inside a/an file/class/object/interface | |
+|Error Prone |Too many functions inside a/an file/class/object/interface | |
+|Error Prone |Too many functions inside a/an file/class/object/interface | |
+|Error Prone |Too many functions inside a/an file/class/object/interface | |
+|Error Prone |Too many functions inside a/an file/class/object/interface | |
+|Error Prone |Too many functions inside a/an file/class/object/interface | |
+|Error Prone |Too many functions inside a/an file/class/object/interface | |
+|Error Prone |Too many functions inside a/an file/class/object/interface | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
 | | | |
 | | | |
 | | | |
