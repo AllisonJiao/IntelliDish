@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Prep Time -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Preparation Time"
+        android:textSize="16sp"
+        android:textColor="@color/primary"/>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/seekbar_prep_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:valueFrom="0"
+        android:valueTo="10"
+        android:stepSize="1"
+        app:thumbColor="@color/primary"
+        app:trackColorActive="@color/primary"
+        app:trackColorInactive="@color/primary_light"/>
+
+    <TextView
+        android:id="@+id/text_prep_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Difficulty -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recipe Complexity"
+        android:textSize="16sp"
+        android:textColor="@color/primary"/>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/seekbar_complexity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:valueFrom="0"
+        android:valueTo="10"
+        android:stepSize="1"
+        app:thumbColor="@color/primary"
+        app:trackColorActive="@color/primary"
+        app:trackColorInactive="@color/primary_light"/>
+
+    <TextView
+        android:id="@+id/text_complexity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Calories -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calories"
+        android:textSize="16sp"
+        android:textColor="@color/primary"/>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/seekbar_calories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:valueFrom="0"
+        android:valueTo="10"
+        android:stepSize="1"
+        app:thumbColor="@color/primary"
+        app:trackColorActive="@color/primary"
+        app:trackColorInactive="@color/primary_light"/>
+
+    <TextView
+        android:id="@+id/text_calories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Nutritional Value -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nutritional Value"
+        android:textSize="16sp"
+        android:textColor="@color/primary"/>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/seekbar_nutrition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:valueFrom="0"
+        android:valueTo="10"
+        android:stepSize="1"
+        app:thumbColor="@color/primary"
+        app:trackColorActive="@color/primary"
+        app:trackColorInactive="@color/primary_light"/>
+
+    <TextView
+        android:id="@+id/text_nutrition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Spice Level -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Spice Level"
+        android:textSize="16sp"
+        android:textColor="@color/primary"/>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/seekbar_spice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:valueFrom="0"
+        android:valueTo="10"
+        android:stepSize="1"
+        app:thumbColor="@color/primary"
+        app:trackColorActive="@color/primary"
+        app:trackColorInactive="@color/primary_light"/>
+
+    <TextView
+        android:id="@+id/text_spice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Price -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price"
+        android:textSize="16sp"
+        android:textColor="@color/primary"/>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/seekbar_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:valueFrom="0"
+        android:valueTo="10"
+        android:stepSize="1"
+        app:thumbColor="@color/primary"
+        app:trackColorActive="@color/primary"
+        app:trackColorInactive="@color/primary_light"/>
+
+    <TextView
+        android:id="@+id/text_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:id="@+id/btn_cancel_preferences"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textColor="@color/primary"/>
+
+        <Button
+            android:id="@+id/btn_apply_preferences"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Apply"
+            android:textColor="@color/primary"/>
+    </LinearLayout>
+</LinearLayout> 

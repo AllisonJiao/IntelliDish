@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">IntelliDish</string>
+    <string name="title_activity_home_page">HomePage</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="manage_friends">Manage Friends</string>
+    <string name="saved_recipes">Saved Recipes</string>
+    <string name="profile">Profile</string>
+    <string name="intellidish">IntelliDish</string>
+    <string name="google_sign_in">Google Sign-In</string>
+
+    <string name="recipe_recommendation">Recipe Recommendation</string>
+    <string name="manage_recipes">Manage Recipes</string>
+    <string name="logout">Log Out</string>
+
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="title_activity_recommendation">RecommendationActivity</string>
+
+    // Recipe Recommendation
+    <string-array name="cuisine_types">
+        <item>Any</item>
+        <item>African</item>
+        <item>American</item>
+        <item>Brazilian</item>
+        <item>British</item>
+        <item>Caribbean</item>
+        <item>Chinese</item>
+        <item>Ethiopian</item>
+        <item>Filipino</item>
+        <item>French</item>
+        <item>German</item>
+        <item>Greek</item>
+        <item>Hawaiian</item>
+        <item>Indian</item>
+        <item>Indonesian</item>
+        <item>Italian</item>
+        <item>Japanese</item>
+        <item>Korean</item>
+        <item>Lebanese</item>
+        <item>Malaysian</item>
+        <item>Mediterranean</item>
+        <item>Mexican</item>
+        <item>Middle Eastern</item>
+        <item>Moroccan</item>
+        <item>Peruvian</item>
+        <item>Polish</item>
+        <item>Russian</item>
+        <item>Spanish</item>
+        <item>Swedish</item>
+        <item>Thai</item>
+        <item>Turkish</item>
+        <item>Vietnamese</item>
+    </string-array>
+
+    // Recipe Management
+    <string name="search_saved_recipes">Search saved recipes...</string>
+
+
+</resources>
