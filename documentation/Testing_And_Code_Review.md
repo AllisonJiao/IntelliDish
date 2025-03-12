@@ -415,3 +415,14 @@ _(Placeholder for screenshots of Codacyâ€™s Issues page)_
 |10 |Class 'ManageFriends' with '20' functions detected. Defined threshold inside classes is set to '11' |frontend/app/src/main/java/com/example/intellidish/ManageFriends.kt
 |11 |Object 'UserManager' with '16' functions detected. Defined threshold inside objects is set to '11' |frontend/app/src/main/java/com/example/intellidish/utils/UserManager.kt
 
+**Category:** Error Prone  
+
+**Code Pattern:** Expression with labels increase complexity and affect maintainability.
+
+**Justification:**  
+
+|          | **Issue**                                                       | **Location in Git**                                              |
+|----------|-----------------------------------------------------------------|------------------------------------------------------------------|
+|1 |Expression with labels increase complexity and affect maintainability.|frontend/app/src/main/java/com/example/intellidish/ManageFriends.kt
+|2 |Expression with labels increase complexity and affect maintainability.|frontend/app/src/main/java/com/example/intellidish/ManageFriends.kt
+
