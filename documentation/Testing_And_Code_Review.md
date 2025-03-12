@@ -14,13 +14,39 @@
 
 #### 2.1.1. Tests
 
-| **Interface**                 | **Describe Group Location, No Mocks**                | **Describe Group Location, With Mocks**            | **Mocked Components**              |
-| ----------------------------- | ---------------------------------------------------- | -------------------------------------------------- | ---------------------------------- |
-| **POST /user/login**          | [`tests/unmocked/authenticationLogin.test.js#L1`](#) | [`tests/mocked/authenticationLogin.test.js#L1`](#) | Google Authentication API, User DB |
-| **POST /study-groups/create** | ...                                                  | ...                                                | Study Group DB                     |
-| ...                           | ...                                                  | ...                                                | ...                                |
-| ...                           | ...                                                  | ...                                                | ...                                |
-
+| **Interface**                                | **Describe Group Location, No Mocks**                                    | **Describe Group Location, With Mocks**                                | **Mocked Components**              |
+|---------------------------------------------|------------------------------------------------------------------------|----------------------------------------------------------------------|-----------------------------------|
+| **GET /ingredients**                         | `tests/jest_unmocked/getAllIngredients_um.test.ts`                      | `tests/jest_mocked/getAllIngredients_m.test.ts`                        | Ingredients DB                     |
+| **GET /ingredients/id/:id**                  | `tests/jest_unmocked/getIngredientById_um.test.ts`                      | `tests/jest_mocked/getIngredientById_m.test.ts`                        | Ingredients DB                     |
+| **GET /ingredients/name**                    | `tests/jest_unmocked/getIngredientByName_um.test.ts`                    | `tests/jest_mocked/getIngredientByName_m.test.ts`                      | Ingredients DB                     |
+| **POST /ingredients**                        | `tests/jest_unmocked/postNewIngredient_um.test.ts`                      | `tests/jest_mocked/postNewIngredient_m.test.ts`                        | Ingredients DB                     |
+| **PUT /ingredients/:id**                     | `tests/jest_unmocked/putIngredientById_um.test.ts`                      | `tests/jest_mocked/putIngredientById_m.test.ts`                        | Ingredients DB                     |
+| **DELETE /ingredients/:id**                  | `tests/jest_unmocked/deleteIngredientById_um.test.ts`                   | `tests/jest_mocked/deleteIngredientById_m.test.ts`                     | Ingredients DB                     |
+| **GET /recipes**                            | `tests/jest_unmocked/getAllRecipes_um.test.ts`                          | `tests/jest_mocked/getAllRecipes_m.test.ts`                            | Recipes DB                         |
+| **GET /recipes/id/:id**                     | `tests/jest_unmocked/getRecipeById_um.test.ts`                          | `tests/jest_mocked/getRecipeById_m.test.ts`                            | Recipes DB                         |
+| **GET /recipes/name**                       | `tests/jest_unmocked/getRecipeByName_um.test.ts`                        | `tests/jest_mocked/getRecipeByName_m.test.ts`                          | Recipes DB                         |
+| **GET /recipes/:id/getIngredientDetails**   | `tests/jest_unmocked/getIngredientsFromRecipeId_um.test.ts`            | `tests/jest_mocked/getIngredientsFromRecipeId_m.test.ts`               | Recipes DB, Ingredients DB         |
+| **POST /recipes**                           | `tests/jest_unmocked/postNewRecipe_um.test.ts`                          | `tests/jest_mocked/postNewRecipe_m.test.ts`                            | Recipes DB                         |
+| **POST /recipes/AI**                        | `tests/jest_unmocked/postNewRecipeFromAI_um.test.ts`                    | `tests/jest_mocked/postNewRecipeFromAI_m.test.ts`                      | Recipes DB, OpenAI API             |
+| **PUT /recipes/:_id**                       | `tests/jest_unmocked/putRecipeById_um.test.ts`                          | `tests/jest_mocked/putRecipeById_m.test.ts`                            | Recipes DB                         |
+| **DELETE /recipes/:_id**                    | `tests/jest_unmocked/deleteRecipeById_um.test.ts`                       | `tests/jest_mocked/deleteRecipeById_m.test.ts`                         | Recipes DB                         |
+| **GET /users**                              | `tests/jest_unmocked/userBasicOperations_um.test.ts`                    | `tests/jest_mocked/userBasicOperations_m.test.ts`                      | Users DB                           |
+| **GET /users/id/:id**                       | `tests/jest_unmocked/userBasicOperations_um.test.ts`                    | `tests/jest_mocked/userBasicOperations_m.test.ts`                      | Users DB                           |
+| **GET /users/email/:email**                 | `tests/jest_unmocked/userBasicOperations_um.test.ts`                    | `tests/jest_mocked/userBasicOperations_m.test.ts`                      | Users DB                           |
+| **POST /users**                             | `tests/jest_unmocked/userBasicOperations_um.test.ts`                    | `tests/jest_mocked/userBasicOperations_m.test.ts`                      | Users DB                           |
+| **PUT /users/:id/name**                     | `tests/jest_unmocked/userBasicOperations_um.test.ts`                    | `tests/jest_mocked/userBasicOperations_m.test.ts`                      | Users DB                           |
+| **DELETE /users/:id**                       | `tests/jest_unmocked/userBasicOperations_um.test.ts`                    | `tests/jest_mocked/userBasicOperations_m.test.ts`                      | Users DB                           |
+| **PUT /users/:id/addFriend**                | `tests/jest_unmocked/userFriendOperations_um.test.ts`                   | `tests/jest_mocked/userFriendOperations_m.test.ts`                     | Users DB                           |
+| **PUT /users/:id/deleteFriend**             | `tests/jest_unmocked/userFriendOperations_um.test.ts`                   | `tests/jest_mocked/userFriendOperations_m.test.ts`                     | Users DB                           |
+| **GET /users/:id/friends**                  | `tests/jest_unmocked/userFriendOperations_um.test.ts`                   | `tests/jest_mocked/userFriendOperations_m.test.ts`                     | Users DB                           |
+| **GET /potluck**                            | `tests/jest_unmocked/userPotluckOperations_um.test.ts`                  | `tests/jest_mocked/userPotluckOperations_m.test.ts`                    | Users DB, Potluck DB               |
+| **GET /potluck/:id**                        | `tests/jest_unmocked/userPotluckOperations_um.test.ts`                  | `tests/jest_mocked/userPotluckOperations_m.test.ts`                    | Users DB, Potluck DB               |
+| **POST /potluck**                           | `tests/jest_unmocked/userPotluckOperations_um.test.ts`                  | `tests/jest_mocked/userPotluckOperations_m.test.ts`                    | Users DB, Potluck DB               |
+| **PUT /potluck/:id/ingredients**            | `tests/jest_unmocked/userPotluckOperations_um.test.ts`                  | `tests/jest_mocked/userPotluckOperations_m.test.ts`                    | Users DB, Potluck DB               |
+| **DELETE /potluck/:id/ingredients**         | `tests/jest_unmocked/userPotluckOperations_um.test.ts`                  | `tests/jest_mocked/userPotluckOperations_m.test.ts`                    | Users DB, Potluck DB               |
+| **PUT /potluck/:id/participants**           | `tests/jest_unmocked/userPotluckOperations_um.test.ts`                  | `tests/jest_mocked/userPotluckOperations_m.test.ts`                    | Users DB, Potluck DB               |
+| **PUT /potluck/AI/:id**                     | `tests/jest_unmocked/userPotluckOperations_um.test.ts`                  | `tests/jest_mocked/userPotluckOperations_m.test.ts`                    | Users DB, Potluck DB, OpenAI API   |
+| **DELETE /potluck/:id**                     | `tests/jest_unmocked/userPotluckOperations_um.test.ts`                  | `tests/jest_mocked/userPotluckOperations_m.test.ts`                    | Users DB, Potluck DB               |
 #### 2.1.2. Commit Hash Where Tests Run
 
 `[Insert Commit SHA here]`
