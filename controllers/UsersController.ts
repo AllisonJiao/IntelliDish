@@ -818,11 +818,14 @@ export class UsersController {
             }
             
             //Remove potluck session from all participants' list:
-            await UserModel.updateMany(
-                { _id: { $in: potluck.participants } }, // Find all participants
-                { $pull: { potluck: id } } // Remove potluck ID from their list
-            );
+            const participantIds = potluck.participants.map(participant => participant.user.toString());
 
+            // Remove potluck session from all participants' potluck list
+            await UserModel.updateMany(
+                { _id: { $in: participantIds } }, // Find users who are participants
+                { $pull: { potluck: id } } // Remove the potluck ID from their potluck array
+            );
+            
             // Delete the potluck session
             await PotluckModel.deleteOne({ _id: id });
     
