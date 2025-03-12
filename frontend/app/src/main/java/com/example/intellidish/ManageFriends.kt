@@ -280,8 +280,12 @@ class ManageFriends : AppCompatActivity() {
     private fun removeFriend(user: User) {
         lifecycleScope.launch {
             try {
-                val userId = getCurrentUserId() ?: return@launch
-                val friendId = user._id ?: return@launch
+                val userId = getCurrentUserId() // Now correctly inside the coroutine
+                val friendId = user._id
+
+                if (userId == null || friendId == null) {
+                    return@launch // Exit early if IDs are null
+                }
 
                 showLoading()
                 val response = NetworkClient.apiService.deleteFriend(
