@@ -397,21 +397,18 @@ _(Placeholder for screenshots of Codacyâ€™s Issues page)_
 ### 5.4. Justifications for Unfixed Issues
 
 | **Category**        | **Code Pattern**                   | **Issue**                                       | **Location in Git**                               |
-|----------------|--------------------------------|---------------------------------------------|-----------------------------------------------|
-|Error Prone |Too many functions inside a/an file/class/object/interface |Class 'ManageRecipes' with '19' functions detected. Defined threshold inside classes is set to '11' |frontend/app/src/main/java/com/example/intellidish/
-ManageRecipes.kt
-|Error Prone |Too many functions inside a/an file/class/object/interface |Class 'PreferencesManager' with '23' functions detected. Defined threshold inside classes is set to '11' |frontend/app/src/main/java/com/example/intellidish/utils/
-PreferencesManager.kt
-|Error Prone |Too many functions inside a/an file/class/object/interface |Class 'CreatePotluckActivity' with '20' functions detected. Defined threshold inside classes is set to '11' |frontend/app/src/main/java/com/example/intellidish/
-CreatePotluckActivity.kt
-|Error Prone |Too many functions inside a/an file/class/object/interface | |
-|Error Prone |Too many functions inside a/an file/class/object/interface | |
-|Error Prone |Too many functions inside a/an file/class/object/interface | |
-|Error Prone |Too many functions inside a/an file/class/object/interface | |
-|Error Prone |Too many functions inside a/an file/class/object/interface | |
-|Error Prone |Too many functions inside a/an file/class/object/interface | |
-|Error Prone |Too many functions inside a/an file/class/object/interface | |
-|Error Prone |Too many functions inside a/an file/class/object/interface | |
+|----------------|----------------------------------|-----------------------------------------------------------------|------------------------------------------------------------------|
+|Error Prone |Too many functions inside a/an file/class/object/interface |Class 'ManageRecipes' with '19' functions detected. Defined threshold inside classes is set to '11' |frontend/app/src/main/java/com/example/intellidish/ManageRecipes.kt
+|Error Prone |Too many functions inside a/an file/class/object/interface |Class 'PreferencesManager' with '23' functions detected. Defined threshold inside classes is set to '11' |frontend/app/src/main/java/com/example/intellidish/utils/PreferencesManager.kt
+|Error Prone |Too many functions inside a/an file/class/object/interface |Class 'CreatePotluckActivity' with '20' functions detected. Defined threshold inside classes is set to '11' |frontend/app/src/main/java/com/example/intellidish/CreatePotluckActivity.kt
+|Error Prone |Too many functions inside a/an file/class/object/interface |Class 'GetRecommendation' with '11' functions detected. Defined threshold inside classes is set to '11' |frontend/app/src/main/java/com/example/intellidish/GetRecommendation.kt
+|Error Prone |Too many functions inside a/an file/class/object/interface |Class 'MainActivity' with '12' functions detected. Defined threshold inside classes is set to '11' |frontend/app/src/main/java/com/example/intellidish/MainActivity.kt
+|Error Prone |Too many functions inside a/an file/class/object/interface |Class 'PotluckActivity' with '13' functions detected. Defined threshold inside classes is set to '11' |frontend/app/src/main/java/com/example/intellidish/PotluckActivity.kt
+|Error Prone |Too many functions inside a/an file/class/object/interface |Class 'PotluckDetailActivity' with '31' functions detected. Defined threshold inside classes is set to '11' |frontend/app/src/main/java/com/example/intellidish/PotluckDetailActivity.kt
+|Error Prone |Too many functions inside a/an file/class/object/interface |Interface 'ApiService' with '26' functions detected. Defined threshold inside interfaces is set to '11' |frontend/app/src/main/java/com/example/intellidish/api/ApiService.kt
+|Error Prone |Too many functions inside a/an file/class/object/interface |Class 'RecommendationActivity' with '29' functions detected. Defined threshold inside classes is set to '11' |frontend/app/src/main/java/com/example/intellidish/RecommendationActivity.kt
+|Error Prone |Too many functions inside a/an file/class/object/interface |Class 'ManageFriends' with '20' functions detected. Defined threshold inside classes is set to '11' |frontend/app/src/main/java/com/example/intellidish/ManageFriends.kt
+|Error Prone |Too many functions inside a/an file/class/object/interface |Object 'UserManager' with '16' functions detected. Defined threshold inside objects is set to '11' |frontend/app/src/main/java/com/example/intellidish/utils/UserManager.kt
 | | | |
 | | | |
 | | | |
