@@ -234,6 +234,10 @@ jest.mock('../../routes/IngredientsRoutes', () => ({
 
 describe("Mocked: Potluck Operations", () => {
     describe("GET /potluck", () => {
+        // Input: A valid GET request to the /potluck endpoint
+        // Expected status code: 500 (forced error from mock)
+        // Expected behavior: Throws error from mocked controller
+        // Expected output: An error response
         test("getPotluckSessions throws error", async () => {
             const res = await request(app)
                 .get('/potluck')
@@ -242,12 +246,20 @@ describe("Mocked: Potluck Operations", () => {
     });
 
     describe("GET /potluck/:id", () => {
+        // Input: A GET request with an invalid MongoDB ID format
+        // Expected status code: 400
+        // Expected behavior: Returns validation error for invalid ID format
+        // Expected output: An object with an 'error' property
         test("getPotluckSessionsById throws with invalid ID", async () => {
             const res = await request(app)
                 .get('/potluck/invalid-id')
                 .expect(400);
         });
 
+        // Input: A GET request with a valid MongoDB ID format
+        // Expected status code: 500 (forced error from mock)
+        // Expected behavior: Throws error from mocked controller
+        // Expected output: An error response
         test("getPotluckSessionsById throws with valid ID format", async () => {
             const validId = new mongoose.Types.ObjectId().toString();
             const res = await request(app)
@@ -257,6 +269,10 @@ describe("Mocked: Potluck Operations", () => {
     });
 
     describe("POST /potluck", () => {
+        // Input: A POST request with missing required fields
+        // Expected status code: 400
+        // Expected behavior: Returns validation error for missing fields
+        // Expected output: An object with an 'error' property
         test("createPotluckSession throws with missing required fields", async () => {
             const res = await request(app)
                 .post('/potluck')
@@ -264,6 +280,10 @@ describe("Mocked: Potluck Operations", () => {
                 .expect(400);
         });
 
+        // Input: A POST request with invalid host ID format
+        // Expected status code: 400
+        // Expected behavior: Returns validation error for invalid host ID
+        // Expected output: An object with an 'error' property
         test("createPotluckSession throws with invalid host ID", async () => {
             const res = await request(app)
                 .post('/potluck')
@@ -277,6 +297,10 @@ describe("Mocked: Potluck Operations", () => {
                 .expect(400);
         });
 
+        // Input: A POST request with valid data
+        // Expected status code: 500 (forced error from mock)
+        // Expected behavior: Throws error from mocked controller
+        // Expected output: An error response
         test("createPotluckSession throws with valid data", async () => {
             const validHostId = new mongoose.Types.ObjectId().toString();
             const res = await request(app)
@@ -293,6 +317,10 @@ describe("Mocked: Potluck Operations", () => {
     });
 
     describe("PUT /potluck/:id/ingredients", () => {
+        // Input: A PUT request with invalid potluck ID
+        // Expected status code: 400
+        // Expected behavior: Returns validation error for invalid ID
+        // Expected output: An object with an 'error' property
         test("addPotluckIngredientsToParticipant throws with invalid potluck ID", async () => {
             const validParticipantId = new mongoose.Types.ObjectId().toString();
             const res = await request(app)
@@ -304,6 +332,10 @@ describe("Mocked: Potluck Operations", () => {
                 .expect(400);
         });
 
+        // Input: A PUT request with empty ingredients array
+        // Expected status code: 400
+        // Expected behavior: Returns validation error for empty ingredients
+        // Expected output: An object with an 'error' property
         test("addPotluckIngredientsToParticipant throws with empty ingredients", async () => {
             const validId = new mongoose.Types.ObjectId().toString();
             const validParticipantId = new mongoose.Types.ObjectId().toString();
@@ -316,6 +348,10 @@ describe("Mocked: Potluck Operations", () => {
                 .expect(400);
         });
 
+        // Input: A PUT request with valid data
+        // Expected status code: 500 (forced error from mock)
+        // Expected behavior: Throws error from mocked controller
+        // Expected output: An error response
         test("addPotluckIngredientsToParticipant throws with valid data", async () => {
             const validId = new mongoose.Types.ObjectId().toString();
             const validParticipantId = new mongoose.Types.ObjectId().toString();
@@ -330,6 +366,10 @@ describe("Mocked: Potluck Operations", () => {
     });
 
     describe("DELETE /potluck/:id/ingredients", () => {
+        // Input: A DELETE request with invalid potluck ID but valid participant data
+        // Expected status code: 400
+        // Expected behavior: Returns validation error for invalid potluck ID
+        // Expected output: An object with an 'error' property
         test("removePotluckIngredientsFromParticipant throws with invalid potluck ID", async () => {
             const validParticipantId = new mongoose.Types.ObjectId().toString();
             const res = await request(app)
@@ -341,6 +381,10 @@ describe("Mocked: Potluck Operations", () => {
                 .expect(400);
         });
 
+        // Input: A DELETE request with valid potluck ID, participant ID, and ingredients
+        // Expected status code: 500 (forced error from mock)
+        // Expected behavior: Throws error from mocked controller
+        // Expected output: An error response
         test("removePotluckIngredientsFromParticipant throws with valid data", async () => {
             const validId = new mongoose.Types.ObjectId().toString();
             const validParticipantId = new mongoose.Types.ObjectId().toString();
@@ -355,6 +399,10 @@ describe("Mocked: Potluck Operations", () => {
     });
 
     describe("PUT /potluck/:id/participants", () => {
+        // Input: A PUT request with invalid potluck ID but valid participant array
+        // Expected status code: 400
+        // Expected behavior: Returns validation error for invalid potluck ID
+        // Expected output: An object with an 'error' property
         test("addPotluckParticipants throws with invalid potluck ID", async () => {
             const res = await request(app)
                 .put('/potluck/invalid-id/participants')
@@ -364,6 +412,10 @@ describe("Mocked: Potluck Operations", () => {
                 .expect(400);
         });
 
+        // Input: A PUT request with valid potluck ID but empty participants array
+        // Expected status code: 400
+        // Expected behavior: Returns validation error for empty participants array
+        // Expected output: An object with an 'error' property
         test("addPotluckParticipants throws with empty participants", async () => {
             const validId = new mongoose.Types.ObjectId().toString();
             const res = await request(app)
@@ -374,6 +426,10 @@ describe("Mocked: Potluck Operations", () => {
                 .expect(400);
         });
 
+        // Input: A PUT request with valid potluck ID and participant array
+        // Expected status code: 500 (forced error from mock)
+        // Expected behavior: Throws error from mocked controller
+        // Expected output: An error response
         test("addPotluckParticipants throws with valid data", async () => {
             const validId = new mongoose.Types.ObjectId().toString();
             const res = await request(app)
@@ -386,12 +442,20 @@ describe("Mocked: Potluck Operations", () => {
     });
 
     describe("PUT /potluck/AI/:id", () => {
+        // Input: A PUT request with invalid potluck ID
+        // Expected status code: 400
+        // Expected behavior: Returns validation error for invalid ID format
+        // Expected output: An object with an 'error' property
         test("updatePotluckRecipesByAI throws with invalid ID", async () => {
             const res = await request(app)
                 .put('/potluck/AI/invalid-id')
                 .expect(400);
         });
 
+        // Input: A PUT request with valid potluck ID format
+        // Expected status code: 500 (forced error from mock)
+        // Expected behavior: Throws error from mocked controller
+        // Expected output: An error response
         test("updatePotluckRecipesByAI throws with valid ID format", async () => {
             const validId = new mongoose.Types.ObjectId().toString();
             const res = await request(app)
@@ -401,12 +465,20 @@ describe("Mocked: Potluck Operations", () => {
     });
 
     describe("DELETE /potluck/:id", () => {
+        // Input: A DELETE request with invalid potluck ID
+        // Expected status code: 400
+        // Expected behavior: Returns validation error for invalid ID format
+        // Expected output: An object with an 'error' property
         test("endPotluckSession throws with invalid ID", async () => {
             const res = await request(app)
                 .delete('/potluck/invalid-id')
                 .expect(400);
         });
 
+        // Input: A DELETE request with valid potluck ID format
+        // Expected status code: 500 (forced error from mock)
+        // Expected behavior: Throws error from mocked controller
+        // Expected output: An error response
         test("endPotluckSession throws with valid ID format", async () => {
             const validId = new mongoose.Types.ObjectId().toString();
             const res = await request(app)

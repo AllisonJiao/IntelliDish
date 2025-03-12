@@ -75,6 +75,10 @@ jest.mock('../../routes/UsersRoutes', () => ({
 }));
 
 describe("Mocked: POST /recipes/AI", () => {
+    // Input: A POST request with valid recipe name and image path
+    // Expected status code: 500 (forced error from mock)
+    // Expected behavior: Throws error from mocked controller
+    // Expected output: An error response
     test("postNewRecipeFromAI throws", async () => {
         const res = await request(app)
             .post('/recipes/AI')

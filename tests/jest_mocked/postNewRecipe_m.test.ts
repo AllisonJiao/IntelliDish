@@ -89,6 +89,10 @@ jest.mock('../../routes/UsersRoutes', () => ({
 }));
 
 describe("Mocked: POST /recipes", () => {
+    // Input: A POST request with missing required name field
+    // Expected status code: 400
+    // Expected behavior: Returns validation error for missing name
+    // Expected output: An object with an 'error' property
     test("postNewRecipe throws with missing name", async () => {
         const controller = new RecipesController();
         
@@ -107,6 +111,10 @@ describe("Mocked: POST /recipes", () => {
         expect(mockRes.status).toHaveBeenCalledWith(400);
     });
 
+    // Input: A POST request with valid recipe data including all optional fields
+    // Expected status code: 500 (forced error from mock)
+    // Expected behavior: Throws error from mocked controller
+    // Expected output: An error response
     test("postNewRecipe throws with valid data", async () => {
         const res = await request(app)
             .post('/recipes')
@@ -126,6 +134,10 @@ describe("Mocked: POST /recipes", () => {
     });
 });
 
+// Input: A PUT request with a valid MongoDB ID format and complete recipe data
+// Expected status code: 500 (forced error from mock)
+// Expected behavior: Throws error from mocked controller
+// Expected output: An error response
 test("putRecipeById throws with valid ID format", async () => {
     const validId = new mongoose.Types.ObjectId().toString();
     

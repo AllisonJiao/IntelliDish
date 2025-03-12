@@ -15,6 +15,10 @@ jest.mock("../../controllers/RecipesController", () => {
 });
 
 describe("Mocked: GET /recipes", () => {
+    // Input: A GET request to retrieve all recipes
+    // Expected status code: 500 (forced error from mock)
+    // Expected behavior: Throws error from mocked controller
+    // Expected output: An error response
     test("getAllRecipes throws", async () => {
         const res = await request(app)
             .get('/recipes')
