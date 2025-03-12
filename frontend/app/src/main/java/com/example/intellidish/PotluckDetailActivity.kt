@@ -66,6 +66,7 @@ class PotluckDetailActivity : AppCompatActivity() {
     private lateinit var btnBack: ExtendedFloatingActionButton
     private lateinit var btnRefresh: ExtendedFloatingActionButton
     private lateinit var btnDeleteOrLeave: MaterialButton
+    private lateinit var btnDeleteOrLeave: MaterialButton
 
     private var selectedImageUri: Uri? = null
     private lateinit var preferencesManager: PreferencesManager
@@ -126,6 +127,8 @@ class PotluckDetailActivity : AppCompatActivity() {
 
         btnDeleteOrLeave = findViewById(R.id.btn_delete_or_leave)
 
+        btnDeleteOrLeave = findViewById(R.id.btn_delete_or_leave)
+
         preferencesManager = PreferencesManager(this)
     }
 
@@ -178,6 +181,15 @@ class PotluckDetailActivity : AppCompatActivity() {
         // If current user is the potluck owner, show Add/Remove participant
         if (currentUser.equals(potluckOwner, ignoreCase = true)) {
             layoutHostButtons.visibility = View.VISIBLE
+        }
+
+        // Show Delete if Owner, Leave if Participant
+        if (currentUser.equals(potluckOwner, ignoreCase = true)) {
+            btnDeleteOrLeave.text = "Delete This Potluck"
+            btnDeleteOrLeave.setOnClickListener { deletePotluck() }
+        } else {
+            btnDeleteOrLeave.text = "Leave This Potluck"
+            btnDeleteOrLeave.setOnClickListener { leavePotluck() }
         }
 
         // Show Delete if Owner, Leave if Participant

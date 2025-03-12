@@ -125,6 +125,8 @@ For users like busy university students and employees (who often lack the time, 
     - **Failure scenario(s)**:
         - **3a**: The user attempts to add an ingredient without entering any text input.
             - **3a1**: Display an error message: “Please enter at least one ingredient!”
+        - **3b**: The user does not enter any ingredient before clicking "Generate Recipes".
+            - **3b1**: Display an error message: “Please add at least one ingredient!”
         - **5a**: The AI API is unreachable/ unavailable.
             - **5a1**: Display error message that the AI API is unreachable/ unavailable.
             - **5a2**: Prompt the user to try again later, or check online whether the AI API is down/ under maintainence.
@@ -155,6 +157,8 @@ For users like busy university students and employees (who often lack the time, 
     - **Failure scenario(s)**:
         - **3a**: The user attempts to add an ingredient without entering any text input.
             - **3a1**: Display an error message: “Please enter at least one ingredient!”
+        - **3b**: The user does not enter any ingredient before clicking "Generate Recipes".
+            - **3b1**: Display an error message: “Please add at least one ingredient!”
         - **5a**: The AI API is unreachable/ unavailable.
             - **5a1**: Display error message that the AI API is unreachable/ unavailable.
             - **5a2**: Prompt the user to try again later, or check online whether the AI API is down/ under maintainence.
