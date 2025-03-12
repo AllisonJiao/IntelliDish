@@ -506,76 +506,94 @@ class RecommendationActivity : AppCompatActivity() {
 
         dialog.show()
 
-        val prepTimeSlider = dialog.findViewById<Slider>(R.id.seekbar_prep_time)
-        val complexitySlider = dialog.findViewById<Slider>(R.id.seekbar_complexity)
-        val caloriesSlider = dialog.findViewById<Slider>(R.id.seekbar_calories)
+        val sliders = getSliders(dialog)
+        val textViews = getTextViews(dialog)
 
-        val nutritionSlider = dialog.findViewById<Slider>(R.id.seekbar_nutrition)
-        val spiceSlider = dialog.findViewById<Slider>(R.id.seekbar_spice)
-        val priceSlider = dialog.findViewById<Slider>(R.id.seekbar_price)
+        setInitialValues(sliders, textViews)
+        setupSliderListeners(sliders, textViews)
+        setupDialogButtons(dialog, sliders)
+    }
 
-        val prepTimeText = dialog.findViewById<TextView>(R.id.text_prep_time)
-        val complexityText = dialog.findViewById<TextView>(R.id.text_complexity)
-        val caloriesText = dialog.findViewById<TextView>(R.id.text_calories)
+    private fun getSliders(dialog: AlertDialog): Map<String, Slider?> {
+        return mapOf(
+            "prepTime" to dialog.findViewById(R.id.seekbar_prep_time),
+            "complexity" to dialog.findViewById(R.id.seekbar_complexity),
+            "calories" to dialog.findViewById(R.id.seekbar_calories),
+            "nutrition" to dialog.findViewById(R.id.seekbar_nutrition),
+            "spice" to dialog.findViewById(R.id.seekbar_spice),
+            "price" to dialog.findViewById(R.id.seekbar_price)
+        )
+    }
 
-        val nutritionText = dialog.findViewById<TextView>(R.id.text_nutrition)
-        val spiceText = dialog.findViewById<TextView>(R.id.text_spice)
-        val priceText = dialog.findViewById<TextView>(R.id.text_price)
+    private fun getTextViews(dialog: AlertDialog): Map<String, TextView?> {
+        return mapOf(
+            "prepTime" to dialog.findViewById(R.id.text_prep_time),
+            "complexity" to dialog.findViewById(R.id.text_complexity),
+            "calories" to dialog.findViewById(R.id.text_calories),
+            "nutrition" to dialog.findViewById(R.id.text_nutrition),
+            "spice" to dialog.findViewById(R.id.text_spice),
+            "price" to dialog.findViewById(R.id.text_price)
+        )
+    }
 
-        prepTimeSlider?.value = preferencesManager.getSavedPrepTime().toFloat()
-        complexitySlider?.value = preferencesManager.getSavedComplexity().toFloat()
-        caloriesSlider?.value = preferencesManager.getSavedCalories().toFloat()
+    private fun setInitialValues(sliders: Map<String, Slider?>, textViews: Map<String, TextView?>) {
+        sliders["prepTime"]?.value = preferencesManager.getSavedPrepTime().toFloat()
+        sliders["complexity"]?.value = preferencesManager.getSavedComplexity().toFloat()
+        sliders["calories"]?.value = preferencesManager.getSavedCalories().toFloat()
+        sliders["nutrition"]?.value = preferencesManager.getSavedNutrition().toFloat()
+        sliders["spice"]?.value = preferencesManager.getSavedSpice().toFloat()
+        sliders["price"]?.value = preferencesManager.getSavedPrice().toFloat()
 
-        nutritionSlider?.value = preferencesManager.getSavedNutrition().toFloat()
-        spiceSlider?.value = preferencesManager.getSavedSpice().toFloat()
-        priceSlider?.value = preferencesManager.getSavedPrice().toFloat()
+        updateTextViews(sliders, textViews)
+    }
 
-        updatePrepTimeText(prepTimeSlider?.value?.toInt() ?: 0, prepTimeText)
-        updateComplexityText(complexitySlider?.value?.toInt() ?: 0, complexityText)
-        updateCaloriesText(caloriesSlider?.value?.toInt() ?: 0, caloriesText)
+    private fun updateTextViews(sliders: Map<String, Slider?>, textViews: Map<String, TextView?>) {
+        sliders["prepTime"]?.value?.toInt()?.let { updatePrepTimeText(it, textViews["prepTime"]) }
+        sliders["complexity"]?.value?.toInt()?.let { updateComplexityText(it, textViews["complexity"]) }
+        sliders["calories"]?.value?.toInt()?.let { updateCaloriesText(it, textViews["calories"]) }
+        sliders["nutrition"]?.value?.toInt()?.let { updateNutritionText(it, textViews["nutrition"]) }
+        sliders["spice"]?.value?.toInt()?.let { updateSpiceText(it, textViews["spice"]) }
+        sliders["price"]?.value?.toInt()?.let { updatePriceText(it, textViews["price"]) }
+    }
 
-        updateNutritionText(nutritionSlider?.value?.toInt() ?: 0, nutritionText)
-        updateSpiceText(spiceSlider?.value?.toInt() ?: 0, spiceText)
-        updatePriceText(priceSlider?.value?.toInt() ?: 0, priceText)
-
-        prepTimeSlider?.addOnChangeListener { _, value, _ ->
-            updatePrepTimeText(value.toInt(), prepTimeText)
+    private fun setupSliderListeners(sliders: Map<String, Slider?>, textViews: Map<String, TextView?>) {
+        sliders.forEach { (key, slider) ->
+            slider?.addOnChangeListener { _, value, _ ->
+                updateTextView(key, value.toInt(), textViews)
+            }
         }
+    }
 
-        complexitySlider?.addOnChangeListener { _, value, _ ->
-            updateComplexityText(value.toInt(), complexityText)
+    private fun updateTextView(key: String, value: Int, textViews: Map<String, TextView?>) {
+        when (key) {
+            "prepTime" -> updatePrepTimeText(value, textViews["prepTime"])
+            "complexity" -> updateComplexityText(value, textViews["complexity"])
+            "calories" -> updateCaloriesText(value, textViews["calories"])
+            "nutrition" -> updateNutritionText(value, textViews["nutrition"])
+            "spice" -> updateSpiceText(value, textViews["spice"])
+            "price" -> updatePriceText(value, textViews["price"])
         }
+    }
 
-        caloriesSlider?.addOnChangeListener { _, value, _ ->
-            updateCaloriesText(value.toInt(), caloriesText)
-        }
-
-        nutritionSlider?.addOnChangeListener { _, value, _ ->
-            updateNutritionText(value.toInt(), nutritionText)
-        }
-
-        spiceSlider?.addOnChangeListener { _, value, _ ->
-            updateSpiceText(value.toInt(), spiceText)
-        }
-
-        priceSlider?.addOnChangeListener { _, value, _ ->
-            updatePriceText(value.toInt(), priceText)
-        }
-
+    private fun setupDialogButtons(dialog: AlertDialog, sliders: Map<String, Slider?>) {
         dialog.findViewById<Button>(R.id.btn_cancel_preferences)?.setOnClickListener {
             dialog.dismiss()
         }
 
         dialog.findViewById<Button>(R.id.btn_apply_preferences)?.setOnClickListener {
-            prepTimeSlider?.value?.let { preferencesManager.savePrepTime(it.toInt()) }
-            complexitySlider?.value?.let { preferencesManager.saveComplexity(it.toInt()) }
-            caloriesSlider?.value?.let { preferencesManager.saveCalories(it.toInt()) }
-            nutritionSlider?.value?.let { preferencesManager.saveNutrition(it.toInt()) }
-            spiceSlider?.value?.let { preferencesManager.saveSpice(it.toInt()) }
-            priceSlider?.value?.let { preferencesManager.savePrice(it.toInt()) }
-            Toast.makeText(this, "Preferences saved", Toast.LENGTH_SHORT).show()
+            savePreferences(sliders)
+            Snackbar.make(findViewById(android.R.id.content), "Preferences saved", Snackbar.LENGTH_SHORT).show()
             dialog.dismiss()
         }
+    }
+
+    private fun savePreferences(sliders: Map<String, Slider?>) {
+        sliders["prepTime"]?.value?.let { preferencesManager.savePrepTime(it.toInt()) }
+        sliders["complexity"]?.value?.let { preferencesManager.saveComplexity(it.toInt()) }
+        sliders["calories"]?.value?.let { preferencesManager.saveCalories(it.toInt()) }
+        sliders["nutrition"]?.value?.let { preferencesManager.saveNutrition(it.toInt()) }
+        sliders["spice"]?.value?.let { preferencesManager.saveSpice(it.toInt()) }
+        sliders["price"]?.value?.let { preferencesManager.savePrice(it.toInt()) }
     }
 
     private fun updatePrepTimeText(progress: Int, textView: TextView?) {

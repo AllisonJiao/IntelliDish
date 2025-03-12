@@ -68,10 +68,6 @@ class ManageFriendsTest {
             .check(matches(isDisplayed()))
     }
 
-    /**
-     * Helper: Wait for a specific view to appear within a timeout.
-     * If the view is in a ScrollView, scrollTo() is tried.
-     */
     private fun waitForViewToAppear(viewId: Int, timeoutMs: Long) {
         val startTime = System.currentTimeMillis()
         while (System.currentTimeMillis() - startTime < timeoutMs) {
