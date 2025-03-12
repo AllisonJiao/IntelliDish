@@ -283,25 +283,23 @@ class ManageFriends : AppCompatActivity() {
                 val userId = getCurrentUserId() // Now correctly inside the coroutine
                 val friendId = user._id
 
-                if (userId == null || friendId == null) {
-                    return@launch // Exit early if IDs are null
-                }
+                if (userId != null && friendId != null) {
+                    showLoading()
+                    val response = NetworkClient.apiService.deleteFriend(
+                        userId = userId,
+                        friendId = mapOf("_id" to friendId)
+                    )
 
-                showLoading()
-                val response = NetworkClient.apiService.deleteFriend(
-                    userId = userId,
-                    friendId = mapOf("_id" to friendId)
-                )
-
-                withContext(Dispatchers.Main) {
-                    if (response.isSuccessful && response.body() != null) {
-                        removeFriendFromList(user)
-                        Toast.makeText(this@ManageFriends, "Friend removed", Toast.LENGTH_SHORT).show()
-                        loadFriends()
-                    } else {
-                        showErrorDialog("Error", "Failed to remove friend")
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful && response.body() != null) {
+                            removeFriendFromList(user)
+                            Toast.makeText(this@ManageFriends, "Friend removed", Toast.LENGTH_SHORT).show()
+                            loadFriends()
+                        } else {
+                            showErrorDialog("Error", "Failed to remove friend")
+                        }
+                        hideLoading()
                     }
-                    hideLoading()
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
