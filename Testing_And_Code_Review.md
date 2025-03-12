@@ -66,7 +66,9 @@
      ```
 
 2. **Run the Test with Coverage**
-   - npm test --coverage
+   - ```
+     npm test --coverage
+     ```
 
 ### 2.2. GitHub Actions Configuration Location
 
