@@ -426,3 +426,14 @@ _(Placeholder for screenshots of Codacyâ€™s Issues page)_
 |1 |Expression with labels increase complexity and affect maintainability.|frontend/app/src/main/java/com/example/intellidish/ManageFriends.kt
 |2 |Expression with labels increase complexity and affect maintainability.|frontend/app/src/main/java/com/example/intellidish/ManageFriends.kt
 
+**Category:** Error Prone  
+
+**Code Pattern:** Excessive nesting leads to hidden complexity. Prefer extracting code to make it easier to understand.
+
+**Justification:**  
+
+|          | **Issue**                                                       | **Location in Git**                                              |
+|----------|-----------------------------------------------------------------|------------------------------------------------------------------|
+|1 |Function fetchIngredientsFromServer is nested too deeply.|frontend/app/src/main/java/com/example/intellidish/adapters/PotluckIngredientAdapter.kt
+
+
