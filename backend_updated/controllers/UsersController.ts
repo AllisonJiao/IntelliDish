@@ -816,7 +816,7 @@ export class UsersController {
             if (!potluck) {
                 return res.status(404).json({ error: "Potluck session not found." });
             }
-            
+    
             //Remove potluck session from all participants' list:
             const participantIds = potluck.participants.map(participant => participant.user.toString());
 
@@ -825,7 +825,7 @@ export class UsersController {
                 { _id: { $in: participantIds } }, // Find users who are participants
                 { $pull: { potluck: id } } // Remove the potluck ID from their potluck array
             );
-            
+    
             // Delete the potluck session
             await PotluckModel.deleteOne({ _id: id });
     
