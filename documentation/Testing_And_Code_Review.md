@@ -396,23 +396,10 @@ _(Placeholder for screenshots of Codacyâ€™s Issues page)_
 
 ### 5.4. Justifications for Unfixed Issues
 
-- **Code Pattern - Error Prone Category: [Too many functions inside a/an file/class/object/interface always indicate a violation of the single responsibility principle. Maybe the file/class/object/interface wants to manage too many things at once.](#)**
-1. **Class 'PotluckActivity' with '13' functions detected. Defined threshold inside classes is set to '11'**
-   **Location in Git:** [frontend/app/src/main/java/com/example/intellidish/PotluckActivity.kt](#)
-2. **Class 'PotluckActivity' with '13' functions detected. Defined threshold inside classes is set to '11'**
-   **Location in Git:** [frontend/app/src/main/java/com/example/intellidish/PotluckActivity.kt](#)
-  
-       
-  **Justification:** Around half of the code in this function is error handling, not because the function has too many responsibilities.
+| **Category**        | **Code Pattern**                   | **Issue**                                       | **Location in Git**                               |
+|----------------|--------------------------------|---------------------------------------------|-----------------------------------------------|
+| | | |
+| | | |
+| | | |
+| | | |
 
-  1. **The function handleSignIn is too long (65). The maximum length is 60.**
-
-     - **Location in Git:** [frontend/app/src/main/java/com/example/intellidish/MainActivity.kt](#)
-     - **Justification:** Around half of the code in this function is error handling, not because the function has too many responsibilities.
-
-  1. **The function showPreferencesDialog is too long (61). The maximum length is 60.**
-
-     - **Location in Git:** [frontend/app/src/main/java/com/example/intellidish/MainActivity.kt](#)
-     - **Justification:** Around half of the code in this function is error handling and bracketing conventions where a single closing bracket counts as an entire line for Codacy.
-
-- ...
