@@ -33,6 +33,7 @@ import com.example.intellidish.models.User
 import com.example.intellidish.utils.UserManager
 import kotlinx.coroutines.withContext
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.material.snackbar.Snackbar
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
@@ -56,6 +57,11 @@ class MainActivity : AppCompatActivity() {
         findViewById<SignInButton>(R.id.sign_in_button).setOnClickListener {
             Log.d(TAG, "Sign in button clicked")
             signInWithGoogle()
+        }
+
+        // Check if the sign-out flag was passed
+        if (intent.getBooleanExtra("SHOW_SIGNOUT_SNACKBAR", false)) {
+            Snackbar.make(findViewById(android.R.id.content), "Signed out successfully!", Snackbar.LENGTH_SHORT).show()
         }
     }
 

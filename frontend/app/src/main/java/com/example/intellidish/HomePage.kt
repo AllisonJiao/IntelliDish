@@ -2,9 +2,6 @@ package com.example.intellidish
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Toast
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -12,6 +9,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.card.MaterialCardView
 import com.example.intellidish.utils.UserManager
+import com.google.android.material.snackbar.Snackbar
 
 class HomePage : AppCompatActivity() {
 
@@ -57,11 +55,7 @@ class HomePage : AppCompatActivity() {
                     putExtra("userEmail", userEmail)
                 })
             } else {
-                Toast.makeText(
-                    this,
-                    "Please sign in to access this feature",
-                    Toast.LENGTH_LONG
-                ).show()
+                Snackbar.make(findViewById(android.R.id.content), "Please sign in to access this feature", Snackbar.LENGTH_SHORT).show()
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
@@ -79,10 +73,11 @@ class HomePage : AppCompatActivity() {
     private fun signOut() {
         googleSignInClient.signOut().addOnCompleteListener {
             UserManager.clearUserInfo() // Clear user info when signing out
-            Toast.makeText(this, "Signed out successfully!", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, MainActivity::class.java))
+            val intent = Intent(this, MainActivity::class.java).apply {
+                putExtra("SHOW_SIGNOUT_SNACKBAR", true) // Send flag to MainActivity
+            }
+            startActivity(intent)
             finish()
         }
     }
 }
-

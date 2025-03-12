@@ -20,7 +20,6 @@ import android.widget.TextView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.switchmaterial.SwitchMaterial
 import android.content.Intent
-import android.widget.Toast
 import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import com.example.intellidish.api.NetworkClient
@@ -32,6 +31,7 @@ import com.example.intellidish.utils.UserManager
 import com.example.intellidish.models.User
 import com.example.intellidish.models.ApiResponse
 import com.example.intellidish.models.RecipesResponse
+import com.google.android.material.snackbar.Snackbar
 import java.io.IOException
 
 class ManageRecipes : AppCompatActivity() {
@@ -120,7 +120,7 @@ class ManageRecipes : AppCompatActivity() {
         autoRefreshJob = lifecycleScope.launch(Dispatchers.Main + SupervisorJob()) {
             while (isActive) { // Use isActive instead of true for better coroutine handling
                 try {
-                    // Quietly refresh without showing loading or toast
+                    // Quietly refresh without showing loading
                     val userId = UserManager.getUserId()
                     if (userId != null) {
                         NetworkUtils.safeApiCallDirect<RecipesResponse> {
@@ -155,9 +155,9 @@ class ManageRecipes : AppCompatActivity() {
             try {
                 showLoading()
                 loadRecipes()
-                Toast.makeText(this@ManageRecipes, "Recipes refreshed", Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Recipes refreshed", Snackbar.LENGTH_SHORT).show()
             } catch (e: IOException) {
-                Toast.makeText(this@ManageRecipes, "Error refreshing: ${e.message}", Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Error refreshing: ${e.message}", Snackbar.LENGTH_SHORT).show()
             } finally {
                 hideLoading()
             }
@@ -184,21 +184,21 @@ class ManageRecipes : AppCompatActivity() {
                         onFailure = { e ->
                             withContext(Dispatchers.Main) {
                                 Log.e("ManageRecipes", "Failed to load recipes: ${e.message}")
-                                Toast.makeText(this@ManageRecipes, "Failed to load recipes: ${e.message}", Toast.LENGTH_SHORT).show()
+                                Snackbar.make(findViewById(android.R.id.content), "Failed to load recipes: ${e.message}", Snackbar.LENGTH_SHORT).show()
                                 updateEmptyState(true)
                             }
                         }
                     )
                 } else {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(this@ManageRecipes, "User not logged in", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(findViewById(android.R.id.content), "User not logged in", Snackbar.LENGTH_SHORT).show()
                         finish()
                     }
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
                     Log.e("ManageRecipes", "Error loading recipes: ${e.message}")
-                    Toast.makeText(this@ManageRecipes, "Error loading recipes: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Error loading recipes: ${e.message}", Snackbar.LENGTH_SHORT).show()
                     updateEmptyState(true)
                 }
             } finally {
@@ -216,19 +216,19 @@ class ManageRecipes : AppCompatActivity() {
                 }.fold(
                     onSuccess = {
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(this@ManageRecipes, "Recipe deleted", Toast.LENGTH_SHORT).show()
+                            Snackbar.make(findViewById(android.R.id.content), "Recipe deleted", Snackbar.LENGTH_SHORT).show()
                             loadRecipes()
                         }
                     },
                     onFailure = { e ->
                         withContext(Dispatchers.Main) {
-                            //Toast.makeText(this@ManageRecipes, "Failed to delete recipe: ${e.message}", Toast.LENGTH_SHORT).show()
+                            //Snackbar.make(findViewById(android.R.id.content), "Failed to delete recipe: ${e.message}", Snackbar.LENGTH_SHORT).show()
                         }
                     }
                 )
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@ManageRecipes, "Error deleting recipe: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Error deleting recipe: ${e.message}", Snackbar.LENGTH_SHORT).show()
                 }
             } finally {
                 hideLoading()

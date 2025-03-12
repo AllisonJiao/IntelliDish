@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.intellidish.models.Potluck
 
 class PotluckAdapter(
-    private val potluckList: List<Potluck>,
+    private val potluckList: MutableList<Potluck>,
     private val onItemClick: (Potluck) -> Unit
 ) : RecyclerView.Adapter<PotluckAdapter.PotluckViewHolder>() {
 
@@ -24,6 +24,13 @@ class PotluckAdapter(
     }
 
     override fun getItemCount(): Int = potluckList.size
+
+    fun updateData(newList: List<Potluck>) {
+        potluckList.clear()
+        potluckList.addAll(newList)
+        notifyDataSetChanged() // Refresh UI dynamically
+    }
+
 
     class PotluckViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val potluckName: TextView = itemView.findViewById(R.id.potluck_name)

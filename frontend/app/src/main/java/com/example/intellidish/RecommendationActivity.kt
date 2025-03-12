@@ -145,7 +145,7 @@ class RecommendationActivity : AppCompatActivity() {
 
     private fun handleGenerateButtonClick() {
         if (ingredientsList.isEmpty()) {
-            showToast("Please add at least one ingredient!")
+            showSnackbar("Please add at least one ingredient!")
         } else {
             showLoadingState()
             generateRecipe()
@@ -160,7 +160,7 @@ class RecommendationActivity : AppCompatActivity() {
         binding.btnClearIngredients.setOnClickListener {
             ingredientsList.clear()
             ingredientAdapter.notifyDataSetChanged()
-            showToast("Ingredients cleared")
+            showSnackbar("Ingredients cleared")
         }
     }
 
@@ -204,7 +204,7 @@ class RecommendationActivity : AppCompatActivity() {
             binding.btnCuisineType.text = "Cuisine Type"
             binding.btnTogglePreferences.text = "Preferences"
             preferencesManager.resetPreferences()
-            showToast("Cuisine type and preferences have been reset")
+            showSnackbar("Cuisine type and preferences have been reset")
         }
     }
 
@@ -230,8 +230,8 @@ class RecommendationActivity : AppCompatActivity() {
         generateButton.isEnabled = false
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun showSnackbar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun observeViewModel() {

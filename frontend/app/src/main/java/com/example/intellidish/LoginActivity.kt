@@ -3,13 +3,13 @@ package com.example.intellidish
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.intellidish.api.NetworkClient
 import com.example.intellidish.utils.NetworkUtils
 import com.example.intellidish.utils.UserManager
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
@@ -33,19 +33,11 @@ class LoginActivity : AppCompatActivity() {
                     finish()
                 }.onFailure { exception ->
                     Log.e("LoginActivity", "Failed to save user info", exception)
-                    Toast.makeText(
-                        this@LoginActivity,
-                        "Failed to sign in: ${exception.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Failed to sign in: ${exception.message}", Snackbar.LENGTH_SHORT).show()
                 }
             } catch (e: IOException) {
                 Log.e("LoginActivity", "Error during sign in", e)
-                Toast.makeText(
-                    this@LoginActivity,
-                    "Error signing in. Please try again.",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Snackbar.make(findViewById(android.R.id.content), "Error signing in. Please try again.", Snackbar.LENGTH_SHORT).show()
             }
         }
     }

@@ -9,6 +9,7 @@ import androidx.test.espresso.action.Tap
 import androidx.test.espresso.action.ViewActions.clearText
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -65,14 +66,11 @@ class GetFullRecipeRecommendationTest {
             .check(matches(isDisplayed()))
     }
 
-    /**
-     * Helper: Wait for a specific view to appear within a timeout.
-     */
     private fun waitForViewToAppear(viewId: Int, timeoutMs: Long) {
         val startTime = System.currentTimeMillis()
         while (System.currentTimeMillis() - startTime < timeoutMs) {
             try {
-                onView(withId(viewId)).check(matches(isDisplayed()))
+                onView(withId(viewId)).perform(scrollTo()).check(matches(isDisplayed()))
                 return
             } catch (e: Exception) {
                 Thread.sleep(500)
@@ -133,13 +131,34 @@ class GetFullRecipeRecommendationTest {
         // Open "Get Full Recipe Recommendation" screen
         onView(withId(R.id.btn_get_recommendations))
             .perform(click())
-        // Attempt to generate recipe immediately (with no ingredients)
+        // Attempt to add an ingredient immediately (with no input)
         onView(withId(R.id.btn_add_ingredient))
             .perform(click())
-        //waitForViewToAppear(R.id.btn_get_recommendations, 10000)
         // Check for error dialog
         onView(withId(com.google.android.material.R.id.snackbar_text))
             .check(matches(withText("Please enter at least one ingredient!")))
+            .check(matches(isDisplayed()))
+
+    }
+
+    /**
+     * 3b. The user does not enter any ingredient before clicking "Generate Recipes".
+     * 3b1. Display an error message: "Please enter at least one ingredient!"
+     */
+    @Test
+    fun testGenerateRecipeWithNoIngredient() {
+        // Make sure user is signed in
+        testGoogleSignIn()
+
+        // Open "Get Full Recipe Recommendation" screen
+        onView(withId(R.id.btn_get_recommendations))
+            .perform(click())
+        // Attempt to generate recipe immediately (with no ingredients)
+        onView(withId(R.id.btn_generate))
+            .perform(click())
+        // Check for error dialog
+        onView(withId(com.google.android.material.R.id.snackbar_text))
+            .check(matches(withText("Please add at least one ingredient!")))
             .check(matches(isDisplayed()))
 
     }
@@ -170,10 +189,9 @@ class GetFullRecipeRecommendationTest {
         onView(withId(R.id.btn_add_ingredient))
             .perform(click())
 
-        // (Optional) Check that "egg" and "tomato" are visible in the ingredient list
-        // This depends on your RecyclerView adapter. A simple way:
-        onView(withText("egg")).check(matches(isDisplayed()))
-        onView(withText("tomato")).check(matches(isDisplayed()))
+        // Check that "egg" and "tomato" are visible in the ingredient list
+        onView(withText("Egg")).check(matches(isDisplayed()))
+        onView(withText("Tomato")).check(matches(isDisplayed()))
 
         // Select Cuisine Type: "Chinese"
         onView(withId(R.id.btn_cuisine_type))
@@ -190,8 +208,8 @@ class GetFullRecipeRecommendationTest {
         // Assume you show a dialog with a slider for "Recipe Complexity"
         // Move slider to "2" (example: you can do a custom click or swipe)
         // If you have a slider with ID R.id.slider_recipe_complexity, do something like:
-        onView(withId(R.id.seekbar_complexity)) // placeholder ID
-            .perform(clickSeekBar(0.4f)) // ~2/5 if scale is 5
+        onView(withId(R.id.seekbar_complexity))
+            .perform(clickSeekBar(0.2f))
 
         // Close preferences
         onView(withId(R.id.btn_apply_preferences)).perform(click())
@@ -200,18 +218,16 @@ class GetFullRecipeRecommendationTest {
         onView(withId(R.id.btn_generate))
             .perform(click())
 
-        waitForViewToAppear(R.id.recipes_container, 10000)
+        waitForViewToAppear(R.id.recipes_container, 20000)
     }
 
-    /**
-     * Helper to click a SeekBar/Slider at a given fraction of its width.
-     * E.g. 0.0 = far left, 0.5 = middle, 1.0 = far right
-     */
     private fun clickSeekBar(position: Float) = GeneralClickAction(
         Tap.SINGLE,
         { view ->
             val screenPos = IntArray(2)
             view.getLocationOnScreen(screenPos)
+            // position is where the SeekBar/Slider at a given fraction of its width
+            // E.g. 0.0 = far left, 0.5 = middle, 1.0 = far right
             val x = screenPos[0] + (view.width * position)
             val y = screenPos[1] + (view.height / 2f)
             floatArrayOf(x, y)

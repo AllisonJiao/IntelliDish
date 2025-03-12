@@ -29,6 +29,7 @@ import com.example.intellidish.utils.UserManager
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.slider.Slider
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
 import com.google.gson.Gson
@@ -64,6 +65,7 @@ class PotluckDetailActivity : AppCompatActivity() {
     private lateinit var btnTogglePreferences: MaterialButton
     private lateinit var btnBack: ExtendedFloatingActionButton
     private lateinit var btnRefresh: ExtendedFloatingActionButton
+    private lateinit var btnDeleteOrLeave: MaterialButton
 
     private var selectedImageUri: Uri? = null
     private lateinit var preferencesManager: PreferencesManager
@@ -122,6 +124,8 @@ class PotluckDetailActivity : AppCompatActivity() {
         btnBack = findViewById(R.id.btn_back)
         btnRefresh = findViewById(R.id.btn_refresh)
 
+        btnDeleteOrLeave = findViewById(R.id.btn_delete_or_leave)
+
         preferencesManager = PreferencesManager(this)
     }
 
@@ -175,6 +179,15 @@ class PotluckDetailActivity : AppCompatActivity() {
         if (currentUser.equals(potluckOwner, ignoreCase = true)) {
             layoutHostButtons.visibility = View.VISIBLE
         }
+
+        // Show Delete if Owner, Leave if Participant
+        if (currentUser.equals(potluckOwner, ignoreCase = true)) {
+            btnDeleteOrLeave.text = "Delete This Potluck"
+            btnDeleteOrLeave.setOnClickListener { deletePotluck() }
+        } else {
+            btnDeleteOrLeave.text = "Leave This Potluck"
+            btnDeleteOrLeave.setOnClickListener { leavePotluck() }
+        }
     }
 
     private fun setupRecycler() {
@@ -196,13 +209,12 @@ class PotluckDetailActivity : AppCompatActivity() {
                 ingredientAdapter.addIngredient(this, ingredientText)
                 inputField.text?.clear()
             } else {
-                Toast.makeText(this, "Please enter an ingredient first!", Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Please enter an ingredient first!", Snackbar.LENGTH_SHORT).show()
             }
         }
 
         // Generate AI
         btnGenerateAI.setOnClickListener {
-            //Toast.makeText(this, "Generating recipes", Toast.LENGTH_SHORT).show()
             updatePotluckRecipes()
         }
 
@@ -294,14 +306,14 @@ class PotluckDetailActivity : AppCompatActivity() {
                         intent.putExtra("recipe", jsonObject)
                         startActivity(intent)
                     } else {
-                        Toast.makeText(this@PotluckDetailActivity, "Failed to update recipes", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(findViewById(android.R.id.content), "Failed to update recipes", Snackbar.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
                     progressBar.visibility = View.GONE
                     generateButton.isEnabled = true
-                    Toast.makeText(this@PotluckDetailActivity, "Network error: ${e.message}", Toast.LENGTH_LONG).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Network error: ${e.message}", Snackbar.LENGTH_SHORT).show()
                 }
                 Log.e("PotluckDetailActivity", "Error updating recipes", e)
             }
@@ -336,7 +348,7 @@ class PotluckDetailActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 selectedImageUri = result.data?.data
                 selectedImageUri?.let {
-                    Toast.makeText(this, "Image Selected!", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Image Selected!", Snackbar.LENGTH_SHORT).show()
                     sendImageToBackend(it)
                 }
             }
@@ -357,7 +369,7 @@ class PotluckDetailActivity : AppCompatActivity() {
                     null
                 )
                 selectedImageUri = Uri.parse(path)
-                Toast.makeText(this, "Image Captured!", Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Image Captured!", Snackbar.LENGTH_SHORT).show()
                 selectedImageUri?.let { uri -> sendImageToBackend(uri) }
             }
         }
@@ -382,7 +394,7 @@ class PotluckDetailActivity : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 runOnUiThread {
-                    Toast.makeText(applicationContext, "Image Upload Failed", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Image Upload Failed", Snackbar.LENGTH_SHORT).show()
                 }
             }
 
@@ -419,7 +431,7 @@ class PotluckDetailActivity : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 runOnUiThread {
-                    Toast.makeText(applicationContext, "Failed to fetch recipes", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Failed to fetch recipes", Snackbar.LENGTH_SHORT).show()
                 }
             }
 
@@ -427,20 +439,12 @@ class PotluckDetailActivity : AppCompatActivity() {
                 try {
                     response.body?.string()?.let { responseStr ->
                         runOnUiThread {
-                            Toast.makeText(
-                                applicationContext,
-                                "Recipe generation started! This will be implemented soon.",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            Snackbar.make(findViewById(android.R.id.content), "Recipe generation started! This will be implemented soon.", Snackbar.LENGTH_SHORT).show()
                         }
                     }
                 } catch (e: IOException) {
                     runOnUiThread {
-                        Toast.makeText(
-                            applicationContext,
-                            "Error processing response",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Snackbar.make(findViewById(android.R.id.content), "Error processing response", Snackbar.LENGTH_SHORT).show()
                     }
                     Log.e("RecommendationActivity", "Error parsing response", e)
                 }
@@ -531,7 +535,7 @@ class PotluckDetailActivity : AppCompatActivity() {
 
         dialog.findViewById<Button>(R.id.btn_apply_preferences)?.setOnClickListener {
             savePreferences(sliders)
-            Toast.makeText(this, "Preferences saved", Toast.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(android.R.id.content), "Preferences saved", Snackbar.LENGTH_SHORT).show()
             dialog.dismiss()
         }
     }
@@ -743,7 +747,7 @@ class PotluckDetailActivity : AppCompatActivity() {
                 .create()
             dialog.show()
         } else {
-            Toast.makeText(this, "No image has been uploaded", Toast.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(android.R.id.content), "No image has been uploaded", Snackbar.LENGTH_SHORT).show()
         }
     }
 
@@ -752,7 +756,7 @@ class PotluckDetailActivity : AppCompatActivity() {
         autoRefreshJob = lifecycleScope.launch(Dispatchers.Main + SupervisorJob()) {
             while (true) {
                 try {
-                    // Quietly refresh without showing loading or toast
+                    // Quietly refresh without showing loading
                     ingredientAdapter.fetchIngredientsFromServer()
                 } catch (e: IOException) {
                     Log.e("PotluckDetail", "Auto-refresh error: ${e.message}")
@@ -777,13 +781,69 @@ class PotluckDetailActivity : AppCompatActivity() {
             try {
                 showLoading()
                 ingredientAdapter.fetchIngredientsFromServer()
-                Toast.makeText(this@PotluckDetailActivity, "Potluck details refreshed", Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Potluck details refreshed", Snackbar.LENGTH_SHORT).show()
             } catch (e: IOException) {
-                Toast.makeText(this@PotluckDetailActivity, "Error refreshing: ${e.message}", Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Error refreshing: ${e.message}", Snackbar.LENGTH_SHORT).show()
             } finally {
                 hideLoading()
             }
         }
+    }
+
+    private fun deletePotluck() {
+        AlertDialog.Builder(this)
+            .setTitle("Delete Potluck?")
+            .setMessage("Are you sure you want to permanently delete $potluckName?")
+            .setPositiveButton("Yes") { _, _ ->
+                lifecycleScope.launch {
+                    try {
+                        val response = NetworkClient.apiService.deletePotluck(potluckId)
+                        if (response.isSuccessful) {
+                            Snackbar.make(findViewById(android.R.id.content), "Potluck deleted!", Snackbar.LENGTH_SHORT).show()
+                            finish() // Close activity after deleting
+                        } else {
+                            Snackbar.make(findViewById(android.R.id.content), "Failed to delete potluck", Snackbar.LENGTH_SHORT).show()
+                        }
+                    } catch (e: IOException) {
+                        Snackbar.make(findViewById(android.R.id.content), "Network error", Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun leavePotluck() {
+        AlertDialog.Builder(this)
+            .setTitle("Leave Potluck?")
+            .setMessage("Are you sure you want to leave $potluckName?")
+            .setPositiveButton("Yes") { _, _ ->
+                val requestBody = hashMapOf("participants" to listOf(currentUserId))
+
+                lifecycleScope.launch(Dispatchers.IO) {
+                    try {
+                        Log.d("LeavePotluck", "Request body: $requestBody")
+                        val response = NetworkClient.apiService.removePotluckParticipant(potluckId, requestBody)
+
+                        withContext(Dispatchers.Main) {
+                            if (response.isSuccessful && response.body() != null) {
+                                Snackbar.make(findViewById(android.R.id.content), "You have left the potluck!", Snackbar.LENGTH_SHORT).show()
+                                finish() // Close activity after leaving
+                            } else {
+                                Snackbar.make(findViewById(android.R.id.content), "Failed to leave potluck", Snackbar.LENGTH_SHORT).show()
+                                Log.e("LeavePotluck", "Response error: ${response.errorBody()?.string()}")
+                            }
+                        }
+                    } catch (e: IOException) {
+                        withContext(Dispatchers.Main) {
+                            Snackbar.make(findViewById(android.R.id.content), "Network error: ${e.message}", Snackbar.LENGTH_SHORT).show()
+                            Log.e("LeavePotluck", "Error leaving potluck", e)
+                        }
+                    }
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     private fun showLoading() {

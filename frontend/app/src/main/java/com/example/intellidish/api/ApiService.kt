@@ -128,6 +128,10 @@ interface ApiService {
     @GET("users/{userId}/recipes")
     suspend fun getUserRecipes(@Path("userId") userId: String): Response<RecipesResponse>
 
+    @DELETE("potluck/{id}")
+    suspend fun deletePotluck(@Path("id") potluckId: String): Response<Void>
+
+
 }
 
 data class ApiResponse<T>(
