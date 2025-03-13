@@ -415,6 +415,8 @@ _(Placeholder for Jest coverage screenshot without mocks)_
 |10 |Class 'ManageFriends' with '20' functions detected. Defined threshold inside classes is set to '11' |frontend/app/src/main/java/com/example/intellidish/ManageFriends.kt
 |11 |Object 'UserManager' with '16' functions detected. Defined threshold inside objects is set to '11' |frontend/app/src/main/java/com/example/intellidish/utils/UserManager.kt
 
+---------
+
 **Category:** Error Prone  
 
 **Code Pattern:** Others - Excessive nesting leads to hidden complexity. Prefer extracting code to make it easier to understand.  
@@ -432,6 +434,8 @@ Extracting code into helper functions may actually make the code more convolutes
 |          | **Issue**                                                       | **Location in Git**                                              |
 |----------|-----------------------------------------------------------------|------------------------------------------------------------------|
 |1 |Function fetchIngredientsFromServer is nested too deeply.|frontend/app/src/main/java/com/example/intellidish/adapters/PotluckIngredientAdapter.kt
+
+---------
 
 **Category:** Security  
 
