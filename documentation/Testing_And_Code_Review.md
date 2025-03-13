@@ -388,11 +388,11 @@ _(Placeholder for Jest coverage screenshot without mocks)_
 
 ### 5.2. Unfixed Issues per Codacy Category
 
-_(Placeholder for screenshots of Codacyâ€™s Category Breakdown table in Overview)_
+![codacy_issue_categories.png](images/codacy_issue_categories.png)
 
 ### 5.3. Unfixed Issues per Codacy Code Pattern
 
-_(Placeholder for screenshots of Codacyâ€™s Issues page)_
+![codacy_code_patterns.png](images/codacy_code_patterns.png)
 
 ### 5.4. Justifications for Unfixed Issues
 **Category:** Error Prone  
