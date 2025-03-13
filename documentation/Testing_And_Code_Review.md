@@ -246,9 +246,112 @@ _(Placeholder for Jest coverage screenshot without mocks)_
     | 6. The AI API returns a possible recipe based on the collective ingredients. | Check a recipe is displayed |
 
   - **Test Logs:**
-    ```
-    [Placeholder for Espresso test execution logs]
-    ```
+   ```
+   2025-03-12 22:48:32: Launching ParticipateInPotluckTest on 'Pixel 9 API 31.
+   Running tests
+   Executing tasks: [:app:connectedDebugAndroidTest] in project /Users/angelawork/Desktop/IntelliDish-frontend
+   
+   
+   > Configure project :app
+   AGPBI: {"kind":"warning","text":"The option setting 'android.experimental.testOptions.emulatorSnapshots.maxSnapshotsForTestFailures=0' is experimental.","sources":[{}]}
+   
+   > Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+   > Task :app:preBuild UP-TO-DATE
+   > Task :app:preDebugBuild UP-TO-DATE
+   > Task :app:dataBindingMergeDependencyArtifactsDebug UP-TO-DATE
+   > Task :app:generateDebugResValues UP-TO-DATE
+   > Task :app:generateDebugResources UP-TO-DATE
+   > Task :app:mergeDebugResources UP-TO-DATE
+   > Task :app:packageDebugResources UP-TO-DATE
+   > Task :app:parseDebugLocalResources UP-TO-DATE
+   > Task :app:dataBindingGenBaseClassesDebug UP-TO-DATE
+   > Task :app:generateDebugBuildConfig UP-TO-DATE
+   > Task :app:checkDebugAarMetadata UP-TO-DATE
+   > Task :app:mapDebugSourceSetPaths UP-TO-DATE
+   > Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+   > Task :app:extractDeepLinksDebug UP-TO-DATE
+   > Task :app:processDebugMainManifest UP-TO-DATE
+   > Task :app:processDebugManifest UP-TO-DATE
+   > Task :app:processDebugManifestForPackage UP-TO-DATE
+   > Task :app:javaPreCompileDebug UP-TO-DATE
+   > Task :app:preDebugAndroidTestBuild SKIPPED
+   > Task :app:dataBindingMergeDependencyArtifactsDebugAndroidTest UP-TO-DATE
+   > Task :app:generateDebugAndroidTestResValues UP-TO-DATE
+   > Task :app:generateDebugAndroidTestResources UP-TO-DATE
+   > Task :app:mergeDebugAndroidTestResources UP-TO-DATE
+   > Task :app:dataBindingGenBaseClassesDebugAndroidTest UP-TO-DATE
+   > Task :app:processDebugAndroidTestManifest UP-TO-DATE
+   > Task :app:generateDebugAndroidTestBuildConfig UP-TO-DATE
+   > Task :app:checkDebugAndroidTestAarMetadata UP-TO-DATE
+   > Task :app:mapDebugAndroidTestSourceSetPaths UP-TO-DATE
+   > Task :app:processDebugAndroidTestResources UP-TO-DATE
+   > Task :app:javaPreCompileDebugAndroidTest UP-TO-DATE
+   > Task :app:mergeDebugShaders UP-TO-DATE
+   > Task :app:compileDebugShaders NO-SOURCE
+   > Task :app:generateDebugAssets UP-TO-DATE
+   > Task :app:mergeDebugAssets UP-TO-DATE
+   > Task :app:compressDebugAssets UP-TO-DATE
+   > Task :app:checkDebugDuplicateClasses UP-TO-DATE
+   > Task :app:desugarDebugFileDependencies UP-TO-DATE
+   > Task :app:mergeExtDexDebug UP-TO-DATE
+   > Task :app:mergeLibDexDebug UP-TO-DATE
+   > Task :app:mergeDebugJniLibFolders UP-TO-DATE
+   > Task :app:mergeDebugNativeLibs NO-SOURCE
+   > Task :app:stripDebugDebugSymbols NO-SOURCE
+   > Task :app:validateSigningDebug UP-TO-DATE
+   > Task :app:writeDebugAppMetadata UP-TO-DATE
+   > Task :app:writeDebugSigningConfigVersions UP-TO-DATE
+   > Task :app:mergeDebugAndroidTestShaders UP-TO-DATE
+   > Task :app:compileDebugAndroidTestShaders NO-SOURCE
+   > Task :app:generateDebugAndroidTestAssets UP-TO-DATE
+   > Task :app:mergeDebugAndroidTestAssets UP-TO-DATE
+   > Task :app:compressDebugAndroidTestAssets UP-TO-DATE
+   > Task :app:checkDebugAndroidTestDuplicateClasses UP-TO-DATE
+   > Task :app:desugarDebugAndroidTestFileDependencies UP-TO-DATE
+   > Task :app:mergeExtDexDebugAndroidTest UP-TO-DATE
+   > Task :app:mergeLibDexDebugAndroidTest UP-TO-DATE
+   > Task :app:mergeDebugAndroidTestJniLibFolders UP-TO-DATE
+   > Task :app:mergeDebugAndroidTestNativeLibs NO-SOURCE
+   > Task :app:stripDebugAndroidTestDebugSymbols NO-SOURCE
+   > Task :app:validateSigningDebugAndroidTest UP-TO-DATE
+   > Task :app:writeDebugAndroidTestSigningConfigVersions UP-TO-DATE
+   > Task :app:processDebugResources
+   > Task :app:compileDebugKotlin UP-TO-DATE
+   > Task :app:compileDebugJavaWithJavac UP-TO-DATE
+   > Task :app:bundleDebugClassesToCompileJar UP-TO-DATE
+   > Task :app:processDebugJavaRes UP-TO-DATE
+   > Task :app:mergeDebugJavaResource UP-TO-DATE
+   > Task :app:dexBuilderDebug UP-TO-DATE
+   > Task :app:mergeProjectDexDebug UP-TO-DATE
+   > Task :app:packageDebug UP-TO-DATE
+   > Task :app:createDebugApkListingFileRedirect UP-TO-DATE
+   
+   > Task :app:compileDebugAndroidTestKotlin
+   w: file:///Users/angelawork/Desktop/IntelliDish-frontend/app/src/androidTest/java/com/example/intellidish/ParticipateInPotluckTest.kt:15:8 'class AndroidJUnit4 : Runner, Filterable, Sortable' is deprecated. Deprecated in Java.
+   w: file:///Users/angelawork/Desktop/IntelliDish-frontend/app/src/androidTest/java/com/example/intellidish/ParticipateInPotluckTest.kt:26:10 'class AndroidJUnit4 : Runner, Filterable, Sortable' is deprecated. Deprecated in Java.
+   
+   > Task :app:compileDebugAndroidTestJavaWithJavac UP-TO-DATE
+   > Task :app:processDebugAndroidTestJavaRes UP-TO-DATE
+   > Task :app:mergeDebugAndroidTestJavaResource UP-TO-DATE
+   > Task :app:dexBuilderDebugAndroidTest
+   > Task :app:mergeProjectDexDebugAndroidTest
+   > Task :app:packageDebugAndroidTest
+   > Task :app:createDebugAndroidTestApkListingFileRedirect UP-TO-DATE
+   Connected to process 3171 on device 'emulator-5554'.
+   
+   > Task :app:connectedDebugAndroidTest
+   Starting 5 tests on Pixel_9_API_31(AVD) - 12
+   
+   Pixel_9_API_31(AVD) - 12 Tests 2/5 completed. (0 skipped) (0 failed)
+   Pixel_9_API_31(AVD) - 12 Tests 3/5 completed. (0 skipped) (0 failed)
+   Pixel_9_API_31(AVD) - 12 Tests 4/5 completed. (0 skipped) (0 failed)
+   Finished 5 tests on Pixel_9_API_31(AVD) - 12
+   
+   BUILD SUCCESSFUL in 47s
+   67 actionable tasks: 6 executed, 61 up-to-date
+   
+   Build Analyzer results available
+   ```
 
 - **Use Case: Manage Friends**
 
