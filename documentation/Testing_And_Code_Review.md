@@ -398,7 +398,7 @@ _(Placeholder for Jest coverage screenshot without mocks)_
     <img src="images/codacy_code_patterns.png" alt="Codacy Code Patterns">
 </div>
 
-`[More detailes about each individual issue can be found in section 5.4 below]`
+More detailes about each individual issue can be found in section 5.4 below.
 
 ### 5.4. Justifications for Unfixed Issues
 **Category:** Error Prone  
