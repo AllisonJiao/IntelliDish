@@ -536,7 +536,7 @@ More detailes about each individual issue can be found in section 5.4 below.
 
 **Code Pattern:** Others - Excessive nesting leads to hidden complexity. Prefer extracting code to make it easier to understand.  
 
-**Justification:**  I believe Codacy claims for the fetchIngredientsFromServer function to be nested to deeply because it counts the try-catch block and if-else statements as 2 layers of "nesting", which is technically true in that they add a layer of depth in the function, but in reality doesn't really make the function "harder to read". Other than this, the function only has a very simple double forEach loop in the following code snippet:  
+**Justification:**  I believe Codacy probably claims that the fetchIngredientsFromServer function is nested too deeply because it counts the try-catch block and if-else statements as 2 layers of "nesting", which is technically true in that they add a layer of depth in the function, but in reality doesn't really make the function "harder to read". Other than this, the function only has a very simple double forEach loop in the following code snippet:  
 ```
 potluck.participants.forEach { participant ->  
    participant.ingredients?.forEach { ing ->
