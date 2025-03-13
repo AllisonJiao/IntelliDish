@@ -95,15 +95,15 @@ For users like busy university students and employees (who often lack the time, 
         - **6**. User session data (tokens, cookies, etc.) are cleared for security purposes.  
         - **7**. The user is redirected to the login screen after logging out.
     - **Failure scenario(s):**  
-        - **1a**: Authentication service is unreachable/unavailable during login.
-          - **1a1**: Display an error message that the authentication service is unreachable/unavailable.
-          - **1a2**: Prompt the user to try again later or check online if the authentication service is down/under maintenance.  
-        - **2a**: Authentication service determines that the user's credentials are invalid.
-          - **2a1**: Display an error message that credentials are invalid.
-          - **2a2**: Prompt the user to try again.
-        - **4a**: Authentication service is unreachable/unavailable during logout, and session termination fails.
-          - **4a1**: Display an error message that the authentication service is unreachable/unavailable.
-          - **4a2**: Prompt the user to try again later or check online if the authentication service is down/under maintenance.
+        - **1a**. Authentication service is unreachable/unavailable during login.
+          - **1a1**. Display an error message that the authentication service is unreachable/unavailable.
+          - **1a2**. Prompt the user to try again later or check online if the authentication service is down/under maintenance.  
+        - **2a**. Authentication service determines that the user's credentials are invalid.
+          - **2a1**. Display an error message that credentials are invalid.
+          - **2a2**. Prompt the user to try again.
+        - **4a**. Authentication service is unreachable/unavailable during logout, and session termination fails.
+          - **4a1**. Display an error message that the authentication service is unreachable/unavailable.
+          - **4a2**. Prompt the user to try again later or check online if the authentication service is down/under maintenance.
 
 2. **Get Full Recipe Recommendation**:
     - **Description**: User provides a list of available ingredients and cuisine preferences, and the AI API returns a list of possible recipes.
@@ -126,15 +126,15 @@ For users like busy university students and employees (who often lack the time, 
         - **4**. The app sends a request to the AI API with the provided inputs.
         - **5**. The AI API returns a possible recipe to the user.
     - **Failure scenario(s)**:
-        - **3a**: The user attempts to add an ingredient without entering any text input.
+        - **3a**. The user attempts to add an ingredient without entering any text input.
             - **3a1**: Display an error message: “Please enter at least one ingredient!”
-        - **3b**: The user does not enter any ingredient before clicking "Generate Recipes".
-            - **3b1**: Display an error message: “Please add at least one ingredient!”
-        - **5a**: The AI API is unreachable/ unavailable.
-            - **5a1**: Display error message that the AI API is unreachable/ unavailable.
-            - **5a2**: Prompt the user to try again later, or check online whether the AI API is down/ under maintainence.
-        - **5b**: No recipes are possible for the provided user inputs.
-            - **5b1**: Suggest the user to use partial recipe recommendations, PotLuck with friends, or try again with different inputs instead.
+        - **3b**. The user does not enter any ingredient before clicking "Generate Recipes".
+            - **3b1**. Display an error message: “Please add at least one ingredient!”
+        - **5a**. The AI API is unreachable/ unavailable.
+            - **5a1**. Display error message that the AI API is unreachable/ unavailable.
+            - **5a2**. Prompt the user to try again later, or check online whether the AI API is down/ under maintainence.
+        - **5b**. No recipes are possible for the provided user inputs.
+            - **5b1**. Suggest the user to use partial recipe recommendations, PotLuck with friends, or try again with different inputs instead.
 
 3. **Get Partial Recipe Recommendation**:
     - **Description**: Suggest recipes where some ingredients are missing from user input, and provide possible substitutes for missing ingredients as well as possible recipes that doesn't match the user's cuisine preferences.
@@ -158,42 +158,42 @@ For users like busy university students and employees (who often lack the time, 
         - **4**. The app sends a request to the AI API with the provided inputs.
         - **5**. The AI API returns a possible recipe to the user.
     - **Failure scenario(s)**:
-        - **3a**: The user attempts to add an ingredient without entering any text input.
-            - **3a1**: Display an error message: “Please enter at least one ingredient!”
-        - **3b**: The user does not enter any ingredient before clicking "Generate Recipes".
-            - **3b1**: Display an error message: “Please add at least one ingredient!”
-        - **5a**: The AI API is unreachable/ unavailable.
-            - **5a1**: Display error message that the AI API is unreachable/ unavailable.
-            - **5a2**: Prompt the user to try again later, or check online whether the AI API is down/ under maintainence.
-        - **5b**: No recipes are possible for the provided user inputs.
-            - **5b1**: Suggest the user to use PotLuck with friends, or try again with different inputs instead.
+        - **3a**. The user attempts to add an ingredient without entering any text input.
+            - **3a1**. Display an error message: “Please enter at least one ingredient!”
+        - **3b**. The user does not enter any ingredient before clicking "Generate Recipes".
+            - **3b1**. Display an error message: “Please add at least one ingredient!”
+        - **5a**. The AI API is unreachable/ unavailable.
+            - **5a1**. Display error message that the AI API is unreachable/ unavailable.
+            - **5a2**. Prompt the user to try again later, or check online whether the AI API is down/ under maintainence.
+        - **5b**. No recipes are possible for the provided user inputs.
+            - **5b1**. Suggest the user to use PotLuck with friends, or try again with different inputs instead.
 
 4. **Participate In PotLuck**:
     - **Description**: Users collaboratively contribute available ingredients for group-based recipe recommendations while managing group creation, invitations, and participant interactions.
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
-        - **1**: The user clicks the "PotLuck" button on the main page to access the "Participate In PotLuck" feature.
-        - **2**: The app displays the following UI components:
+        - **1**. The user clicks the "PotLuck" button on the main page to access the "Participate In PotLuck" feature.
+        - **2**. The app displays the following UI components:
             - ALL JOINED POTLUCK (button)
             - CREATE NEW POTLUCK (button)
             - Discover Existing PotLuck section
             - Text Field labeled "Search for PotLucks"
             - JOIN SELECTED POTLUCK (button)
             - Existing PotLucks Display (large rectangular container for existing potlucks)
-        - **3**: The user starts a PotLuck and adds their friends to create a group.
+        - **3**. The user starts a PotLuck and adds their friends to create a group.
         - **4**. Each user independently adds or removes their ingredient contributions and sets cuisine type and preferences within the PotLuck group. Live updates ensure real-time synchronization across all participants.
         - **5**. A request is sent to the AI API based on the combined user inputs.
         - **6**. The AI API returns a list of possible recipes based on the collective ingredients.
     - **Failure scenario(s)**:
-        - **3a**: The user clicks "CREATE POTLUCK" without entering a potluck name.
-            - **3a1**: Display an error message: “Please enter a potluck name!”
-        - **4a**: A user attempts to delete another user’s contributions.
-            - **4a1**: Display an error message stating that users can only modify their own contributions.
-        - **6a**: The AI API is unreachable/unavailable.
-            - **6a1**: Display an error message that the AI API is unreachable/unavailable.
-            - **6a2**: Prompt the users to try again later or check online whether the AI API is down/under maintenance.
-        - **6b**: No recipes are possible for the provided user inputs.
-            - **6b1**: Suggest the users use partial recipe recommendations or modify their ingredient list.
+        - **3a**. The user clicks "CREATE POTLUCK" without entering a potluck name.
+            - **3a1**. Display an error message: “Please enter a potluck name!”
+        - **4a**. A user attempts to delete another user’s contributions.
+            - **4a1**. Display an error message stating that users can only modify their own contributions.
+        - **6a**. The AI API is unreachable/unavailable.
+            - **6a1**. Display an error message that the AI API is unreachable/unavailable.
+            - **6a2**. Prompt the users to try again later or check online whether the AI API is down/under maintenance.
+        - **6b**. No recipes are possible for the provided user inputs.
+            - **6b1**. Suggest the users use partial recipe recommendations or modify their ingredient list.
 
 5. **Manage Recipes**:
     - **Description**: Users can add or remove recipes.
@@ -203,10 +203,10 @@ For users like busy university students and employees (who often lack the time, 
         - **2**. System asks the user for confirmation of recipe removal.
         - **3**. The user's list of saved recipes is updated with the addition/ removal of a recipe.
     - **Failure scenario(s)**:
-        - **1a**: The addition of a recipe fails due to issues with accessing past query data.
-            - **1a1**: Display error message that the addition failed, and prompt the user to try again. Removal of recipes do not fail.
-        - **1b**: The user attempts to add a duplicate recipe.
-            - **1b1**: Display error message that the recipe is already in the user's saved recipes list.
+        - **1a**. The addition of a recipe fails due to issues with accessing past query data.
+            - **1a1**. Display error message that the addition failed, and prompt the user to try again. Removal of recipes do not fail.
+        - **1b**. The user attempts to add a duplicate recipe.
+            - **1b1**. Display error message that the recipe is already in the user's saved recipes list.
 
 6. **Manage Friends**:
     - **Description**: Users can add or remove friends, with whom they can PotLuck with.
@@ -221,14 +221,14 @@ For users like busy university students and employees (who often lack the time, 
         - **4**. System asks the user for confirmation of friend removal.
         - **5**. The user's friend list is updated with the addition/ removal of a friend.
     - **Failure scenario(s)**:
-        - **3a**: The friend addition fails because the entered username is invalid/ cannot be found.
-            - **3a1**: Display error message for the user to double check that the entered username for friend addition is correct, and prompt the user to try again. Removal of friends do not fail.
-        - **3b**: The user attempts to add themselves as a friend.
-            - **3b1**: Display error message that the user cannot add himself/ herself as a friend.
-        - **3c**: The user attempts to add an existing friend as a friend again.
-            - **3c1**: Display error message that the user is already friends with the existing friend.
-        - **5a**: The user's friend list cannot be updated due to server issues.
-            - **5a1**: Display error message that there are backend server issues.
+        - **3a**. The friend addition fails because the entered username is invalid/ cannot be found.
+            - **3a1**. Display error message for the user to double check that the entered username for friend addition is correct, and prompt the user to try again. Removal of friends do not fail.
+        - **3b**. The user attempts to add themselves as a friend.
+            - **3b1**. Display error message that the user cannot add himself/ herself as a friend.
+        - **3c**. The user attempts to add an existing friend as a friend again.
+            - **3c1**. Display error message that the user is already friends with the existing friend.
+        - **5a**. The user's friend list cannot be updated due to server issues.
+            - **5a1**. Display error message that there are backend server issues.
 
 ### **3.4. Screen Mockups**
 These screen mockups illustrate the user interfaces for the Full Recipe Recommendation, Partial Recipe Recommendation, and Participate in PotLuck use cases.
