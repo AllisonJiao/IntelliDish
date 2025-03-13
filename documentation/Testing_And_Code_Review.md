@@ -417,16 +417,17 @@ _(Placeholder for screenshots of Codacyâ€™s Issues page)_
 
 **Category:** Error Prone  
 
-**Code Pattern:** Others
+**Code Pattern:** Others - Excessive nesting leads to hidden complexity. Prefer extracting code to make it easier to understand.  
 
 **Justification:**  I believe Codacy claims for the fetchIngredientsFromServer function to be nested to deeply because it counts the try-catch block and if-else statements as 2 layers of "nesting", which is technically true in that they add a layer of depth in the function, but in reality doesn't really make the function "harder to read". Other than this, the function only has a very simple double forEach loop in the following code snippet:  
 ```
-               potluck.participants.forEach { participant ->  
-                    participant.ingredients?.forEach { ing ->
-                        newIngredients.add(PotluckIngredient(ing, participant.user.name))
-                    }
-                }
+potluck.participants.forEach { participant ->  
+   participant.ingredients?.forEach { ing ->
+      newIngredients.add(PotluckIngredient(ing, participant.user.name))
+   }
+}
 ```
+Extracting code into helper functions may actually make the code more convolutes and difficult to read.  
 
 |          | **Issue**                                                       | **Location in Git**                                              |
 |----------|-----------------------------------------------------------------|------------------------------------------------------------------|
@@ -434,7 +435,7 @@ _(Placeholder for screenshots of Codacyâ€™s Issues page)_
 
 **Category:** Security  
 
-**Code Pattern:** Others  
+**Code Pattern:** Others - Insecure dependencies detection (critical and high severity)  
 
 **Justification:**  
 
