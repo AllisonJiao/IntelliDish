@@ -125,7 +125,7 @@ _(Placeholder for Jest coverage screenshot without mocks)_
     | 3b1. Display an error message: “Please add at least one ingredient!” | Check dialog is opened with text: "Please add at least one ingredient!” |
     | 3. The user enters a list of available ingredients and selects cuisine preferences. | Input "egg" in text field<br> Click "Add Ingredient" button<br> Input "tomato" in text field<br> Click "Add Ingredient" button<br> Check "egg" and "tomato" are added to the ingredient list recycler view<br> Click "Cuisine Type"<br> Select "Chinese"<br> Click "Apply"<br> Click "Preferences"<br> Change "Recipe Complexity" to "2" |
     | 4. The app sends a request to the AI API with the provided inputs. | Click "Generate Recipes" |
-    | 5. The AI API returns a possible recipe to the user. | Requires backend API (not tested) |
+    | 5. The AI API returns a possible recipe to the user. | Check a recipe is displayed |
     
 
   - **Test Logs:**
@@ -237,7 +237,12 @@ _(Placeholder for Jest coverage screenshot without mocks)_
 
     | **Scenario Steps** | **Test Case Steps** |
     | ------------------ | ------------------- |
-    | ...                | ...                 |
+    | 1. The user clicks the "PotLuck" button on the main page to access the "Participate In PotLuck" feature. | Open "PotLuck" page |
+    | 2. The app displays the following UI components:<br> - ALL JOINED POTLUCK (button)<br> - CREATE NEW POTLUCK (button)<br> - Discover Existing PotLuck section<br> - Text Field labeled "Search for PotLucks"<br> - JOIN SELECTED POTLUCK (button)<br> - Existing PotLucks Display (large rectangular container for existing potlucks) | Check all UI components are present |
+    | 3. The user starts a PotLuck and adds their friends to create a group. | Click "CREATE NEW POTLUCK"<br>Input "Family potluck" in text field<br>Click "Add Participants" to unroll the section<br>Click on the friend's name to select<br>Click "Add Participant"<br>Check the friend is added |
+    | 4. Each user independently adds or removes their ingredient contributions and sets cuisine type and preferences within the PotLuck group. Live updates ensure real-time synchronization across all participants. | Click "ALL JOINED POTLUCKS"<br>Click "Family potluck"<br>Input "bacon" in text field<br>Input "egg" in text field<br>Input "tomato" in text field<br>Click "x" beside "Bacon" to delete it<br>Check only "Egg" and "Tomato" are displayed<br>Click "Cuisine Type"<br>Select "French"<br>Click "APPLY"<br>Click "Preferences"<br>Change "Nutritional Value" to "5"<br>Click "APPLY" |
+    | 5. A request is sent to the AI API based on the combined user inputs. | Click "Generate Recipes" |
+    | 6. The AI API returns a possible recipe based on the collective ingredients. | Check a recipe is displayed |
 
   - **Test Logs:**
     ```
