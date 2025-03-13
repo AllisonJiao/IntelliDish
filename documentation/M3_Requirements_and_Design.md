@@ -176,7 +176,6 @@ For users like busy university students and employees (who often lack the time, 
         - **2**. The app displays the following UI components:
             - ALL JOINED POTLUCK (button)
             - CREATE NEW POTLUCK (button)
-            - Discover Existing PotLuck section
             - Text Field labeled "Search for PotLucks"
             - JOIN SELECTED POTLUCK (button)
             - Existing PotLucks Display (large rectangular container for existing potlucks)
