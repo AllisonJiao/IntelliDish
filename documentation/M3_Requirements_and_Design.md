@@ -192,8 +192,6 @@ For users like busy university students and employees (who often lack the time, 
         - **6a**. The AI API is unreachable/unavailable.
             - **6a1**. Display an error message that the AI API is unreachable/unavailable.
             - **6a2**. Prompt the users to try again later or check online whether the AI API is down/under maintenance.
-        - **6b**. No recipes are possible for the provided user inputs.
-            - **6b1**. Suggest the users use partial recipe recommendations or modify their ingredient list.
 
 5. **Manage Recipes**:
     - **Description**: Users can add or remove recipes.
