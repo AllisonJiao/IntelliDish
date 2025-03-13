@@ -32,6 +32,9 @@ Mar 9:
 Mar 10:
 - Revised Section 3.3 to clarify the flow of "Manage Friends" for E2E testing purposes.
 
+Mar 12:
+- Revised Section 3.3 to clarify the flow of "Participate In PotLuck" for E2E testing purposes.
+
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
 
@@ -169,21 +172,28 @@ For users like busy university students and employees (who often lack the time, 
     - **Description**: Users collaboratively contribute available ingredients for group-based recipe recommendations while managing group creation, invitations, and participant interactions.
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
-        - **1**. A user starts a PotLuck and invites their friends to create a group.
-        - **2**. Each user independently adds or removes their ingredient contributions and sets cuisine type and preferences within the PotLuck group. Live updates ensure real-time synchronization across all participants.
-        - **3**. A request is sent to the AI API based on the combined user inputs.
-        - **4**. The AI API returns a list of possible recipes based on the collective ingredients.
+        - **1**: The user clicks the "PotLuck" button on the main page to access the "Participate In PotLuck" feature.
+        - **2**: The app displays the following UI components:
+            - ALL JOINED POTLUCK (button)
+            - CREATE NEW POTLUCK (button)
+            - Discover Existing PotLuck section
+            - Text Field labeled "Search for PotLucks"
+            - JOIN SELECTED POTLUCK (button)
+            - Existing PotLucks Display (large rectangular container for existing potlucks)
+        - **3**: The user starts a PotLuck and adds their friends to create a group.
+        - **4**. Each user independently adds or removes their ingredient contributions and sets cuisine type and preferences within the PotLuck group. Live updates ensure real-time synchronization across all participants.
+        - **5**. A request is sent to the AI API based on the combined user inputs.
+        - **6**. The AI API returns a list of possible recipes based on the collective ingredients.
     - **Failure scenario(s)**:
-        - **1a**: Group creation failed.
-            - **1a1**: Display an error message indicating the reason for failure (e.g., duplicate PotLuck name, server issues, or invalid invitations).
-            - **1a2**: Prompt the user to retry with a different name or check server status.
-        - **2a**: A user attempts to delete another user’s contributions.
-            - **2a1**: Display an error message stating that users can only modify their own contributions.
-        - **3a**: The AI API is unreachable/unavailable.
-            - **3a1**: Display an error message that the AI API is unreachable/unavailable.
-            - **3a2**: Prompt the users to try again later or check online whether the AI API is down/under maintenance.
-        - **4a**: No recipes are possible for the provided user inputs.
-            - **4a1**: Suggest the users use partial recipe recommendations or modify their ingredient list.
+        - **3a**: The user clicks "CREATE POTLUCK" without entering a potluck name.
+            - **3a1**: Display an error message: “Please enter a potluck name!”
+        - **4a**: A user attempts to delete another user’s contributions.
+            - **4a1**: Display an error message stating that users can only modify their own contributions.
+        - **6a**: The AI API is unreachable/unavailable.
+            - **6a1**: Display an error message that the AI API is unreachable/unavailable.
+            - **6a2**: Prompt the users to try again later or check online whether the AI API is down/under maintenance.
+        - **6b**: No recipes are possible for the provided user inputs.
+            - **6b1**: Suggest the users use partial recipe recommendations or modify their ingredient list.
 
 5. **Manage Recipes**:
     - **Description**: Users can add or remove recipes.
