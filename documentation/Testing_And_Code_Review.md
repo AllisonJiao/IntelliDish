@@ -432,7 +432,6 @@ _(Placeholder for screenshots of Codacyâ€™s Issues page)_
 
 |          | **Issue**                                                       | **Location in Git**                                              |
 |----------|-----------------------------------------------------------------|------------------------------------------------------------------|
-|1 |Insecure dependency npm/hoek@2.16.3 (CVE-2020-36604: hapi/hoek: Prototype Pollution in @hapi/hoek) (no fix available)|backend_updated/
-package-lock.json
+|1 |Insecure dependency npm/hoek@2.16.3 (CVE-2020-36604: hapi/hoek: Prototype Pollution in @hapi/hoek) (no fix available)|backend_updated/package-lock.json
 
 
