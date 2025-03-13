@@ -494,6 +494,9 @@ _(Placeholder for Jest coverage screenshot without mocks)_
 ### 5.1. Commit Hash Where Codacy Ran
 
 `[221f6f741d2a9e5d164effe2844f193f098cc88a]`
+<div style="border: 2px solid black; display: inline-block;">
+    <img src="images/codacy_grade.png" alt="Codacy Grade">
+</div>
 
 ### 5.2. Unfixed Issues per Codacy Category
 
