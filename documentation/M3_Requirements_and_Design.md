@@ -36,7 +36,8 @@ Mar 12:
 - Revised Section 3.3 to clarify the flow of "Participate In PotLuck" for E2E testing purposes.
 
 Mar 13:
-- Revised Section 3.5 to modify the non-functional requirements of data security.
+- Revised Section 3.5 to more clearly introduce the non-functional requirements of data security and performance.
+- Revised Section 4.7 to change the non-functional requirements design for data security and performance.
 
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
@@ -251,8 +252,8 @@ These screen mockups illustrate the user interfaces for the Full Recipe Recommen
     - **Justification**: IntelliDish aims to provide an intuitive, user-friendly interface with a low learning curve to attract and retain users of varying technological backgrounds. Limiting the number of clicks required for common actions helps streamline user workflows, reduce cognitive load, and enhance the overall user experience.
 
 3. **Performance**
-    - **Description**: 90% of user recipe queries should receive a response in less than 5 seconds. This accounts for worst-case scenarios such as heavy backend loads, API call failures, and/or extremely long or complex ingredient lists.
-    - **Justification**: IntelliDish should aim to maintain fast response times to enhance user experience, increase retention, and sustain engagement. According to [this article](https://odown.com/blog/what-is-a-good-api-response-time/?utm_source=chatgpt.com#conclusion), users begin to perceive delays beyond 1 second, and response times exceeding 5 seconds are associated with increased frustration and potential abandonment. Industry best practices suggest that API response times between 2 to 5 seconds are tolerable for non-critical applications but should be optimized for user satisfaction.
+    - **Description**: 90% of user recipe queries should receive a response in less than 10 seconds for AI recipe generation. This accounts for worst-case scenarios such as heavy backend loads, API call failures, and/or extremely long or complex ingredient lists.
+    - **Justification**: IntelliDish should aim to maintain fast response times to enhance user experience, increase retention, and sustain engagement. According to [this article](https://odown.com/blog/what-is-a-good-api-response-time/?utm_source=chatgpt.com#conclusion), users begin to perceive delays beyond 1 second, and response times exceeding 5 seconds are associated with increased frustration and potential abandonment. Industry best practices generally recommend 2–5 second targets for non-critical applications, but the added complexity of AI recipe generation—plus occasional worst-case conditions—makes a 10-second upper bound a pragmatic performance requirement.
 
 
 ## 4. Designs Specification
@@ -517,8 +518,7 @@ These screen mockups illustrate the user interfaces for the Full Recipe Recommen
 2. [**Usability/Ease of Use**](#nfr1)
     - **Validation**: Conduct usability tests with diverse user groups to ensure that key actions—such as recipe searching or PotLuck creation—can be completed in no more than four clicks, aligning with usability research on optimal interaction limits. Implement contextual tooltips and real-time error handling to guide users and enhance overall ease of use and task efficiency.
 3. [**Performance**](nfr1)
-    - **Validation**: Use stress testing tools like JMeter or Locust to simulate real-world usage scenarios. Optimize performance by implementing caching, query tuning, and load balancing to ensure 90% of API requests complete within 5 seconds under expected loads.
-
+    - **Validation**: Perform a stress test specifically against the AI-driven endpoint (/recipes/AI) using large ingredient lists. For example, using 20 sequential calls to the endpoint (including potential error responses) and measure how long all calls take. The requirement is for at least 90% of the requests to be completed within 10 seconds, which accommodates heavy backend loads and large ingredient lists. If this threshold is met, we consider performance acceptable for worst-case scenarios. If not, we investigate optimizations (e.g., caching, query tuning, concurrency management) until the test consistently passes.
 
 ### **4.8. Main Project Complexity Design - Levenshtein Distance Algorithm for Fuzzy Search**
 **Description:**
