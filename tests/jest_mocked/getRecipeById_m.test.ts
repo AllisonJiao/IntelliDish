@@ -20,6 +20,10 @@ jest.mock("../../controllers/RecipesController", () => {
 });
 
 describe("Mocked: GET /recipes/id/:id", () => {
+    // Input: A GET request with an invalid MongoDB ID
+    // Expected status code: 400
+    // Expected behavior: Returns validation error for invalid ID format
+    // Expected output: An object with an 'error' property
     test("getRecipeById throws with invalid ID", async () => {
         const controller = new RecipesController();
         
@@ -38,6 +42,10 @@ describe("Mocked: GET /recipes/id/:id", () => {
         expect(mockRes.status).toHaveBeenCalledWith(400);
     });
 
+    // Input: A GET request with a valid MongoDB ID format
+    // Expected status code: 500 (forced error from mock)
+    // Expected behavior: Throws error from mocked controller
+    // Expected output: An error response
     test("getRecipeById throws with valid ID format", async () => {
         const validId = new mongoose.Types.ObjectId().toString();
         

@@ -19,6 +19,10 @@ jest.mock("../../controllers/IngredientsController", () => {
 });
 
 describe("Mocked: POST /ingredients", () => {
+    // Input: A POST request with missing required name field
+    // Expected status code: 400
+    // Expected behavior: Returns validation error for missing name
+    // Expected output: An object with an 'error' property
     test("postNewIngredient throws with missing name", async () => {
         const controller = new IngredientsController();
         
@@ -37,6 +41,10 @@ describe("Mocked: POST /ingredients", () => {
         expect(mockRes.status).toHaveBeenCalledWith(400);
     });
 
+    // Input: A POST request with valid ingredient data
+    // Expected status code: 500 (forced error from mock)
+    // Expected behavior: Throws error from mocked controller
+    // Expected output: An error response
     test("postNewIngredient throws with valid data", async () => {
         const res = await request(app)
             .post('/ingredients')

@@ -157,6 +157,10 @@ jest.mock('../../routes/IngredientsRoutes', () => ({
 
 describe("Mocked: User Basic Operations", () => {
     describe("GET /users", () => {
+        // Input: A valid GET request to the /users endpoint
+        // Expected status code: 500 (forced error from mock)
+        // Expected behavior: Throws error from mocked controller
+        // Expected output: An error response
         test("getUsers throws error", async () => {
             const res = await request(app)
                 .get('/users')
@@ -165,12 +169,20 @@ describe("Mocked: User Basic Operations", () => {
     });
 
     describe("GET /users/id/:id", () => {
+        // Input: A GET request with an invalid MongoDB ID format
+        // Expected status code: 400
+        // Expected behavior: Returns validation error for invalid ID format
+        // Expected output: An object with an 'error' property
         test("getUserById throws with invalid ID", async () => {
             const res = await request(app)
                 .get('/users/id/invalid-id')
                 .expect(400);
         });
 
+        // Input: A GET request with a valid MongoDB ID format
+        // Expected status code: 500 (forced error from mock)
+        // Expected behavior: Throws error from mocked controller
+        // Expected output: An error response
         test("getUserById throws with valid ID format", async () => {
             const validId = new mongoose.Types.ObjectId().toString();
             const res = await request(app)
@@ -180,6 +192,10 @@ describe("Mocked: User Basic Operations", () => {
     });
 
     describe("GET /users/email/:email", () => {
+        // Input: A GET request with a valid email format
+        // Expected status code: 500 (forced error from mock)
+        // Expected behavior: Throws error from mocked controller
+        // Expected output: An error response
         test("getUserByEmail throws with valid email", async () => {
             const res = await request(app)
                 .get('/users/email/test@example.com')
@@ -188,6 +204,10 @@ describe("Mocked: User Basic Operations", () => {
     });
 
     describe("POST /users", () => {
+        // Input: A POST request with missing required fields
+        // Expected status code: 400
+        // Expected behavior: Returns validation error for missing fields
+        // Expected output: An object with an 'error' property
         test("createNewUser throws with missing data", async () => {
             const res = await request(app)
                 .post('/users')
@@ -195,6 +215,10 @@ describe("Mocked: User Basic Operations", () => {
                 .expect(400);
         });
 
+        // Input: A POST request with valid user data
+        // Expected status code: 500 (forced error from mock)
+        // Expected behavior: Throws error from mocked controller
+        // Expected output: An error response
         test("createNewUser throws with valid data", async () => {
             const res = await request(app)
                 .post('/users')
@@ -207,6 +231,10 @@ describe("Mocked: User Basic Operations", () => {
     });
 
     describe("PUT /users/:id/name", () => {
+        // Input: A PUT request with an invalid MongoDB ID
+        // Expected status code: 400
+        // Expected behavior: Returns validation error for invalid ID format
+        // Expected output: An object with an 'error' property
         test("updateUserName throws with invalid ID", async () => {
             const res = await request(app)
                 .put('/users/invalid-id/name')
@@ -214,6 +242,10 @@ describe("Mocked: User Basic Operations", () => {
                 .expect(400);
         });
 
+        // Input: A PUT request with a valid MongoDB ID format
+        // Expected status code: 500 (forced error from mock)
+        // Expected behavior: Throws error from mocked controller
+        // Expected output: An error response
         test("updateUserName throws with valid ID format", async () => {
             const validId = new mongoose.Types.ObjectId().toString();
             const res = await request(app)
@@ -224,12 +256,20 @@ describe("Mocked: User Basic Operations", () => {
     });
 
     describe("DELETE /users/:id", () => {
+        // Input: A DELETE request with an invalid MongoDB ID
+        // Expected status code: 400
+        // Expected behavior: Returns validation error for invalid ID format
+        // Expected output: An object with an 'error' property
         test("deleteUserAccount throws with invalid ID", async () => {
             const res = await request(app)
                 .delete('/users/invalid-id')
                 .expect(400);
         });
 
+        // Input: A DELETE request with a valid MongoDB ID format
+        // Expected status code: 500 (forced error from mock)
+        // Expected behavior: Throws error from mocked controller
+        // Expected output: An error response
         test("deleteUserAccount throws with valid ID format", async () => {
             const validId = new mongoose.Types.ObjectId().toString();
             const res = await request(app)

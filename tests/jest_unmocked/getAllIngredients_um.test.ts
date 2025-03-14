@@ -10,8 +10,8 @@ const agent = new https.Agent({ rejectUnauthorized: false });
 describe("Unmocked: GET /ingredients", ()=>{
     // Input: A valid GET request to the /ingredients endpoint
     // Expected status code: 200
-    // Expected behavior: Returns a list of ingredients
-    // Expected output: An array of ingredient objects, each with _id, name, category, and quantity properties
+    // Expected behavior: Returns a list of all ingredients in the database
+    // Expected output: An array of ingredient objects, each containing _id, name, category, and quantity properties
     test("get all ingredients", async()=>{
         const res = await request(API_BASE_URL).get("/ingredients").agent(agent);
         expect(res.status).toBe(200);
