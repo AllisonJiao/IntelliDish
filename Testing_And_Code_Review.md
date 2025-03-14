@@ -90,26 +90,73 @@ _(Placeholder for Jest coverage screenshot without mocks)_
 
 | **Non-Functional Requirement**  | **Location in Git**                              |
 | ------------------------------- | ------------------------------------------------ |
-| **Performance (Response Time)** | [`tests/nonfunctional/response_time.test.js`](#) |
-| **Chat Data Security**          | [`tests/nonfunctional/chat_security.test.js`](#) |
+| **Performance** | [`tests/jest_nonFunctionalReq/performance.test.ts`](#) |
+| **Data Security**          | [`tests/jest_nonFunctionalReq/security.test.ts`](#) |
 
 ### 3.2. Test Verification and Logs
 
-- **Performance (Response Time)**
+- **Performance**
 
-  - **Verification:** This test suite simulates multiple concurrent API calls using Jest along with a load-testing utility to mimic real-world user behavior. The focus is on key endpoints such as user login and study group search to ensure that each call completes within the target response time of 2 seconds under normal load. The test logs capture metrics such as average response time, maximum response time, and error rates. These logs are then analyzed to identify any performance bottlenecks, ensuring the system can handle expected traffic without degradation in user experience.
+  - **Verification:**
+  This test suite focuses on the AI-driven recipe endpoint (POST /recipes/AI) to capture performance under worst-case conditions, such as large ingredient lists and occasional heavy loads. We send multiple sequential calls (e.g., 20 calls) in a single test run and measure how many complete in under 10 seconds. Our acceptance criterion is that 90% of calls finish below this threshold, ensuring acceptable user experience even in resource-intensive scenarios.
   - **Log Output**
     ```
-    [Placeholder for response time test logs]
+       -------- Performance Results (All Responses) --------
+         at tests/jest_nonFunctionalReq/performance.test.ts:58:15
+     console.log
+       Total calls:       20
+         at tests/jest_nonFunctionalReq/performance.test.ts:59:15
+     console.log
+       Under 10s count:    19
+         at tests/jest_nonFunctionalReq/performance.test.ts:60:15
+     console.log
+       Under 10s ratio:    95.0%
+         at tests/jest_nonFunctionalReq/performance.test.ts:61:15
+     console.log
+       Average time (ms): 6340.70
+         at tests/jest_nonFunctionalReq/performance.test.ts:62:15
+     console.log
+       -----------------------------------------------------
+         at tests/jest_nonFunctionalReq/performance.test.ts:63:15
+    PASS  tests/jest_nonFunctionalReq/performance.test.ts (128.541 s)
+     Performance: All /recipes/AI calls, measure ratio <10s
+       ✓ At least 90% of 20 calls respond under 10s (including errors) (126850 ms)
+      Test Suites: 1 passed, 1 total
+      Tests:       1 passed, 1 total
+      Snapshots:   0 total
+      Time:        128.587 s, estimated 205 s
+      Ran all test suites matching /performance.test.ts/i.
     ```
 
-- **Chat Data Security**
-  - **Verification:** ...
+- **Data Security**
+  - **Verification:**
+  In these tests, we ensure that sensitive user data (e.g., passwords, tokens, private notes) is never returned by the endpoints. The suite includes tests like:
+     - ``GET /users/:id or GET /users/:id/friends``: verifying no password or tokens fields appear in the response.
+     - ``GET /users/:id/recipes``: confirming that privateNotes or other private fields are omitted.
+     - Rejecting malformed input (e.g., invalid user IDs) or unauthorized deletions with correct status codes.
+Any endpoint that could potentially leak sensitive info is tested by performing real or mocked calls (depending on the test setup) and asserting that the response body does not contain disallowed fields.
   - **Log Output**
     ```
-    [Placeholder for chat security test logs]
+    PASS  tests/jest_nonFunctionalReq/security.test.ts (9.789 s)
+     Unmocked Security Tests (Live API)
+       Create User and Verify No Sensitive Fields
+         ✓ POST /users with valid data => 201, no 'password' or 'tokens' (466 ms)
+         ✓ POST /users with missing fields => 400 (287 ms)
+         ✓ GET /users/email/:email => ensures no 'password' or 'tokens' (1250 ms)
+       Friend List Security
+         ✓ Create a friend user, then add to main user => no 'password' in final friend list (2117 ms)
+       Saved Recipes Security
+         ✓ GET /users/:id/recipes => no 'privateNotes' (1457 ms)
+       Additional Data Security Checks
+         ✓ GET /users/:id with invalid ID => 400 (578 ms)
+         ✓ DELETE /users/:id => unauthorized if no auth => 404 (570 ms)
+         ✓ GET /users/email/:email => ensures no 'password' or 'tokens' (832 ms)
+      Test Suites: 1 passed, 1 total
+      Tests:       8 passed, 8 total
+      Snapshots:   0 total
+      Time:        9.844 s
+      Ran all test suites matching /security.test.ts/i.
     ```
-
 ---
 
 ## 4. Front-end Test Specification
