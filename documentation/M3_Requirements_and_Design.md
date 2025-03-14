@@ -35,6 +35,9 @@ Mar 10:
 Mar 12:
 - Revised Section 3.3 to clarify the flow of "Participate In PotLuck" for E2E testing purposes.
 
+Mar 13:
+- Revised Section 3.5 to modify the non-functional requirements of data security.
+
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
 
