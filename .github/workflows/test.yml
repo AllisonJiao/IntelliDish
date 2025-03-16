@@ -21,6 +21,14 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Create .env File
+        run: |
+          touch .env
+          echo "PORT=${{ secrets.TEST_PORT }}" >> .env
+          echo "DB_URI=${{ secrets.TEST_DB_URI }}" >> .env
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
+          chmod 600 .env
+
       - name: Run Jest Tests with Coverage
         run: npm test -- --coverage
 
