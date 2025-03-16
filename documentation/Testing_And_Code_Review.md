@@ -613,7 +613,7 @@ Extracting code into helper functions may actually make the code more convolutes
 
 **Code Pattern:** Others - Insecure dependencies detection (critical and high severity)  
 
-**Justification:**  
+**Justification:** We decided to not fix this issue because there is no official patch available, and as Codacy indicates in the error message, there is “no fix available”. Completely switching to a new library at this point in the project could cause serious issues that break the functionality of our app, and we have deemed it to be not worth the risk. However, we will keep an eye on possible future updates that could patch this issue.
 
 |          | **Issue**                                                       | **Location in Git**                                              |
 |----------|-----------------------------------------------------------------|------------------------------------------------------------------|
