@@ -72,6 +72,7 @@
 ### 2.2. GitHub Actions Configuration Location
 
 `~/.github/workflows/test.yml`
+The pipeline currently does not work but the test will run successfully on your local machine. However it might fail some tests if you don't have OPENAI_API, because it is in our .env file. We will make sure the workflow can run normally ASAP. If you need our OPENAI_API, we can send you for testing.
 
 ### 2.3. Jest Coverage Report Screenshots With Mocks
 
