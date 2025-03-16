@@ -10,17 +10,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      mongo:
-        image: mongo:latest
-        ports:
-          - 27017:27017
-        options: >-
-          --health-cmd "mongosh --eval 'db.runCommand({ ping: 1 })'"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -33,26 +22,19 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Wait for MongoDB to be Ready
-        run: |
-          echo "Waiting for MongoDB to be ready..."
-          for i in {1..20}; do
-            nc -z mongo 27017 && echo "✅ MongoDB is ready!" && exit 0
-            echo "Waiting for MongoDB... ($i)"
-            sleep 3
-          done
-          echo "❌ MongoDB did not start in time." && exit 1
-
       - name: Create .env File
         run: |
           touch .env
           echo "PORT=${{ secrets.PORT }}" >> .env
-          echo "DB_URI=${{ secrets.DB_URI }}" >> .env
+          echo "DB_URI=${{ secrets.AWS_DB_URI }}" >> .env  # AWS MongoDB URI
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
           chmod 600 .env
 
-      - name: Debug Environment Variables
-        run: cat .env | sed 's/=.*/=********/' # Mask secrets
+      - name: Debug MongoDB Connection
+        run: |
+          echo "Checking MongoDB connection..."
+          echo "DB_URI=${{ secrets.AWS_DB_URI }}" | sed 's/:.*@/:******@/'  # Mask password
+          npm run db:check  # Optional: Add a script to test DB connection
 
       - name: Run Jest Tests with Coverage
         run: npm test -- --coverage
