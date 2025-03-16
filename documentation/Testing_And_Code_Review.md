@@ -75,11 +75,11 @@
 
 ### 2.3. Jest Coverage Report Screenshots With Mocks
 
-![mocked](../images/mocked.png)
+![mocked](./images/mocked.png)
 
 ### 2.4. Jest Coverage Report Screenshots Without Mocks
 
-![unmocked](../images/unmocked.png)
+![unmocked](./images/unmocked.png)
 
 ---
 
