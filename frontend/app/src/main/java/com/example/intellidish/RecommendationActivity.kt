@@ -248,7 +248,7 @@ class RecommendationActivity : AppCompatActivity() {
                 is Result.Error -> {
                     binding.progressBar.visibility = View.GONE
                     binding.btnGenerate.isEnabled = true
-                    Toast.makeText(this, "Error: ${result.exception.message}", Toast.LENGTH_LONG).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Error: ${result.exception.message}", Snackbar.LENGTH_SHORT).show()
                 }
                 is Result.Loading -> {
                     binding.progressBar.visibility = View.VISIBLE
@@ -319,7 +319,7 @@ class RecommendationActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 selectedImageUri = result.data?.data
                 selectedImageUri?.let {
-                    Toast.makeText(this, "Image Selected!", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Image Selected!", Snackbar.LENGTH_SHORT).show()
                     sendImageToBackend(it)
                 }
             }
@@ -339,7 +339,7 @@ class RecommendationActivity : AppCompatActivity() {
                     null
                 )
                 selectedImageUri = Uri.parse(path)
-                Toast.makeText(this, "Image Captured!", Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Image Captured!", Snackbar.LENGTH_SHORT).show()
                 selectedImageUri?.let { uri -> sendImageToBackend(uri) }
             }
         }
@@ -364,7 +364,7 @@ class RecommendationActivity : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 runOnUiThread {
-                    Toast.makeText(applicationContext, "Image Upload Failed", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Image Upload Failed", Snackbar.LENGTH_SHORT).show()
                 }
             }
 
@@ -397,7 +397,7 @@ class RecommendationActivity : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 runOnUiThread {
-                    Toast.makeText(applicationContext, "Failed to fetch recipes", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Failed to fetch recipes", Snackbar.LENGTH_SHORT).show()
                 }
             }
 
@@ -405,20 +405,12 @@ class RecommendationActivity : AppCompatActivity() {
                 try {
                     response.body?.string()?.let { responseStr ->
                         runOnUiThread {
-                            Toast.makeText(
-                                applicationContext,
-                                "Recipe generation started! This will be implemented soon.",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            Snackbar.make(findViewById(android.R.id.content), "Recipe generation started! This will be implemented soon.", Snackbar.LENGTH_SHORT).show()
                         }
                     }
                 } catch (e: IOException) {
                     runOnUiThread {
-                        Toast.makeText(
-                            applicationContext,
-                            "Error processing response",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Snackbar.make(findViewById(android.R.id.content), "Error processing response", Snackbar.LENGTH_SHORT).show()
                     }
                     Log.e("RecommendationActivity", "Error parsing response", e)
                 }
@@ -495,7 +487,7 @@ class RecommendationActivity : AppCompatActivity() {
         runOnUiThread {
             binding.progressBar.visibility = View.GONE
             binding.btnGenerate.isEnabled = true
-            Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
+            Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
         }
     }
 
@@ -797,7 +789,7 @@ class RecommendationActivity : AppCompatActivity() {
                 .create()
             dialog.show()
         } else {
-            Toast.makeText(this, "No image has been uploaded", Toast.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(android.R.id.content), "No image has been uploaded", Snackbar.LENGTH_SHORT).show()
         }
     }
 

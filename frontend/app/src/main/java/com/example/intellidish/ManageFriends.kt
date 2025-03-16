@@ -9,7 +9,6 @@ import android.text.TextWatcher
 import android.util.Log
 import android.util.Patterns
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -26,6 +25,7 @@ import com.example.intellidish.utils.NetworkUtils
 import com.example.intellidish.utils.UserManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.*
 import java.io.IOException
@@ -54,7 +54,7 @@ class ManageFriends : AppCompatActivity() {
         
         val userEmail = UserManager.getUserEmail()
         if (userEmail == null) {
-            Toast.makeText(this, "Please sign in to access this feature", Toast.LENGTH_LONG).show()
+            Snackbar.make(findViewById(android.R.id.content), "Please sign in to access this feature", Snackbar.LENGTH_SHORT).show()
             finish()
             return
         }
@@ -254,9 +254,7 @@ class ManageFriends : AppCompatActivity() {
                     }.fold(
                         onSuccess = { _ ->
                             withContext(Dispatchers.Main) {
-                                Toast.makeText(this@ManageFriends, 
-                                    "Friend request sent to ${friend.name}", 
-                                    Toast.LENGTH_SHORT).show()
+                                Snackbar.make(findViewById(android.R.id.content), "Friend request sent to ${friend.name}", Snackbar.LENGTH_SHORT).show()
                                 loadFriends() // Refresh the friends list
                             }
                         },
@@ -293,7 +291,7 @@ class ManageFriends : AppCompatActivity() {
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful && response.body() != null) {
                             removeFriendFromList(user)
-                            Toast.makeText(this@ManageFriends, "Friend removed", Toast.LENGTH_SHORT).show()
+                            Snackbar.make(findViewById(android.R.id.content), "Friend removed", Snackbar.LENGTH_SHORT).show()
                             loadFriends()
                         } else {
                             showErrorDialog("Error", "Failed to remove friend")
@@ -418,7 +416,7 @@ class ManageFriends : AppCompatActivity() {
         autoRefreshJob = lifecycleScope.launch(Dispatchers.Main + SupervisorJob()) {
             while (true) {
                 try {
-                    // Quietly refresh without showing loading or toast
+                    // Quietly refresh without showing loading
                     currentUser?.let { user ->
                         NetworkUtils.safeApiCallDirect<Map<String, List<User>>> {
                             NetworkClient.apiService.getFriends(user._id!!)
@@ -458,9 +456,9 @@ class ManageFriends : AppCompatActivity() {
             try {
                 showLoading()
                 loadFriends()
-                Toast.makeText(this@ManageFriends, "Friends list refreshed", Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Friends list refreshed", Snackbar.LENGTH_SHORT).show()
             } catch (e: IOException) {
-                Toast.makeText(this@ManageFriends, "Error refreshing: ${e.message}", Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Error refreshing: ${e.message}", Snackbar.LENGTH_SHORT).show()
             } finally {
                 hideLoading()
             }

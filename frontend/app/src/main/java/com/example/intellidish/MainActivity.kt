@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -168,17 +167,13 @@ class MainActivity : AppCompatActivity() {
     private suspend fun handleNetworkError(e: IOException) {
         Log.e(TAG, "Error during sign-in process", e)
         withContext(Dispatchers.Main) {
-            Toast.makeText(
-                this@MainActivity,
-                "Failed to sign in: ${e.message}",
-                Toast.LENGTH_LONG
-            ).show()
+            Snackbar.make(findViewById(android.R.id.content), "Failed to sign in: ${e.message}", Snackbar.LENGTH_SHORT).show()
         }
     }
 
     private fun handleSignInError(message: String, e: Exception?) {
         Log.e(TAG, message, e)
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun navigateToHomePage() {
@@ -190,7 +185,7 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     private fun handleFailure(e: GetCredentialException) {
         Log.e(TAG, "Error getting credential", e)
-        Toast.makeText(this, "Error getting credential", Toast.LENGTH_SHORT).show()
+        Snackbar.make(findViewById(android.R.id.content), "Error getting credential", Snackbar.LENGTH_SHORT).show()
     }
 
     private fun generateHashedNonce(): String {

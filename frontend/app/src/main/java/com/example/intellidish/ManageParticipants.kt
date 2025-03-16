@@ -6,7 +6,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.util.Patterns
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +17,7 @@ import com.example.intellidish.api.NetworkClient
 import com.example.intellidish.models.User
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.Dispatchers
@@ -49,7 +49,7 @@ class ManageParticipants : AppCompatActivity() {
         loggedInUserId = intent.getStringExtra("current_user_id") ?: ""
 
         if (potluckId.isNullOrEmpty() || loggedInUserId.isNullOrEmpty()) {
-            Toast.makeText(this, "Missing required data", Toast.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(android.R.id.content), "Missing required data", Snackbar.LENGTH_SHORT).show()
             finish()
             return
         }
@@ -121,12 +121,12 @@ class ManageParticipants : AppCompatActivity() {
                     }
                 } else {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(this@ManageParticipants, "Failed to fetch participants", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(findViewById(android.R.id.content), "Failed to fetch participants", Snackbar.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@ManageParticipants, "Network error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Network error: ${e.message}", Snackbar.LENGTH_SHORT).show()
                     Log.e("ManageParticipants", "Error fetching participants", e)
                 }
             }
@@ -147,7 +147,7 @@ class ManageParticipants : AppCompatActivity() {
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@ManageParticipants, "Failed to fetch friends", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Failed to fetch friends", Snackbar.LENGTH_SHORT).show()
                 }
             }
         }
@@ -167,13 +167,13 @@ class ManageParticipants : AppCompatActivity() {
 
     private fun addParticipantByEmail(email: String) {
         if (!isValidEmail(email)) {
-            Toast.makeText(this, "Enter a valid email!", Toast.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(android.R.id.content), "Enter a valid email!", Snackbar.LENGTH_SHORT).show()
             return
         }
 
         val friendToAdd = allFriends.find { it.email.equals(email, ignoreCase = true) }
         if (friendToAdd == null) {
-            Toast.makeText(this, "No friend found with this email!", Toast.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(android.R.id.content), "No friend found with this email!", Snackbar.LENGTH_SHORT).show()
             return
         }
 
@@ -187,15 +187,15 @@ class ManageParticipants : AppCompatActivity() {
                 val response = NetworkClient.apiService.addPotluckParticipant(potluckId!!, requestBody)
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@ManageParticipants, "Added successfully!", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(findViewById(android.R.id.content), "Added successfully!", Snackbar.LENGTH_SHORT).show()
                         fetchPotluckParticipants()  // Refresh list
                     } else {
-                        Toast.makeText(this@ManageParticipants, "Failed to add participant", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(findViewById(android.R.id.content), "Failed to add participant", Snackbar.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@ManageParticipants, "Network error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Network error: ${e.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
         }
@@ -211,15 +211,15 @@ class ManageParticipants : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@ManageParticipants, "${user.name} removed!", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(findViewById(android.R.id.content), "${user.name} removed!", Snackbar.LENGTH_SHORT).show()
                         fetchPotluckParticipants()  // Refresh list
                     } else {
-                        Toast.makeText(this@ManageParticipants, "Failed to remove ${user.name}", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(findViewById(android.R.id.content), "Failed to remove ${user.name}", Snackbar.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@ManageParticipants, "Network error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Network error: ${e.message}", Snackbar.LENGTH_SHORT).show()
                     Log.e("ManageParticipants", "Error removing participant", e)
                 }
             }

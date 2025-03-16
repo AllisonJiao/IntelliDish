@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.intellidish.databinding.ActivityRecipeResultsBinding
@@ -24,6 +23,7 @@ import org.json.JSONObject
 import org.json.JSONArray
 import java.io.IOException
 import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -34,7 +34,7 @@ class RecipeResultsActivity : AppCompatActivity() {
     
     private val userId: String by lazy { 
         UserManager.getUserId() ?: run {
-            Toast.makeText(this, "User not logged in", Toast.LENGTH_LONG).show()
+            Snackbar.make(findViewById(android.R.id.content), "User not logged in", Snackbar.LENGTH_SHORT).show()
             finish()
             ""
         }
@@ -59,12 +59,12 @@ class RecipeResultsActivity : AppCompatActivity() {
                 
                 displayRecipes()
             } catch (e: IOException) {
-                Toast.makeText(this, "Error loading recipes: ${e.message}", Toast.LENGTH_LONG).show()
+                Snackbar.make(findViewById(android.R.id.content), "Error loading recipes: ${e.message}", Snackbar.LENGTH_SHORT).show()
                 Log.e("RecipeResultsActivity", "Error parsing recipes", e)
                 finish()
             }
         } else {
-            Toast.makeText(this, "No recipe data received", Toast.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(android.R.id.content), "No recipe data received", Snackbar.LENGTH_SHORT).show()
             finish()
         }
 
@@ -137,7 +137,7 @@ class RecipeResultsActivity : AppCompatActivity() {
                     createAndAddRecipe(recipe)
                 }
             } catch (e: IOException) {
-                showToast("Error: ${e.message}")
+                showSnackbar("Error: ${e.message}")
             }
         }
     }
@@ -150,7 +150,7 @@ class RecipeResultsActivity : AppCompatActivity() {
         addResult.fold(
             onSuccess = {
                 withContext(Dispatchers.Main) {
-                    showToast("Recipe added to favorites!")
+                    showSnackbar("Recipe added to favorites!")
                     finishActivity()
                 }
             },
@@ -183,17 +183,17 @@ class RecipeResultsActivity : AppCompatActivity() {
             onSuccess = { response ->
                 response.recipeId?.let { recipeId ->
                     addRecipeToFavorites(recipeId)
-                } ?: showToast("Failed to get recipe ID from server")
+                } ?: showSnackbar("Failed to get recipe ID from server")
             },
             onFailure = {
-                showToast("Failed to create recipe: ${it.message}")
+                showSnackbar("Failed to create recipe: ${it.message}")
             }
         )
     }
 
-    private suspend fun showToast(message: String) {
+    private suspend fun showSnackbar(message: String) {
         withContext(Dispatchers.Main) {
-            Toast.makeText(this@RecipeResultsActivity, message, Toast.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
         }
     }
 

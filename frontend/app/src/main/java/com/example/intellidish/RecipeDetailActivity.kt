@@ -2,10 +2,10 @@ package com.example.intellidish
 
 import android.os.Bundle
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.example.intellidish.models.Recipe
+import com.google.android.material.snackbar.Snackbar
 import java.io.IOException
 
 class RecipeDetailActivity : AppCompatActivity() {
@@ -16,7 +16,7 @@ class RecipeDetailActivity : AppCompatActivity() {
 
         val recipe = intent.getParcelableExtra<Recipe>("recipe")
         if (recipe == null) {
-            Toast.makeText(this, "Error: Could not load recipe details", Toast.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(android.R.id.content), "Error: Could not load recipe details", Snackbar.LENGTH_SHORT).show()
             finish()
             return
         }
@@ -48,7 +48,7 @@ class RecipeDetailActivity : AppCompatActivity() {
                 }?.joinToString("\n\n") ?: "No instructions available"
 
         } catch (e: IOException) {
-            Toast.makeText(this, "Error displaying recipe details", Toast.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(android.R.id.content), "Error displaying recipe details", Snackbar.LENGTH_SHORT).show()
             finish()
         }
     }

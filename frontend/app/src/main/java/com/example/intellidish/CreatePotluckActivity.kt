@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -26,6 +25,7 @@ import com.example.intellidish.models.User
 import com.example.intellidish.utils.UserManager
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import org.json.JSONArray
@@ -170,16 +170,16 @@ class CreatePotluckActivity : AppCompatActivity() {
             ingredientAdapter.notifyDataSetChanged()
             ingredientsInput.text.clear()
             ingredientsRecyclerView.smoothScrollToPosition(currentUserIngredients.size - 1)
-            showToast("Ingredient(s) added")
+            showSnackbar("Ingredient(s) added")
         } else {
-            showToast("Please enter an ingredient")
+            showSnackbar("Please enter an ingredient")
         }
     }
 
     private fun clearIngredients() {
         currentUserIngredients.clear()
         ingredientAdapter.notifyDataSetChanged()
-        showToast("Ingredients cleared")
+        showSnackbar("Ingredients cleared")
     }
 
     private fun setupParticipantActions() {
@@ -199,16 +199,16 @@ class CreatePotluckActivity : AppCompatActivity() {
     private fun addParticipant() {
         selectedFriend?.let { friend ->
             if (addedParticipants.any { it._id == friend._id }) {
-                showToast("${friend.name} is already added!")
+                showSnackbar("${friend.name} is already added!")
             } else {
                 addedParticipants.add(friend)
                 addedParticipantAdapter.notifyItemInserted(addedParticipants.size - 1)
-                showToast("${friend.name} added to participants")
+                showSnackbar("${friend.name} added to participants")
             }
             selectedFriend = null
             friendsAdapter.clearSelection()
         } ?: run {
-            showToast("Please select a friend to add")
+            showSnackbar("Please select a friend to add")
         }
     }
 
@@ -217,8 +217,8 @@ class CreatePotluckActivity : AppCompatActivity() {
         btnBack.setOnClickListener { finish() }
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun showSnackbar(message: String) {
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun filterFriends(query: String) {
@@ -299,7 +299,7 @@ class CreatePotluckActivity : AppCompatActivity() {
                     fetchFriends()
                 } else {
                     Log.e("PotluckActivity", "Failed to fetch user from backend")
-                    Toast.makeText(this@CreatePotluckActivity, "Failed to retrieve user data", Toast.LENGTH_SHORT).show()
+                    showSnackbar("Failed to retrieve user data")
                 }
             } catch (e: IOException) {
                 Log.e("PotluckActivity", "Network error fetch friend: ${e.message}")
@@ -323,10 +323,10 @@ class CreatePotluckActivity : AppCompatActivity() {
                     friendsAdapter.notifyDataSetChanged()
                     Log.d("CreatePotluckActivity", "Friends fetched: $displayedFriends")
                 } else {
-                    Toast.makeText(this@CreatePotluckActivity, "Failed to fetch friends", Toast.LENGTH_SHORT).show()
+                    showSnackbar("Failed to fetch friends")
                 }
             } catch (e: IOException) {
-                Toast.makeText(this@CreatePotluckActivity, "Network error fetching friends: ${e.message}", Toast.LENGTH_SHORT).show()
+                showSnackbar("Network error fetching friends: ${e.message}")
             }
         }
     }
@@ -335,7 +335,7 @@ class CreatePotluckActivity : AppCompatActivity() {
     private fun createPotluck() {
         val potluckName = potluckNameInput.text.toString().trim()
         if (potluckName.isEmpty()) {
-            Toast.makeText(this, "Please enter a potluck name", Toast.LENGTH_SHORT).show()
+            showSnackbar("Please enter a potluck name!")
             return
         }
 
@@ -389,7 +389,7 @@ class CreatePotluckActivity : AppCompatActivity() {
                 Log.d("CreatePotluckActivity", "CreatePotluck Response: $response")
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@CreatePotluckActivity, "Potluck '$potluckName' created!", Toast.LENGTH_LONG).show()
+                        Snackbar.make(findViewById(android.R.id.content), "Potluck '$potluckName' created!", Snackbar.LENGTH_SHORT).show()
                         finish()
                     } else {
                         Log.e("CreatePotluckActivity", "Error: ${response.errorBody()?.string()}")

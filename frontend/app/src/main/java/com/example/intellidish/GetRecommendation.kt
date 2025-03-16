@@ -1,7 +1,6 @@
 package com.example.intellidish
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -11,6 +10,7 @@ import com.example.intellidish.models.Recipe
 import com.example.intellidish.utils.NetworkUtils
 import com.example.intellidish.utils.UserManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -95,7 +95,7 @@ class GetRecommendation : AppCompatActivity() {
                     NetworkClient.apiService.createRecipe(recipe)
                 }.fold(
                     onSuccess = {
-                        Toast.makeText(this@GetRecommendation, "Recipe saved!", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(findViewById(android.R.id.content), "Recipe saved!", Snackbar.LENGTH_SHORT).show()
                     },
                     onFailure = { e ->
                         showError("Failed to save recipe: ${e.message}")

@@ -12,6 +12,7 @@ import com.example.intellidish.api.ApiService
 import com.example.intellidish.api.NetworkClient
 import com.example.intellidish.models.Potluck
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
@@ -62,22 +63,30 @@ class AllPotlucksActivity : AppCompatActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val response = potluckApiService.getUserJoinedPotlucks(loggedInUserId!!)
-                if (response.isSuccessful) {
-                    val newPotlucks = response.body()?.get("potlucks") ?: emptyList()
 
-                    withContext(Dispatchers.Main) {
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        val newPotlucks = response.body()?.get("potlucks") ?: emptyList()
                         allPotluckList.clear()
                         allPotluckList.addAll(newPotlucks)
                         potluckAdapter.updateData(allPotluckList)
-                    }
-                } else {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(this@AllPotlucksActivity, "Failed to fetch joined potlucks", Toast.LENGTH_SHORT).show()
+
+                        Log.d("AllPotlucksActivity", "Fetched ${allPotluckList.size} potlucks.")
+
+                    } else {
+                        val errorBody = response.errorBody()?.string()
+                        if (errorBody?.contains("No potluck sessions found") == true) {
+                            Log.d("AllPotlucksActivity", "No potlucks found, updating UI.")
+                            allPotluckList.clear()
+                            potluckAdapter.updateData(allPotluckList) // Update UI even when empty
+                        } else {
+                            Log.e("AllPotlucksActivity", "Failed to fetch joined potlucks: $errorBody")
+                        }
                     }
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@AllPotlucksActivity, "Network error fetching potlucks", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Network error fetching potlucks", Snackbar.LENGTH_SHORT).show()
                 }
             }
         }

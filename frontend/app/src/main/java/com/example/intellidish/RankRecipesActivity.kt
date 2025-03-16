@@ -3,7 +3,6 @@ package com.example.intellidish
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +20,7 @@ import com.example.intellidish.models.Recipe
 import com.google.android.material.switchmaterial.SwitchMaterial
 import android.content.Intent
 import com.example.intellidish.utils.PreferencesManager
+import com.google.android.material.snackbar.Snackbar
 
 class RankRecipesActivity : AppCompatActivity() {
 
@@ -164,7 +164,7 @@ class RankRecipesActivity : AppCompatActivity() {
             recipes = mutableListOf(),
             onActionClick = { recipe ->
                 PreferencesManager(this).addFavoriteRecipe(recipe)
-                Toast.makeText(this, "Added to favorites!", Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Added to favorites!", Snackbar.LENGTH_SHORT).show()
             }
         )
         recyclerView.adapter = adapter

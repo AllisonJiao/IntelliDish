@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -23,6 +22,7 @@ import com.example.intellidish.models.User
 import com.example.intellidish.utils.UserManager
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
@@ -58,7 +58,7 @@ class PotluckActivity : AppCompatActivity() {
         if (loggedInUserEmail != null) {
             fetchUserFromBackend()
         } else {
-            Toast.makeText(this, "Failed to get logged-in user email", Toast.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(android.R.id.content), "Failed to get logged-in user email", Snackbar.LENGTH_SHORT).show()
         }
         initViews()
         setupRecyclerView()
@@ -80,7 +80,7 @@ class PotluckActivity : AppCompatActivity() {
         loggedInUserEmail = UserManager.getUserEmail()
         loggedInUserName = UserManager.getUserName()
         if (loggedInUserEmail == null) {
-            Toast.makeText(this, "Please sign in to access this feature", Toast.LENGTH_LONG).show()
+            Snackbar.make(findViewById(android.R.id.content), "Please sign in to access this feature", Snackbar.LENGTH_SHORT).show()
             finish()
             return
         }
@@ -99,7 +99,7 @@ class PotluckActivity : AppCompatActivity() {
                     fetchUserAndFriendsPotlucks()
                 } else {
                     Log.e("PotluckActivity", "Failed to fetch user from backend")
-                    Toast.makeText(this@PotluckActivity, "Failed to retrieve user data", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Failed to retrieve user data", Snackbar.LENGTH_SHORT).show()
                 }
             } catch (e: IOException) {
                 Log.e("PotluckActivity", "Network error fetch friend: ${e.message}")
@@ -276,19 +276,19 @@ class PotluckActivity : AppCompatActivity() {
 
     private fun joinPotluck() {
         if (selectedPotluck == null) {
-            Toast.makeText(this, "Please select a potluck to join!", Toast.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(android.R.id.content), "Please select a potluck to join!", Snackbar.LENGTH_SHORT).show()
             return
         }
 
         val potluckId = selectedPotluck!!._id
         if (potluckId == null) {
-            Toast.makeText(this, "Invalid potluck ID!", Toast.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(android.R.id.content), "Invalid potluck ID!", Snackbar.LENGTH_SHORT).show()
             return
         }
 
         val alreadyJoined = allJoinedPotluckList.any { it._id == potluckId }
         if (alreadyJoined) {
-            Toast.makeText(this, "You have already joined this potluck!", Toast.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(android.R.id.content), "You have already joined this potluck!", Snackbar.LENGTH_SHORT).show()
             return
         }
 
@@ -313,14 +313,14 @@ class PotluckActivity : AppCompatActivity() {
                     }
                     Log.d("PotluckActivity", "All joined potlucks: $allJoinedPotluckList")
 
-                    Toast.makeText(this@PotluckActivity, "Joined potluck successfully!", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Joined potluck successfully!", Snackbar.LENGTH_SHORT).show()
                 } else {
                     Log.e("PotluckActivity", "Error joining potluck: ${response.errorBody()?.string()}")
-                    Toast.makeText(this@PotluckActivity, "Failed to join potluck!", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(android.R.id.content), "Failed to join potluck!", Snackbar.LENGTH_SHORT).show()
                 }
             } catch (e: IOException) {
                 Log.e("PotluckActivity", "Network error joining potluck: ${e.message}")
-                Toast.makeText(this@PotluckActivity, "Network error joining potluck!", Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Network error joining potluck!", Snackbar.LENGTH_SHORT).show()
             }
         }
     }
