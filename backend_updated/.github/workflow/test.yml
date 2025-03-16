@@ -1,0 +1,46 @@
+name: Run Jest Tests with Coverage
+
+on:
+  push:
+    branches:
+      - main
+      - backend_allison_edward
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18 
+      
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Create .env File
+        run: |
+          touch .env
+          echo "PORT=${{ secrets.PORT }}" >> .env
+          echo "DB_URI=${{ secrets.DB_URI }}" >> .env  # AWS MongoDB URI
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
+          chmod 600 .env
+
+      - name: Debug MongoDB Connection
+        run: |
+          echo "Checking MongoDB connection..."
+          echo "DB_URI=${{ secrets.DB_URI }}" | sed 's/:.*@/:******@/'  # Mask password
+          npm run db:check  # Optional: Add a script to test DB connection
+
+      - name: Run Jest Tests with Coverage
+        run: npm test -- --coverage
+
+      - name: Upload Jest Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jest-coverage
+          path: coverage/
