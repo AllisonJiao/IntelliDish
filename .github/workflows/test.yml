@@ -26,14 +26,14 @@ jobs:
         run: |
           touch .env
           echo "PORT=${{ secrets.PORT }}" >> .env
-          echo "DB_URI=${{ secrets.AWS_DB_URI }}" >> .env  # AWS MongoDB URI
+          echo "DB_URI=${{ secrets.DB_URI }}" >> .env  # AWS MongoDB URI
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
           chmod 600 .env
 
       - name: Debug MongoDB Connection
         run: |
           echo "Checking MongoDB connection..."
-          echo "DB_URI=${{ secrets.AWS_DB_URI }}" | sed 's/:.*@/:******@/'  # Mask password
+          echo "DB_URI=${{ secrets.DB_URI }}" | sed 's/:.*@/:******@/'  # Mask password
           npm run db:check  # Optional: Add a script to test DB connection
 
       - name: Run Jest Tests with Coverage
