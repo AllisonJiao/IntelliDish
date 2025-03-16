@@ -20,7 +20,8 @@
   "scripts": {
     "start": "ts-node index.ts",
     "dev": "nodemon -r dotenv/config -e ts index.ts",
-    "test": "jest"
+    "test": "jest",
+    "db:check": "node -e 'require(\"mongoose\").connect(process.env.DB_URI).then(()=>console.log(\"Connected to MongoDB\")).catch(err=>console.error(\"Connection Failed\", err))'"
   },
   "jest": {
     "transform": {
