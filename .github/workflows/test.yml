@@ -25,7 +25,7 @@ jobs:
         run: npm test -- --coverage
 
       - name: Upload Jest Coverage Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: jest-coverage
           path: coverage/
