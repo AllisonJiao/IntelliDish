@@ -547,7 +547,7 @@ Any endpoint that could potentially leak sensitive info is tested by performing 
 
 ### 5.1. Commit Hash Where Codacy Ran
 
-`[221f6f741d2a9e5d164effe2844f193f098cc88a]`
+`[b6af665ee598cbf37de3e7b9300bc1a43ac8d67e]`
 <div style="border: 2px solid black; display: inline-block;">
     <img src="images/codacy_grade.png" alt="Codacy Grade">
 </div>
