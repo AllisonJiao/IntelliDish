@@ -49,7 +49,7 @@
 | **DELETE /potluck/:id**                     | `tests/jest_unmocked/userPotluckOperations_um.test.ts`                  | `tests/jest_mocked/userPotluckOperations_m.test.ts`                    | Users DB, Potluck DB               |
 #### 2.1.2. Commit Hash Where Tests Run
 
-`[8d2c0a20309ba83a941876b4e66cb9d4d472a936]`
+`[163dbef23bc25d583c0a21e2414e04b51e434a21]`
 
 #### 2.1.3. Explanation on How to Run the Tests
 
@@ -71,7 +71,7 @@
 
 ### 2.2. GitHub Actions Configuration Location
 
-`~/.github/workflows/tests.yml`
+`~/.github/workflows/test.yml`
 
 ### 2.3. Jest Coverage Report Screenshots With Mocks
 
