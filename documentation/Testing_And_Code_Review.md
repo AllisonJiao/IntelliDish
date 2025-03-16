@@ -4,7 +4,7 @@
 
 | **Change Date**   | **Modified Sections** | **Rationale** |
 | ----------------- | --------------------- | ------------- |
-| _Nothing to show_ |
+| N/A | N/A | N/A
 
 ---
 
@@ -49,7 +49,7 @@
 | **DELETE /potluck/:id**                     | `tests/jest_unmocked/userPotluckOperations_um.test.ts`                  | `tests/jest_mocked/userPotluckOperations_m.test.ts`                    | Users DB, Potluck DB               |
 #### 2.1.2. Commit Hash Where Tests Run
 
-`[Insert Commit SHA here]`
+`[8d2c0a20309ba83a941876b4e66cb9d4d472a936]`
 
 #### 2.1.3. Explanation on How to Run the Tests
 
@@ -59,8 +59,15 @@
      ```
      git clone https://github.com/example/your-project.git
      ```
+   - cd into Backend Folder
+     ```
+     cd updated_backend
+     ```
 
-2. **...**
+2. **Run the Test with Coverage**
+   - ```
+     npm test --coverage
+     ```
 
 ### 2.2. GitHub Actions Configuration Location
 
@@ -82,33 +89,80 @@ _(Placeholder for Jest coverage screenshot without mocks)_
 
 | **Non-Functional Requirement**  | **Location in Git**                              |
 | ------------------------------- | ------------------------------------------------ |
-| **Performance (Response Time)** | [`tests/nonfunctional/response_time.test.js`](#) |
-| **Chat Data Security**          | [`tests/nonfunctional/chat_security.test.js`](#) |
+| **Performance** | [`tests/jest_nonFunctionalReq/performance.test.ts`](#) |
+| **Data Security**          | [`tests/jest_nonFunctionalReq/security.test.ts`](#) |
 
 ### 3.2. Test Verification and Logs
 
-- **Performance (Response Time)**
+- **Performance**
 
-  - **Verification:** This test suite simulates multiple concurrent API calls using Jest along with a load-testing utility to mimic real-world user behavior. The focus is on key endpoints such as user login and study group search to ensure that each call completes within the target response time of 2 seconds under normal load. The test logs capture metrics such as average response time, maximum response time, and error rates. These logs are then analyzed to identify any performance bottlenecks, ensuring the system can handle expected traffic without degradation in user experience.
+  - **Verification:**
+  This test suite focuses on the AI-driven recipe endpoint (POST /recipes/AI) to capture performance under worst-case conditions, such as large ingredient lists and occasional heavy loads. We send multiple sequential calls (e.g., 20 calls) in a single test run and measure how many complete in under 10 seconds. Our acceptance criterion is that 90% of calls finish below this threshold, ensuring acceptable user experience even in resource-intensive scenarios.
   - **Log Output**
     ```
-    [Placeholder for response time test logs]
+       -------- Performance Results (All Responses) --------
+         at tests/jest_nonFunctionalReq/performance.test.ts:58:15
+     console.log
+       Total calls:       20
+         at tests/jest_nonFunctionalReq/performance.test.ts:59:15
+     console.log
+       Under 10s count:    19
+         at tests/jest_nonFunctionalReq/performance.test.ts:60:15
+     console.log
+       Under 10s ratio:    95.0%
+         at tests/jest_nonFunctionalReq/performance.test.ts:61:15
+     console.log
+       Average time (ms): 6340.70
+         at tests/jest_nonFunctionalReq/performance.test.ts:62:15
+     console.log
+       -----------------------------------------------------
+         at tests/jest_nonFunctionalReq/performance.test.ts:63:15
+    PASS  tests/jest_nonFunctionalReq/performance.test.ts (128.541 s)
+     Performance: All /recipes/AI calls, measure ratio <10s
+       ✓ At least 90% of 20 calls respond under 10s (including errors) (126850 ms)
+      Test Suites: 1 passed, 1 total
+      Tests:       1 passed, 1 total
+      Snapshots:   0 total
+      Time:        128.587 s, estimated 205 s
+      Ran all test suites matching /performance.test.ts/i.
     ```
 
-- **Chat Data Security**
-  - **Verification:** ...
+- **Data Security**
+  - **Verification:**
+  In these tests, we ensure that sensitive user data (e.g., passwords, tokens, private notes) is never returned by the endpoints. The suite includes tests like:
+     - ``GET /users/:id or GET /users/:id/friends``: verifying no password or tokens fields appear in the response.
+     - ``GET /users/:id/recipes``: confirming that privateNotes or other private fields are omitted.
+     - Rejecting malformed input (e.g., invalid user IDs) or unauthorized deletions with correct status codes.
+Any endpoint that could potentially leak sensitive info is tested by performing real or mocked calls (depending on the test setup) and asserting that the response body does not contain disallowed fields.
   - **Log Output**
     ```
-    [Placeholder for chat security test logs]
+    PASS  tests/jest_nonFunctionalReq/security.test.ts (9.789 s)
+     Unmocked Security Tests (Live API)
+       Create User and Verify No Sensitive Fields
+         ✓ POST /users with valid data => 201, no 'password' or 'tokens' (466 ms)
+         ✓ POST /users with missing fields => 400 (287 ms)
+         ✓ GET /users/email/:email => ensures no 'password' or 'tokens' (1250 ms)
+       Friend List Security
+         ✓ Create a friend user, then add to main user => no 'password' in final friend list (2117 ms)
+       Saved Recipes Security
+         ✓ GET /users/:id/recipes => no 'privateNotes' (1457 ms)
+       Additional Data Security Checks
+         ✓ GET /users/:id with invalid ID => 400 (578 ms)
+         ✓ DELETE /users/:id => unauthorized if no auth => 404 (570 ms)
+         ✓ GET /users/email/:email => ensures no 'password' or 'tokens' (832 ms)
+      Test Suites: 1 passed, 1 total
+      Tests:       8 passed, 8 total
+      Snapshots:   0 total
+      Time:        9.844 s
+      Ran all test suites matching /security.test.ts/i.
     ```
-
 ---
 
 ## 4. Front-end Test Specification
 
 ### 4.1. Location in Git of Front-end Test Suite:
 
-`frontend/src/androidTest/java/com/studygroupfinder/`
+`frontend/app/src/androidTest/java/com/example/intellidish`
 
 ### 4.2. Tests
 
@@ -125,7 +179,7 @@ _(Placeholder for Jest coverage screenshot without mocks)_
     | 3b1. Display an error message: “Please add at least one ingredient!” | Check dialog is opened with text: "Please add at least one ingredient!” |
     | 3. The user enters a list of available ingredients and selects cuisine preferences. | Input "egg" in text field<br> Click "Add Ingredient" button<br> Input "tomato" in text field<br> Click "Add Ingredient" button<br> Check "egg" and "tomato" are added to the ingredient list recycler view<br> Click "Cuisine Type"<br> Select "Chinese"<br> Click "Apply"<br> Click "Preferences"<br> Change "Recipe Complexity" to "2" |
     | 4. The app sends a request to the AI API with the provided inputs. | Click "Generate Recipes" |
-    | 5. The AI API returns a possible recipe to the user. | Requires backend API (not tested) |
+    | 5. The AI API returns a possible recipe to the user. | Check a recipe is displayed |
     
 
   - **Test Logs:**
@@ -237,12 +291,121 @@ _(Placeholder for Jest coverage screenshot without mocks)_
 
     | **Scenario Steps** | **Test Case Steps** |
     | ------------------ | ------------------- |
-    | ...                | ...                 |
+    | 1. The user clicks the "PotLuck" button on the main page to access the "Participate In PotLuck" feature. | Open "PotLuck" page |
+    | 2. The app displays the following UI components:<br> - ALL JOINED POTLUCK (button)<br> - CREATE NEW POTLUCK (button)<br> - Text Field labeled "Search for PotLucks"<br> - JOIN SELECTED POTLUCK (button)<br> - Existing PotLucks Display (large rectangular container for existing potlucks) | Check all UI components are present |
+    | 3a. The user clicks "CREATE POTLUCK" without entering a potluck name. | Click "CREATE NEW POTLUCK"<br>Click "CREATE POTLUCK"<br>Check dialog is opened with text: "Please enter a potluck name!”  |
+    | 3. The user starts a PotLuck and adds their friends to create a group. | Input "Family potluck" in text field<br>Click "Add Participants" to unroll the section<br>Click on the friend's name to select<br>Click "Add Participant"<br>Check the friend is added<br>Click "Add Participants" to roll up the section<br>Click "CREATE POTLUCK" |
+    | 4. Each user independently adds or removes their ingredient contributions and sets cuisine type and preferences within the PotLuck group. Live updates ensure real-time synchronization across all participants. | Click "ALL JOINED POTLUCKS"<br>Click "Family potluck"<br>Input "bacon" in text field<br>Input "egg" in text field<br>Input "tomato" in text field<br>Click "x" beside "Bacon" to delete it<br>Check only "Egg" and "Tomato" are displayed<br>Click "Cuisine Type"<br>Select "French"<br>Click "APPLY"<br>Click "Preferences"<br>Change "Nutritional Value" to "5"<br>Click "APPLY" |
+    | 5. A request is sent to the AI API based on the combined user inputs. | Click "Generate Recipes" |
+    | 6. The AI API returns a possible recipe based on the collective ingredients. | Check a recipe is displayed |
 
   - **Test Logs:**
-    ```
-    [Placeholder for Espresso test execution logs]
-    ```
+   ```
+   2025-03-12 22:48:32: Launching ParticipateInPotluckTest on 'Pixel 9 API 31.
+   Running tests
+   Executing tasks: [:app:connectedDebugAndroidTest] in project /Users/angelawork/Desktop/IntelliDish-frontend
+   
+   
+   > Configure project :app
+   AGPBI: {"kind":"warning","text":"The option setting 'android.experimental.testOptions.emulatorSnapshots.maxSnapshotsForTestFailures=0' is experimental.","sources":[{}]}
+   
+   > Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+   > Task :app:preBuild UP-TO-DATE
+   > Task :app:preDebugBuild UP-TO-DATE
+   > Task :app:dataBindingMergeDependencyArtifactsDebug UP-TO-DATE
+   > Task :app:generateDebugResValues UP-TO-DATE
+   > Task :app:generateDebugResources UP-TO-DATE
+   > Task :app:mergeDebugResources UP-TO-DATE
+   > Task :app:packageDebugResources UP-TO-DATE
+   > Task :app:parseDebugLocalResources UP-TO-DATE
+   > Task :app:dataBindingGenBaseClassesDebug UP-TO-DATE
+   > Task :app:generateDebugBuildConfig UP-TO-DATE
+   > Task :app:checkDebugAarMetadata UP-TO-DATE
+   > Task :app:mapDebugSourceSetPaths UP-TO-DATE
+   > Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+   > Task :app:extractDeepLinksDebug UP-TO-DATE
+   > Task :app:processDebugMainManifest UP-TO-DATE
+   > Task :app:processDebugManifest UP-TO-DATE
+   > Task :app:processDebugManifestForPackage UP-TO-DATE
+   > Task :app:javaPreCompileDebug UP-TO-DATE
+   > Task :app:preDebugAndroidTestBuild SKIPPED
+   > Task :app:dataBindingMergeDependencyArtifactsDebugAndroidTest UP-TO-DATE
+   > Task :app:generateDebugAndroidTestResValues UP-TO-DATE
+   > Task :app:generateDebugAndroidTestResources UP-TO-DATE
+   > Task :app:mergeDebugAndroidTestResources UP-TO-DATE
+   > Task :app:dataBindingGenBaseClassesDebugAndroidTest UP-TO-DATE
+   > Task :app:processDebugAndroidTestManifest UP-TO-DATE
+   > Task :app:generateDebugAndroidTestBuildConfig UP-TO-DATE
+   > Task :app:checkDebugAndroidTestAarMetadata UP-TO-DATE
+   > Task :app:mapDebugAndroidTestSourceSetPaths UP-TO-DATE
+   > Task :app:processDebugAndroidTestResources UP-TO-DATE
+   > Task :app:javaPreCompileDebugAndroidTest UP-TO-DATE
+   > Task :app:mergeDebugShaders UP-TO-DATE
+   > Task :app:compileDebugShaders NO-SOURCE
+   > Task :app:generateDebugAssets UP-TO-DATE
+   > Task :app:mergeDebugAssets UP-TO-DATE
+   > Task :app:compressDebugAssets UP-TO-DATE
+   > Task :app:checkDebugDuplicateClasses UP-TO-DATE
+   > Task :app:desugarDebugFileDependencies UP-TO-DATE
+   > Task :app:mergeExtDexDebug UP-TO-DATE
+   > Task :app:mergeLibDexDebug UP-TO-DATE
+   > Task :app:mergeDebugJniLibFolders UP-TO-DATE
+   > Task :app:mergeDebugNativeLibs NO-SOURCE
+   > Task :app:stripDebugDebugSymbols NO-SOURCE
+   > Task :app:validateSigningDebug UP-TO-DATE
+   > Task :app:writeDebugAppMetadata UP-TO-DATE
+   > Task :app:writeDebugSigningConfigVersions UP-TO-DATE
+   > Task :app:mergeDebugAndroidTestShaders UP-TO-DATE
+   > Task :app:compileDebugAndroidTestShaders NO-SOURCE
+   > Task :app:generateDebugAndroidTestAssets UP-TO-DATE
+   > Task :app:mergeDebugAndroidTestAssets UP-TO-DATE
+   > Task :app:compressDebugAndroidTestAssets UP-TO-DATE
+   > Task :app:checkDebugAndroidTestDuplicateClasses UP-TO-DATE
+   > Task :app:desugarDebugAndroidTestFileDependencies UP-TO-DATE
+   > Task :app:mergeExtDexDebugAndroidTest UP-TO-DATE
+   > Task :app:mergeLibDexDebugAndroidTest UP-TO-DATE
+   > Task :app:mergeDebugAndroidTestJniLibFolders UP-TO-DATE
+   > Task :app:mergeDebugAndroidTestNativeLibs NO-SOURCE
+   > Task :app:stripDebugAndroidTestDebugSymbols NO-SOURCE
+   > Task :app:validateSigningDebugAndroidTest UP-TO-DATE
+   > Task :app:writeDebugAndroidTestSigningConfigVersions UP-TO-DATE
+   > Task :app:processDebugResources
+   > Task :app:compileDebugKotlin UP-TO-DATE
+   > Task :app:compileDebugJavaWithJavac UP-TO-DATE
+   > Task :app:bundleDebugClassesToCompileJar UP-TO-DATE
+   > Task :app:processDebugJavaRes UP-TO-DATE
+   > Task :app:mergeDebugJavaResource UP-TO-DATE
+   > Task :app:dexBuilderDebug UP-TO-DATE
+   > Task :app:mergeProjectDexDebug UP-TO-DATE
+   > Task :app:packageDebug UP-TO-DATE
+   > Task :app:createDebugApkListingFileRedirect UP-TO-DATE
+   
+   > Task :app:compileDebugAndroidTestKotlin
+   w: file:///Users/angelawork/Desktop/IntelliDish-frontend/app/src/androidTest/java/com/example/intellidish/ParticipateInPotluckTest.kt:15:8 'class AndroidJUnit4 : Runner, Filterable, Sortable' is deprecated. Deprecated in Java.
+   w: file:///Users/angelawork/Desktop/IntelliDish-frontend/app/src/androidTest/java/com/example/intellidish/ParticipateInPotluckTest.kt:26:10 'class AndroidJUnit4 : Runner, Filterable, Sortable' is deprecated. Deprecated in Java.
+   
+   > Task :app:compileDebugAndroidTestJavaWithJavac UP-TO-DATE
+   > Task :app:processDebugAndroidTestJavaRes UP-TO-DATE
+   > Task :app:mergeDebugAndroidTestJavaResource UP-TO-DATE
+   > Task :app:dexBuilderDebugAndroidTest
+   > Task :app:mergeProjectDexDebugAndroidTest
+   > Task :app:packageDebugAndroidTest
+   > Task :app:createDebugAndroidTestApkListingFileRedirect UP-TO-DATE
+   Connected to process 3171 on device 'emulator-5554'.
+   
+   > Task :app:connectedDebugAndroidTest
+   Starting 5 tests on Pixel_9_API_31(AVD) - 12
+   
+   Pixel_9_API_31(AVD) - 12 Tests 2/5 completed. (0 skipped) (0 failed)
+   Pixel_9_API_31(AVD) - 12 Tests 3/5 completed. (0 skipped) (0 failed)
+   Pixel_9_API_31(AVD) - 12 Tests 4/5 completed. (0 skipped) (0 failed)
+   Finished 5 tests on Pixel_9_API_31(AVD) - 12
+   
+   BUILD SUCCESSFUL in 47s
+   67 actionable tasks: 6 executed, 61 up-to-date
+   
+   Build Analyzer results available
+   ```
 
 - **Use Case: Manage Friends**
 
@@ -384,15 +547,24 @@ _(Placeholder for Jest coverage screenshot without mocks)_
 
 ### 5.1. Commit Hash Where Codacy Ran
 
-`[Insert Commit SHA here]`
+`[221f6f741d2a9e5d164effe2844f193f098cc88a]`
+<div style="border: 2px solid black; display: inline-block;">
+    <img src="images/codacy_grade.png" alt="Codacy Grade">
+</div>
 
 ### 5.2. Unfixed Issues per Codacy Category
 
-_(Placeholder for screenshots of Codacyâ€™s Category Breakdown table in Overview)_
+<div style="border: 2px solid black; display: inline-block;">
+    <img src="images/codacy_issue_categories.png" alt="Codacy Issue Categories">
+</div>
 
 ### 5.3. Unfixed Issues per Codacy Code Pattern
 
-_(Placeholder for screenshots of Codacyâ€™s Issues page)_
+<div style="border: 2px solid black; display: inline-block;">
+    <img src="images/codacy_code_patterns.png" alt="Codacy Code Patterns">
+</div>
+
+More detailes about each individual issue can be found in section 5.4 below.
 
 ### 5.4. Justifications for Unfixed Issues
 **Category:** Error Prone  
@@ -415,25 +587,36 @@ _(Placeholder for screenshots of Codacyâ€™s Issues page)_
 |10 |Class 'ManageFriends' with '20' functions detected. Defined threshold inside classes is set to '11' |frontend/app/src/main/java/com/example/intellidish/ManageFriends.kt
 |11 |Object 'UserManager' with '16' functions detected. Defined threshold inside objects is set to '11' |frontend/app/src/main/java/com/example/intellidish/utils/UserManager.kt
 
-**Category:** Error Prone  
-
-**Code Pattern:** Expression with labels increase complexity and affect maintainability.
-
-**Justification:**  
-
-|          | **Issue**                                                       | **Location in Git**                                              |
-|----------|-----------------------------------------------------------------|------------------------------------------------------------------|
-|1 |Expression with labels increase complexity and affect maintainability.|frontend/app/src/main/java/com/example/intellidish/ManageFriends.kt
-|2 |Expression with labels increase complexity and affect maintainability.|frontend/app/src/main/java/com/example/intellidish/ManageFriends.kt
+---------
 
 **Category:** Error Prone  
 
-**Code Pattern:** Excessive nesting leads to hidden complexity. Prefer extracting code to make it easier to understand.
+**Code Pattern:** Others - Excessive nesting leads to hidden complexity. Prefer extracting code to make it easier to understand.  
 
-**Justification:**  
+**Justification:**  I believe Codacy probably claims that the fetchIngredientsFromServer function is nested too deeply because it counts the try-catch block and if-else statements as 2 layers of "nesting", which is technically true in that they add a layer of depth in the function, but in reality doesn't really make the function "harder to read". Other than this, the function only has a very simple double forEach loop in the following code snippet:  
+```
+potluck.participants.forEach { participant ->  
+   participant.ingredients?.forEach { ing ->
+      newIngredients.add(PotluckIngredient(ing, participant.user.name))
+   }
+}
+```
+Extracting code into helper functions may actually make the code more convolutes and difficult to read.  
 
 |          | **Issue**                                                       | **Location in Git**                                              |
 |----------|-----------------------------------------------------------------|------------------------------------------------------------------|
 |1 |Function fetchIngredientsFromServer is nested too deeply.|frontend/app/src/main/java/com/example/intellidish/adapters/PotluckIngredientAdapter.kt
+
+---------
+
+**Category:** Security  
+
+**Code Pattern:** Others - Insecure dependencies detection (critical and high severity)  
+
+**Justification:**  
+
+|          | **Issue**                                                       | **Location in Git**                                              |
+|----------|-----------------------------------------------------------------|------------------------------------------------------------------|
+|1 |Insecure dependency npm/hoek@2.16.3 (CVE-2020-36604: hapi/hoek: Prototype Pollution in @hapi/hoek) (no fix available)|backend_updated/package-lock.json
 
 
