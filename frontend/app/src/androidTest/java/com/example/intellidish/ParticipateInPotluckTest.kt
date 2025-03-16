@@ -65,9 +65,6 @@ class ParticipateInPotluckTest {
             .check(matches(isDisplayed()))
     }
 
-    /**
-     * Helper function to wait until a view (by ID) is visible or up to a timeout.
-     */
     private fun waitForViewToAppear(viewId: Int, timeoutMs: Long) {
         val startTime = System.currentTimeMillis()
         while (System.currentTimeMillis() - startTime < timeoutMs) {
@@ -135,9 +132,6 @@ class ParticipateInPotluckTest {
             .check(matches(isDisplayed()))
     }
 
-    /**
-     * 3. The user starts a PotLuck and adds their friends to create a group.
-     */
     @Test
     fun testD_CreatePotluckAndAddParticipants() {
         testA_SignIn()
@@ -272,9 +266,6 @@ class ParticipateInPotluckTest {
             .check(matches(isDisplayed()))
     }
 
-    /**
-     * Helper function to click a SeekBar at a fraction of its width
-     */
     private fun clickSeekBar(position: Float) = GeneralClickAction(
         Tap.SINGLE,
         { view ->
