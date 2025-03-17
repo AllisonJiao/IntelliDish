@@ -49,7 +49,7 @@
 | **DELETE /potluck/:id**                     | `backend/tests/jest_unmocked/userPotluckOperations_um.test.ts`                  | `backend/tests/jest_mocked/userPotluckOperations_m.test.ts`                    | Users DB, Potluck DB               |
 #### 2.1.2. Commit Hash Where Tests Run
 
-`[4f0e9e8affbe02f1092f7b76b0e465d3c73cc0bb]`
+`[9aca1aa1246bbb505a62c0738cd61d730b41cb32]`
 
 #### 2.1.3. Explanation on How to Run the Tests
 To test locally (you may need OPENAI_API_KEY to run some tests, you can ask our team and put it in your local .env to test on)
@@ -553,7 +553,7 @@ Any endpoint that could potentially leak sensitive info is tested by performing 
 
 ### 5.1. Commit Hash Where Codacy Ran
 
-`[b6af665ee598cbf37de3e7b9300bc1a43ac8d67e]`
+`[9aca1aa1246bbb505a62c0738cd61d730b41cb32]`
 <div style="border: 2px solid black; display: inline-block;">
     <img src="images/codacy_grade.png" alt="Codacy Grade">
 </div>
