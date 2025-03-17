@@ -76,11 +76,11 @@ The pipeline currently does not work but the test will run successfully on your 
 
 ### 2.3. Jest Coverage Report Screenshots With Mocks
 
-![mocked](./images/mocked.png)
+![mocked](./images/mocked_test.png)
 
 ### 2.4. Jest Coverage Report Screenshots Without Mocks
 
-![unmocked](./images/unmocked.png)
+![unmocked](./images/unmocked_test.png)
 Unmocked tests has zero coverage because we are testing with AWS endpoints, Jest cannot generate the coverage for the tests remotely. It will only generate coverage for the local tests like the mocked ones.
 
 ---
