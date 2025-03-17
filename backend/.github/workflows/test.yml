@@ -1,0 +1,43 @@
+name: Run Jest Tests with Coverage
+
+on:
+  push:
+    branches:
+      - main
+      - backend_allison_edward
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 23
+      
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Create .env File
+        run: |
+          touch .env
+          echo "PORT=${{ secrets.PROD_PORT }}" >> .env
+          echo "DB_URI=${{ secrets.PROD_DB_URI }}" >> .env  # AWS MongoDB URI
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
+          chmod 600 .env
+
+      - name: Run Unmocked Jest Tests with Coverage
+        run: npm test -- --coverage tests/jest_unmocked
+
+      - name: Run Mocked Jest Tests with Coverage
+        run: npm test -- --coverage tests/jest_mocked
+
+      - name: Upload Jest Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jest-coverage
+          path: coverage/

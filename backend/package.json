@@ -1,0 +1,51 @@
+{
+  "dependencies": {
+    "@types/express": "^5.0.0",
+    "ajv": "^6.12.3",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-validator": "^7.2.1",
+    "fs": "^0.0.1-security",
+    "mongodb": "^6.12.0",
+    "mongoose": "^8.10.1",
+    "morgan": "^1.10.0",
+    "openai": "^4.85.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  },
+  "name": "intellidish",
+  "version": "1.0.0",
+  "description": "CPEN 321 Project",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node index.ts",
+    "dev": "nodemon -r dotenv/config -e ts index.ts",
+    "test": "jest",
+    "db:check": "node -e 'require(\"mongoose\").connect(process.env.DB_URI).then(()=>console.log(\"Connected to MongoDB\")).catch(err=>console.error(\"Connection Failed\", err))'"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AllisonJiao/IntelliDish.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AllisonJiao/IntelliDish/issues"
+  },
+  "homepage": "https://github.com/AllisonJiao/IntelliDish#readme",
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@types/jest": "^29.5.14",
+    "@types/morgan": "^1.9.9",
+    "@types/supertest": "^6.0.2",
+    "dotenv": "^16.4.7",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.6"
+  }
+}
