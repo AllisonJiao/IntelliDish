@@ -561,13 +561,13 @@ Any endpoint that could potentially leak sensitive info is tested by performing 
 ### 5.2. Unfixed Issues per Codacy Category
 
 <div style="border: 2px solid black; display: inline-block;">
-    <img src="images/codacy_issue_categories.png" alt="Codacy Issue Categories">
+    <img src="images/codacy_issue_categorie.png" alt="Codacy Issue Categories">
 </div>
 
 ### 5.3. Unfixed Issues per Codacy Code Pattern
 
 <div style="border: 2px solid black; display: inline-block;">
-    <img src="images/codacy_code_patterns.png" alt="Codacy Code Patterns">
+    <img src="images/codacy_code_pattern.png" alt="Codacy Code Patterns">
 </div>
 
 More detailes about each individual issue can be found in section 5.4 below.
@@ -613,16 +613,5 @@ Extracting code into helper functions may actually make the code more convolutes
 |----------|-----------------------------------------------------------------|------------------------------------------------------------------|
 |1 |Function fetchIngredientsFromServer is nested too deeply.|frontend/app/src/main/java/com/example/intellidish/adapters/PotluckIngredientAdapter.kt
 
----------
-
-**Category:** Security  
-
-**Code Pattern:** Others - Insecure dependencies detection (critical and high severity)  
-
-**Justification:** We decided to not fix this issue because there is no official patch available, and as Codacy indicates in the error message, there is “no fix available”. Completely switching to a new library at this point in the project could cause serious issues that break the functionality of our app, and we have deemed it to be not worth the risk. However, we will keep an eye on possible future updates that could patch this issue.
-
-|          | **Issue**                                                       | **Location in Git**                                              |
-|----------|-----------------------------------------------------------------|------------------------------------------------------------------|
-|1 |Insecure dependency npm/hoek@2.16.3 (CVE-2020-36604: hapi/hoek: Prototype Pollution in @hapi/hoek) (no fix available)|backend_updated/package-lock.json
 
 
