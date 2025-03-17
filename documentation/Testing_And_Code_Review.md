@@ -560,7 +560,7 @@ Any endpoint that could potentially leak sensitive info is tested by performing 
 
 ### 5.2. Unfixed Issues per Codacy Category
 
-![issues](./images/codacy_issue_categories.png.png)
+![categories](./images/codacy_issue_categories.png)
 
 ### 5.3. Unfixed Issues per Codacy Code Pattern
 
