@@ -561,13 +561,13 @@ Any endpoint that could potentially leak sensitive info is tested by performing 
 ### 5.2. Unfixed Issues per Codacy Category
 
 <div style="border: 2px solid black; display: inline-block;">
-    <img src="images/codacy_issue_categorie.png" alt="Codacy Issue Categories">
+    <img src="images/codacy_issue_categories.png" alt="Codacy Issue Categories">
 </div>
 
 ### 5.3. Unfixed Issues per Codacy Code Pattern
 
 <div style="border: 2px solid black; display: inline-block;">
-    <img src="images/codacy_code_pattern.png" alt="Codacy Code Patterns">
+    <img src="images/codacy_code_patterns.png" alt="Codacy Code Patterns">
 </div>
 
 More detailes about each individual issue can be found in section 5.4 below.
