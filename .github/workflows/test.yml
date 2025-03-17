@@ -30,8 +30,11 @@ jobs:
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
           chmod 600 .env
 
-      - name: Run Jest Tests with Coverage
+      - name: Run Unmocked Jest Tests with Coverage
         run: npm test -- --coverage tests/jest_unmocked
+
+      - name: Run Mocked Jest Tests with Coverage
+        run: npm test -- --coverage tests/jest_mocked
 
       - name: Upload Jest Coverage Report
         uses: actions/upload-artifact@v4
