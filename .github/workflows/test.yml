@@ -10,6 +10,17 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongo --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -21,6 +32,20 @@ jobs:
       
       - name: Install Dependencies
         run: npm install
+
+      - name: Debug MongoDB URI
+        run: |
+          echo "Checking MongoDB connection..."
+          echo "DB_URI=${{ secrets.DB_URI }}"
+
+      - name: Wait for MongoDB to be Ready
+        run: |
+          for i in {1..20}; do
+            nc -z mongo 27017 && echo "MongoDB is ready" && exit 0
+            echo "Waiting for MongoDB..."
+            sleep 3
+          done
+          echo "MongoDB did not start in time" && exit 1
 
       - name: Create .env File
         run: |
