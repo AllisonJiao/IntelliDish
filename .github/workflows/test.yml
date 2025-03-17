@@ -17,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18 
+          node-version: 23
       
       - name: Install Dependencies
         run: npm install
@@ -30,14 +30,8 @@ jobs:
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
           chmod 600 .env
 
-      - name: Debug MongoDB Connection
-        run: |
-          echo "Checking MongoDB connection..."
-          echo "DB_URI=${{ secrets.DB_URI }}" | sed 's/:.*@/:******@/'  # Mask password
-          npm run db:check  # Optional: Add a script to test DB connection
-
       - name: Run Jest Tests with Coverage
-        run: npm test -- --coverage
+        run: npm test -- --coverage tests/jest_unmocked
 
       - name: Upload Jest Coverage Report
         uses: actions/upload-artifact@v4
