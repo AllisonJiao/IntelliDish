@@ -52,7 +52,7 @@
 `[4f0e9e8affbe02f1092f7b76b0e465d3c73cc0bb]`
 
 #### 2.1.3. Explanation on How to Run the Tests
-
+To test locally (you may need OPENAI_API_KEY to run some tests, you can ask our team and put it in your local .env to test on)
 1. **Clone the Repository**:
 
    - Open your terminal and run:
@@ -66,8 +66,13 @@
 
 2. **Run the Test with Coverage**
    - ```
-     npm test --coverage
+     npm test -- --coverage
      ```
+To test on Github (Recommended)
+1. **Go to Actions**
+2. **Click on the latest working pipeline**
+  - Under "Run Mocked Jest Tests with Coverage", open the artifact link
+  - Open ```coverage/lcov-report/IntelliDish/index.html```, you can check the coverage of our test
 
 ### 2.2. GitHub Actions Configuration Location
 
