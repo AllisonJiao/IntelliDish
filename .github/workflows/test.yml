@@ -10,20 +10,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      mongo:
-        image: mongo:latest
-        ports:
-          - 27017:27017
-        options: >-
-          --health-cmd "mongo --eval 'db.runCommand({ping:1})'"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-          --memory=2g
-          --cpus=1
-          --env WIRED_TIGER_CACHE_SIZE=256M
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -36,40 +22,19 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Debug MongoDB URI
-        run: |
-          echo "Checking MongoDB connection..."
-          echo "DB_URI=${{ secrets.PROD_DB_URI }}"
-      
-      - name: Debug MongoDB Logs
-        if: always()
-        run: |
-          echo "Checking MongoDB logs..."
-          docker ps -a
-          docker logs $(docker ps -q --filter ancestor=mongo:latest) || echo "No logs found"
-
-      - name: Wait for MongoDB to be Ready
-        run: |
-          for i in {1..20}; do
-            echo "Checking MongoDB status..."
-            docker exec $(docker ps -q --filter ancestor=mongo:latest) mongo --eval "db.runCommand({ ping: 1 })" && exit 0
-            sleep 3
-          done
-          echo "MongoDB did not start in time" && exit 1
-
       - name: Create .env File
         run: |
           touch .env
           echo "PORT=${{ secrets.PROD_PORT }}" >> .env
-          echo "DB_URI=${{ secrets.PROD_DB_URI }}" >> .env  # Local MongoDB URI
+          echo "DB_URI=${{ secrets.PROD_DB_URI }}" >> .env  # AWS MongoDB URI
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
           chmod 600 .env
 
-      - name: Run Jest Tests (Unmocked)
-        run: npm test tests/jest_unmocked -- --coverage
+      - name: Run Unmocked Jest Tests with Coverage
+        run: npm test -- --coverage tests/jest_unmocked
 
-      - name: Run Jest Tests (Mocked)
-        run: npm test tests/jest_mocked -- --coverage
+      - name: Run Mocked Jest Tests with Coverage
+        run: npm test -- --coverage tests/jest_mocked
 
       - name: Upload Jest Coverage Report
         uses: actions/upload-artifact@v4
