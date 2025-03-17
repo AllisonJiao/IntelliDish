@@ -49,7 +49,7 @@
 | **DELETE /potluck/:id**                     | `tests/jest_unmocked/userPotluckOperations_um.test.ts`                  | `tests/jest_mocked/userPotluckOperations_m.test.ts`                    | Users DB, Potluck DB               |
 #### 2.1.2. Commit Hash Where Tests Run
 
-`[163dbef23bc25d583c0a21e2414e04b51e434a21]`
+`[4f0e9e8affbe02f1092f7b76b0e465d3c73cc0bb]`
 
 #### 2.1.3. Explanation on How to Run the Tests
 
@@ -72,7 +72,6 @@
 ### 2.2. GitHub Actions Configuration Location
 
 `~/.github/workflows/test.yml`
-The pipeline currently does not work but the test will run successfully on your local machine. However it might fail some tests if you don't have OPENAI_API, because it is in our .env file. We will make sure the workflow can run normally ASAP. If you need our OPENAI_API, we can send you for testing.
 
 ### 2.3. Jest Coverage Report Screenshots With Mocks
 
