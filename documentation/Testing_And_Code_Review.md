@@ -85,7 +85,7 @@ To test on Github (Recommended)
 ### 2.4. Jest Coverage Report Screenshots Without Mocks
 
 ![unmocked](./images/unmocked_test.png)
-Unmocked tests has zero coverage because we are testing with AWS endpoints, Jest cannot generate the coverage for the tests remotely. It will only generate coverage for the local tests like the mocked ones.
+Unmocked tests have unknown coverage because we are testing with AWS endpoints, Jest cannot generate the coverage for the tests remotely. It will only generate coverage for the local tests like the mocked ones.
 
 ---
 
