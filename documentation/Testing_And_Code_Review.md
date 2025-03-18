@@ -81,6 +81,7 @@ To test on Github (Recommended)
 ### 2.3. Jest Coverage Report Screenshots With Mocks
 
 ![mocked](./images/mocked_test.png)
+Justification for controllers coverage: Our Jest test uses API endpoint calls directly (such as ```request(API_BASE_URL).delete('/ingredients/invalid-id')```, and our routes are bounded with actions in controller using routes.ts (such as```route: "/ingredients",action: controller.getAllIngredients```). Thus, the Jest might not detect the use of controller functions correctly, which leading to the low coverage as shown. The 100% coverage of routes indicate that we are also covering functions in controllers.
 
 ### 2.4. Jest Coverage Report Screenshots Without Mocks
 
