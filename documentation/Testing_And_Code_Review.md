@@ -61,7 +61,7 @@ To test locally (you may need OPENAI_API_KEY to run some tests, you can ask our 
      ```
    - cd into Backend Folder
      ```
-     cd updated_backend
+     cd backend
      ```
 
 2. **Run the Test with Coverage**
@@ -76,7 +76,7 @@ To test on Github (Recommended)
 
 ### 2.2. GitHub Actions Configuration Location
 
-`~/.github/workflows/test.yml`
+`~/backend/.github/workflows/test.yml`
 
 ### 2.3. Jest Coverage Report Screenshots With Mocks
 
