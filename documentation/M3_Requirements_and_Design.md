@@ -39,6 +39,9 @@ Mar 13:
 - Revised Section 3.5 to more clearly introduce the non-functional requirements of data security and performance.
 - Revised Section 4.7 to change the non-functional requirements design for data security and performance.
 
+Mar 19:
+- Revised Section 4.5 to capture the updated interactions between components.
+
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
 
