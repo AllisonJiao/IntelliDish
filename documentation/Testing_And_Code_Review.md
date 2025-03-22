@@ -57,7 +57,7 @@ To test locally (you may need OPENAI_API_KEY to run some tests, you can ask our 
 
    - Open your terminal and run:
      ```
-     git clone https://github.com/example/your-project.git
+     git clone https://github.com/AllisonJiao/IntelliDish.git
      ```
    - cd into Backend Folder
      ```
