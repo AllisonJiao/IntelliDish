@@ -1,10 +1,13 @@
-import {describe, expect, test} from '@jest/globals';
+import {describe, expect, test, afterAll} from '@jest/globals';
+import app from '../../index';
 import request from "supertest";
-import https from "https";
 import mongoose from "mongoose";
 
-const API_BASE_URL = "https://ec2-3-21-30-112.us-east-2.compute.amazonaws.com";
-const agent = new https.Agent({ rejectUnauthorized: false });
+// Clean up after all tests
+afterAll(async () => {
+    await mongoose.connection.close();
+    await new Promise(resolve => setTimeout(resolve, 1000));
+});
 
 describe("Unmocked: DELETE /recipes/:_id", () => {
     // Input: A DELETE request with an invalid MongoDB ID
@@ -12,9 +15,8 @@ describe("Unmocked: DELETE /recipes/:_id", () => {
     // Expected behavior: Returns validation error for invalid ID format
     // Expected output: An object with 'errors' property
     test("deleteRecipeById with invalid ID", async () => {
-        const res = await request(API_BASE_URL)
-            .delete('/recipes/invalid-id')
-            .agent(agent);
+        const res = await request(app)
+            .delete('/recipes/invalid-id');
         
         expect(res.status).toBe(400);
         expect(res.body).toHaveProperty('errors');
@@ -27,9 +29,8 @@ describe("Unmocked: DELETE /recipes/:_id", () => {
     test("deleteRecipeById with non-existent ID", async () => {
         const nonExistentId = new mongoose.Types.ObjectId().toString();
         
-        const res = await request(API_BASE_URL)
-            .delete(`/recipes/${nonExistentId}`)
-            .agent(agent);
+        const res = await request(app)
+            .delete(`/recipes/${nonExistentId}`);
         
         expect(res.status).toBe(404);
         expect(res.body).toHaveProperty('error');

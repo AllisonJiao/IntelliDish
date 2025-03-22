@@ -161,8 +161,11 @@ export const UsersRoutes = [
         route: "/potluck",
         action: controller.createPotluckSession,
         validation: [
-            body("participants").isArray(),
-            body("ingredients").isArray()
+            body("name").isString().withMessage("Name is required"),
+            body("date").isISO8601().withMessage("Valid date is required"),
+            body("host").isMongoId().withMessage("Valid host ID is required"),
+            body("participants").isArray().withMessage("Participants must be an array"),
+            body("ingredients").isArray().withMessage("Ingredients must be an array")
         ]
     },
     {

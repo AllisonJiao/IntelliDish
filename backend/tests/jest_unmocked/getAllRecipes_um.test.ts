@@ -1,9 +1,13 @@
-import {describe, expect, test} from '@jest/globals';
+import {describe, expect, test, afterAll} from '@jest/globals';
+import app from '../../index';
 import request from "supertest";
-import https from "https";
+import mongoose from "mongoose";
 
-const API_BASE_URL = "https://ec2-3-21-30-112.us-east-2.compute.amazonaws.com";
-const agent = new https.Agent({ rejectUnauthorized: false });
+// Clean up after all tests
+afterAll(async () => {
+    await mongoose.connection.close();
+    await new Promise(resolve => setTimeout(resolve, 1000));
+});
 
 describe("Unmocked: GET /recipes", () => {
     // Input: A GET request to retrieve all recipes
@@ -11,9 +15,8 @@ describe("Unmocked: GET /recipes", () => {
     // Expected behavior: Returns a list of all recipes in the database
     // Expected output: An array of recipe objects
     test("getAllRecipes returns recipes", async () => {
-        const res = await request(API_BASE_URL)
-            .get('/recipes')
-            .agent(agent);
+        const res = await request(app)
+            .get('/recipes');
         
         expect(res.status).toBe(200);
     });

@@ -1,9 +1,13 @@
-import {describe, expect, test} from '@jest/globals';
+import {describe, expect, test, afterAll} from '@jest/globals';
+import app from '../../index';
 import request from "supertest";
-import https from "https";
+import mongoose from "mongoose";
 
-const API_BASE_URL = "https://ec2-3-21-30-112.us-east-2.compute.amazonaws.com";
-const agent = new https.Agent({ rejectUnauthorized: false });
+// Clean up after all tests
+afterAll(async () => {
+    await mongoose.connection.close();
+    await new Promise(resolve => setTimeout(resolve, 1000));
+});
 
 describe("Unmocked: POST /recipes", () => {
     // Input: A POST request with an empty body
@@ -11,10 +15,9 @@ describe("Unmocked: POST /recipes", () => {
     // Expected behavior: Returns validation error for missing required fields
     // Expected output: An object with 'errors' property listing all missing required fields
     test("postNewRecipe with missing required fields", async () => {
-        const res = await request(API_BASE_URL)
+        const res = await request(app)
             .post('/recipes')
-            .send({})
-            .agent(agent);
+            .send({});
         
         expect(res.status).toBe(400);
         expect(res.body).toHaveProperty('errors');
@@ -25,14 +28,13 @@ describe("Unmocked: POST /recipes", () => {
     // Expected behavior: Returns validation error for invalid data format
     // Expected output: An object with 'errors' property indicating invalid data types
     test("postNewRecipe with invalid data", async () => {
-        const res = await request(API_BASE_URL)
+        const res = await request(app)
             .post('/recipes')
             .send({
                 name: "Test Recipe",
                 ingredients: "not an array", // Should be an array
                 procedure: ["step1"]
-            })
-            .agent(agent);
+            });
         
         expect(res.status).toBe(400);
         expect(res.body).toHaveProperty('errors');

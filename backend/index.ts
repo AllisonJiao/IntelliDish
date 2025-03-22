@@ -55,9 +55,14 @@ const options = {
 };
 
 connectDB().then(() => {
-  https.createServer(options, app).listen(process.env.PORT || 443, () => {
-    console.log(`HTTPS Server running on port ${process.env.PORT || 443}`);
-  });
+  // Only start the HTTPS server if not in test environment
+  if (process.env.NODE_ENV !== 'test') {
+    https.createServer(options, app).listen(process.env.PORT || 443, () => {
+      console.log(`HTTPS Server running on port ${process.env.PORT || 443}`);
+    });
+  } else {
+    console.log('Test environment detected - skipping server startup');
+  }
 }).catch(err => {
   console.error(err);
 });

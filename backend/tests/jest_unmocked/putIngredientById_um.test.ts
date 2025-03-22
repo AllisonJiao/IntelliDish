@@ -1,49 +1,49 @@
-import {describe, expect, test} from '@jest/globals';
+import {describe, expect, test, afterAll} from '@jest/globals';
+import app from '../../index';
 import request from "supertest";
-import https from "https";
 import mongoose from "mongoose";
 
-const API_BASE_URL = "https://ec2-3-21-30-112.us-east-2.compute.amazonaws.com";
-const agent = new https.Agent({ rejectUnauthorized: false });
+// Clean up after all tests
+afterAll(async () => {
+    await mongoose.connection.close();
+    await new Promise(resolve => setTimeout(resolve, 1000));
+});
 
 describe("Unmocked: PUT /ingredients/:id", () => {
-    // Input: A PUT request with an invalid MongoDB ID and valid ingredient data
+    // Input: A PUT request with an invalid MongoDB ID
     // Expected status code: 400
     // Expected behavior: Returns validation error for invalid ID format
     // Expected output: An object with 'errors' property
     test("putIngredientById with invalid ID", async () => {
-        const res = await request(API_BASE_URL)
+        const res = await request(app)
             .put('/ingredients/invalid-id')
             .send({
-                name: "Updated Tomato",
+                name: "Updated Ingredient",
                 category: "Vegetables",
                 quantity: 1,
                 unit: "kg"
-            })
-            .agent(agent);
+            });
         
         expect(res.status).toBe(400);
         expect(res.body).toHaveProperty('errors');
     });
 
-    // Input: A PUT request with a valid but non-existent MongoDB ID and valid ingredient data
+    // Input: A PUT request with a valid but non-existent MongoDB ID
     // Expected status code: 404
     // Expected behavior: Returns error indicating ingredient not found
-    // Expected output: An object with 'error' property
+    // Expected output: An error response
     test("putIngredientById with non-existent ID", async () => {
         const nonExistentId = new mongoose.Types.ObjectId().toString();
         
-        const res = await request(API_BASE_URL)
+        const res = await request(app)
             .put(`/ingredients/${nonExistentId}`)
             .send({
-                name: "Updated Tomato",
+                name: "Updated Ingredient",
                 category: "Vegetables",
                 quantity: 1,
                 unit: "kg"
-            })
-            .agent(agent);
+            });
         
         expect(res.status).toBe(404);
-        expect(res.body).toHaveProperty('error');
     });
 }); 

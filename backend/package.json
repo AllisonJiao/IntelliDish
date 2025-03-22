@@ -26,7 +26,8 @@
   "jest": {
     "transform": {
       "^.+\\.ts$": "ts-jest"
-    }
+    },
+    "setupFiles": ["<rootDir>/jest.setup.ts"]
   },
   "repository": {
     "type": "git",
