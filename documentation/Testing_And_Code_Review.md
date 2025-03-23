@@ -49,7 +49,7 @@
 | **DELETE /potluck/:id**                     | `backend/tests/jest_unmocked/userPotluckOperations_um.test.ts`                  | `backend/tests/jest_mocked/userPotluckOperations_m.test.ts`                    | Users DB, Potluck DB               |
 #### 2.1.2. Commit Hash Where Tests Run
 
-`[9aca1aa1246bbb505a62c0738cd61d730b41cb32]`
+`[5019d20bcb3365f89e62b6176c511f3fa57ea742]`
 
 #### 2.1.3. Explanation on How to Run the Tests
 To test locally (you may need OPENAI_API_KEY to run some tests, you can ask our team and put it in your local .env to test on)
