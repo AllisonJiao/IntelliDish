@@ -89,8 +89,7 @@ Justification for model coverage: We implemented some implicit functions for mod
 
 ### 2.4. Jest Coverage Report Screenshots Without Mocks
 
-![unmocked](./images/unmocked_test.png)
-Unmocked tests have unknown coverage because we are testing with AWS endpoints, Jest cannot generate the coverage for the tests remotely. It will only generate coverage for the local tests like the mocked ones.
+![unmocked](./images/jest_unmocked.png)
 
 ---
 
