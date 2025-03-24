@@ -83,7 +83,7 @@ To test on Github (Recommended)
 ![mocked](./images/mocked_test.png)
 Justification for IntelliDish coverage:  Most of the uncovered lines for these files are because of the logging, they are used for debugging at our current stage of development.
 
-Justification for controllers coverage: Our Jest test uses API endpoint calls directly (such as ```request(API_BASE_URL).delete('/ingredients/invalid-id')```, and our routes are bounded with actions in controller using routes.ts (such as```route: "/ingredients",action: controller.getAllIngredients```). Thus, the Jest can not detect the use of controller functions correctly, which leading to the low coverage as shown. The 100% coverage of routes indicate that we are also covering functions in controllers.  
+Justification for controllers coverage: We mocked the entire components instead of the functions inside the controllers, thus the test would not be able to touch on those functions.
 
 Justification for model coverage: We implemented some implicit functions for models to handle deletion and update in database, and these functions are called within the controller. Since the Jest does not detect the usage in controller, these functions are also not detected.
 
