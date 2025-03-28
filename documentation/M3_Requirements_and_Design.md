@@ -42,6 +42,9 @@ Mar 13:
 Mar 19:
 - Revised Section 4.5 to capture the updated interactions between components.
 
+Mar 28:
+- Revised Section 3.3 to align with the current implementation.
+
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
 
@@ -77,15 +80,13 @@ For users like busy university students and employees (who often lack the time, 
 **Overview**:
 1. **Authenticate**
     * User logs into and out of IntelliDish using the authentication service to manage their session securely.
-2. **Get Full Recipe Recommendation**
-    * User provides a list of available ingredients and cuisine preferences, and the AI API returns a list of possible recipes.
-3. **Get Partial Recipe Recommendation**
-    * Suggest recipes where some ingredients are missing from user input, and provide possible substitutes for missing ingredients as well as possible recipes that doesn't match the user's cuisine preferences.
-4. **Participate In PotLuck**
+2. **Get Recipe Recommendation**
+    * User provides a list of available ingredients and cuisine preferences, and the AI API returns a possible recipe.
+3. **Participate In PotLuck**
     * Users can collaboratively input available ingredients as a group for recipe recommendations.
-5. **Manage Recipes**
+4. **Manage Recipes**
     * Users can add or remove recipes.
-6. **Manage Friends**
+5. **Manage Friends**
     * Users can add or remove friends, with whom they can PotLuck and share recipes with.
 
 **Detailed Flow for Each Independent Scenario**:
@@ -112,8 +113,8 @@ For users like busy university students and employees (who often lack the time, 
           - **4a1**. Display an error message that the authentication service is unreachable/unavailable.
           - **4a2**. Prompt the user to try again later or check online if the authentication service is down/under maintenance.
 
-2. **Get Full Recipe Recommendation**:
-    - **Description**: User provides a list of available ingredients and cuisine preferences, and the AI API returns a list of possible recipes.
+2. **Get Recipe Recommendation**:
+    - **Description**: User provides a list of available ingredients and cuisine preferences, and the AI API returns a possible recipe.
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
         - **1**. The user clicks the "Get Recommendation" button on the main page to access the "Get Recipe Recommendation" feature.
@@ -141,41 +142,9 @@ For users like busy university students and employees (who often lack the time, 
             - **5a1**. Display error message that the AI API is unreachable/ unavailable.
             - **5a2**. Prompt the user to try again later, or check online whether the AI API is down/ under maintainence.
         - **5b**. No recipes are possible for the provided user inputs.
-            - **5b1**. Suggest the user to use partial recipe recommendations, PotLuck with friends, or try again with different inputs instead.
+            - **5b1**. Suggest the user to use PotLuck with friends or try again with different inputs instead.
 
-3. **Get Partial Recipe Recommendation**:
-    - **Description**: Suggest recipes where some ingredients are missing from user input, and provide possible substitutes for missing ingredients as well as possible recipes that doesn't match the user's cuisine preferences.
-    - **Primary actor(s)**: User, AI API.
-    - **Main success scenario**:
-        - **1**. The user clicks the "Get Recommendation" button on the main page to access the "Get Recipe Recommendation" feature.
-        - **2**. The app displays the following UI components:
-          - Text Field labeled “Enter ingredients”
-          - Add Ingredient (button)
-          - Upload Image (button)
-          - View Image (button)
-          - Ingredient List Display (large rectangular container for added ingredients)
-          - Clear Ingredients (button)
-          - Cuisine Type (button)
-          - Preferences (button)
-          - Reset Cuisine Type and Preferences (button)
-          - Allow Partial Recipe Recommendations (toggle switch)
-          - Generate Recipes (button)
-        - **3**. The user enters a list of available ingredients and selects cuisine preferences.
-        - **4**. The user clicks the "Allow Partial Recipe Recommendations" switch.
-        - **4**. The app sends a request to the AI API with the provided inputs.
-        - **5**. The AI API returns a possible recipe to the user.
-    - **Failure scenario(s)**:
-        - **3a**. The user attempts to add an ingredient without entering any text input.
-            - **3a1**. Display an error message: “Please enter at least one ingredient!”
-        - **3b**. The user does not enter any ingredient before clicking "Generate Recipes".
-            - **3b1**. Display an error message: “Please add at least one ingredient!”
-        - **5a**. The AI API is unreachable/ unavailable.
-            - **5a1**. Display error message that the AI API is unreachable/ unavailable.
-            - **5a2**. Prompt the user to try again later, or check online whether the AI API is down/ under maintainence.
-        - **5b**. No recipes are possible for the provided user inputs.
-            - **5b1**. Suggest the user to use PotLuck with friends, or try again with different inputs instead.
-
-4. **Participate In PotLuck**:
+3. **Participate In PotLuck**:
     - **Description**: Users collaboratively contribute available ingredients for group-based recipe recommendations while managing group creation, invitations, and participant interactions.
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
@@ -199,7 +168,7 @@ For users like busy university students and employees (who often lack the time, 
             - **6a1**. Display an error message that the AI API is unreachable/unavailable.
             - **6a2**. Prompt the users to try again later or check online whether the AI API is down/under maintenance.
 
-5. **Manage Recipes**:
+4. **Manage Recipes**:
     - **Description**: Users can add or remove recipes.
     - **Primary actor(s)**: User.
     - **Main success scenario**:
@@ -212,7 +181,7 @@ For users like busy university students and employees (who often lack the time, 
         - **1b**. The user attempts to add a duplicate recipe.
             - **1b1**. Display error message that the recipe is already in the user's saved recipes list.
 
-6. **Manage Friends**:
+5. **Manage Friends**:
     - **Description**: Users can add or remove friends, with whom they can PotLuck with.
     - **Primary actor(s)**: User.
     - **Main success scenario**:
