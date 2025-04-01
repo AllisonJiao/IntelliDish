@@ -4,7 +4,7 @@
 
 | **Change Date**   | **Modified Sections** | **Rationale** |
 | ----------------- | --------------------- | ------------- |
-| 03/23 | backend/tests/jest_unmocked | The original tests without mocks are tested with API connected. However, it should not start the server when the test begins. The unmocked tests work parallel with the real App.
+| 03/23 | Section 2.4 - backend/tests/jest_unmocked | The original tests without mocks are tested with API connected. However, it should not start the server when the test begins. The unmocked tests work parallel with the real App.
 
 ---
 
