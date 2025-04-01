@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1742608510995" clover="3.2.0">
-  <project timestamp="1742608510995" name="All files">
-    <metrics statements="668" coveredstatements="198" conditionals="186" coveredconditionals="31" methods="75" coveredmethods="22" elements="929" coveredelements="251" complexity="0" loc="668" ncloc="668" packages="4" files="13" classes="13"/>
+<coverage generated="1742726255148" clover="3.2.0">
+  <project timestamp="1742726255148" name="All files">
+    <metrics statements="668" coveredstatements="196" conditionals="186" coveredconditionals="31" methods="75" coveredmethods="22" elements="929" coveredelements="249" complexity="0" loc="668" ncloc="668" packages="4" files="13" classes="13"/>
     <package name="backend">
-      <metrics statements="66" coveredstatements="44" conditionals="13" coveredconditionals="5" methods="9" coveredmethods="5"/>
+      <metrics statements="66" coveredstatements="42" conditionals="13" coveredconditionals="5" methods="9" coveredmethods="5"/>
       <file name="aiHelper.ts" path="/Users/lottej/Documents/GitHub/IntelliDish/backend/aiHelper.ts">
         <metrics statements="25" coveredstatements="8" conditionals="2" coveredconditionals="0" methods="2" coveredmethods="0"/>
-        <line num="1" count="27" type="stmt"/>
-        <line num="3" count="27" type="stmt"/>
-        <line num="4" count="27" type="stmt"/>
-        <line num="6" count="27" type="stmt"/>
-        <line num="8" count="27" type="stmt"/>
-        <line num="10" count="27" type="stmt"/>
-        <line num="18" count="27" type="stmt"/>
+        <line num="1" count="17" type="stmt"/>
+        <line num="3" count="17" type="stmt"/>
+        <line num="4" count="17" type="stmt"/>
+        <line num="6" count="17" type="stmt"/>
+        <line num="8" count="17" type="stmt"/>
+        <line num="10" count="17" type="stmt"/>
+        <line num="18" count="17" type="stmt"/>
         <line num="19" count="0" type="stmt"/>
         <line num="20" count="0" type="stmt"/>
         <line num="59" count="0" type="stmt"/>
@@ -21,7 +21,7 @@
         <line num="63" count="0" type="stmt"/>
         <line num="66" count="0" type="stmt"/>
         <line num="68" count="0" type="stmt"/>
-        <line num="72" count="27" type="stmt"/>
+        <line num="72" count="17" type="stmt"/>
         <line num="73" count="0" type="stmt"/>
         <line num="75" count="0" type="stmt"/>
         <line num="76" count="0" type="stmt"/>
@@ -33,61 +33,61 @@
         <line num="128" count="0" type="stmt"/>
       </file>
       <file name="index.ts" path="/Users/lottej/Documents/GitHub/IntelliDish/backend/index.ts">
-        <metrics statements="33" coveredstatements="30" conditionals="7" coveredconditionals="2" methods="6" coveredmethods="4"/>
-        <line num="1" count="34" type="stmt"/>
-        <line num="2" count="34" type="stmt"/>
-        <line num="3" count="34" type="stmt"/>
-        <line num="4" count="34" type="stmt"/>
-        <line num="5" count="34" type="stmt"/>
-        <line num="6" count="34" type="stmt"/>
-        <line num="7" count="34" type="stmt"/>
-        <line num="8" count="34" type="stmt"/>
-        <line num="9" count="34" type="stmt"/>
-        <line num="10" count="34" type="stmt"/>
-        <line num="12" count="34" type="stmt"/>
-        <line num="14" count="34" type="stmt"/>
-        <line num="19" count="34" type="stmt"/>
-        <line num="20" count="34" type="stmt"/>
-        <line num="22" count="34" type="stmt"/>
-        <line num="27" count="34" type="stmt"/>
-        <line num="28" count="1130" type="stmt"/>
-        <line num="31" count="88" type="stmt"/>
-        <line num="32" count="88" type="stmt"/>
-        <line num="33" count="88" type="cond" truecount="1" falsecount="0"/>
+        <metrics statements="33" coveredstatements="28" conditionals="7" coveredconditionals="2" methods="6" coveredmethods="4"/>
+        <line num="1" count="17" type="stmt"/>
+        <line num="2" count="17" type="stmt"/>
+        <line num="3" count="17" type="stmt"/>
+        <line num="4" count="17" type="stmt"/>
+        <line num="5" count="17" type="stmt"/>
+        <line num="6" count="17" type="stmt"/>
+        <line num="7" count="17" type="stmt"/>
+        <line num="8" count="17" type="stmt"/>
+        <line num="9" count="17" type="stmt"/>
+        <line num="10" count="17" type="stmt"/>
+        <line num="12" count="17" type="stmt"/>
+        <line num="14" count="17" type="stmt"/>
+        <line num="19" count="17" type="stmt"/>
+        <line num="20" count="17" type="stmt"/>
+        <line num="22" count="17" type="stmt"/>
+        <line num="27" count="17" type="stmt"/>
+        <line num="28" count="697" type="stmt"/>
+        <line num="31" count="36" type="stmt"/>
+        <line num="32" count="36" type="stmt"/>
+        <line num="33" count="36" type="cond" truecount="1" falsecount="0"/>
         <line num="35" count="20" type="stmt"/>
-        <line num="37" count="68" type="stmt"/>
-        <line num="38" count="68" type="stmt"/>
-        <line num="44" count="32" type="stmt"/>
-        <line num="45" count="32" type="stmt"/>
-        <line num="52" count="34" type="stmt"/>
-        <line num="57" count="34" type="stmt"/>
-        <line num="59" count="24" type="cond" truecount="1" falsecount="1"/>
+        <line num="37" count="16" type="stmt"/>
+        <line num="38" count="16" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="52" count="17" type="stmt"/>
+        <line num="57" count="17" type="stmt"/>
+        <line num="59" count="17" type="cond" truecount="1" falsecount="1"/>
         <line num="60" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="61" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="64" count="24" type="stmt"/>
+        <line num="64" count="17" type="stmt"/>
         <line num="67" count="0" type="stmt"/>
-        <line num="70" count="34" type="stmt"/>
+        <line num="70" count="17" type="stmt"/>
       </file>
       <file name="services.ts" path="/Users/lottej/Documents/GitHub/IntelliDish/backend/services.ts">
         <metrics statements="8" coveredstatements="6" conditionals="4" coveredconditionals="3" methods="1" coveredmethods="1"/>
-        <line num="1" count="34" type="stmt"/>
-        <line num="5" count="34" type="stmt"/>
-        <line num="6" count="34" type="stmt"/>
-        <line num="7" count="34" type="cond" truecount="3" falsecount="1"/>
-        <line num="8" count="24" type="stmt"/>
+        <line num="1" count="17" type="stmt"/>
+        <line num="5" count="17" type="stmt"/>
+        <line num="6" count="17" type="stmt"/>
+        <line num="7" count="17" type="cond" truecount="3" falsecount="1"/>
+        <line num="8" count="17" type="stmt"/>
         <line num="10" count="0" type="stmt"/>
         <line num="11" count="0" type="stmt"/>
-        <line num="15" count="34" type="stmt"/>
+        <line num="15" count="17" type="stmt"/>
       </file>
     </package>
     <package name="backend.controllers">
       <metrics statements="560" coveredstatements="116" conditionals="172" coveredconditionals="26" methods="63" coveredmethods="15"/>
       <file name="IngredientsController.ts" path="/Users/lottej/Documents/GitHub/IntelliDish/backend/controllers/IngredientsController.ts">
         <metrics statements="122" coveredstatements="38" conditionals="53" coveredconditionals="4" methods="11" coveredmethods="5"/>
-        <line num="2" count="22" type="stmt"/>
-        <line num="4" count="22" type="stmt"/>
-        <line num="5" count="22" type="stmt"/>
-        <line num="10" count="22" type="stmt"/>
+        <line num="2" count="17" type="stmt"/>
+        <line num="4" count="17" type="stmt"/>
+        <line num="5" count="17" type="stmt"/>
+        <line num="10" count="17" type="stmt"/>
         <line num="16" count="0" type="stmt"/>
         <line num="17" count="0" type="cond" truecount="0" falsecount="1"/>
         <line num="18" count="0" type="stmt"/>
@@ -96,7 +96,7 @@
         <line num="29" count="0" type="stmt"/>
         <line num="31" count="0" type="stmt"/>
         <line num="32" count="0" type="stmt"/>
-        <line num="36" count="22" type="stmt"/>
+        <line num="36" count="17" type="stmt"/>
         <line num="37" count="0" type="stmt"/>
         <line num="38" count="0" type="stmt"/>
         <line num="40" count="0" type="stmt"/>
@@ -106,12 +106,12 @@
         <line num="49" count="0" type="stmt"/>
         <line num="51" count="0" type="stmt"/>
         <line num="52" count="0" type="stmt"/>
-        <line num="59" count="22" type="stmt"/>
-        <line num="68" count="22" type="stmt"/>
+        <line num="59" count="17" type="stmt"/>
+        <line num="68" count="17" type="stmt"/>
         <line num="69" count="0" type="cond" truecount="0" falsecount="3"/>
         <line num="70" count="0" type="stmt"/>
         <line num="72" count="0" type="stmt"/>
-        <line num="75" count="22" type="stmt"/>
+        <line num="75" count="17" type="stmt"/>
         <line num="79" count="0" type="stmt"/>
         <line num="80" count="0" type="stmt"/>
         <line num="81" count="0" type="stmt"/>
@@ -141,7 +141,7 @@
         <line num="128" count="0" type="stmt"/>
         <line num="131" count="0" type="stmt"/>
         <line num="132" count="0" type="stmt"/>
-        <line num="136" count="22" type="stmt"/>
+        <line num="136" count="17" type="stmt"/>
         <line num="138" count="1" type="stmt"/>
         <line num="139" count="1" type="stmt"/>
         <line num="140" count="1" type="stmt"/>
@@ -209,11 +209,11 @@
       </file>
       <file name="RecipesController.ts" path="/Users/lottej/Documents/GitHub/IntelliDish/backend/controllers/RecipesController.ts">
         <metrics statements="78" coveredstatements="31" conditionals="14" coveredconditionals="6" methods="9" coveredmethods="5"/>
-        <line num="2" count="22" type="stmt"/>
-        <line num="3" count="22" type="stmt"/>
-        <line num="4" count="22" type="stmt"/>
-        <line num="5" count="22" type="stmt"/>
-        <line num="7" count="22" type="stmt"/>
+        <line num="2" count="17" type="stmt"/>
+        <line num="3" count="17" type="stmt"/>
+        <line num="4" count="17" type="stmt"/>
+        <line num="5" count="17" type="stmt"/>
+        <line num="7" count="17" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
@@ -290,13 +290,13 @@
       </file>
       <file name="UsersController.ts" path="/Users/lottej/Documents/GitHub/IntelliDish/backend/controllers/UsersController.ts">
         <metrics statements="360" coveredstatements="47" conditionals="105" coveredconditionals="16" methods="43" coveredmethods="5"/>
-        <line num="2" count="27" type="stmt"/>
-        <line num="3" count="27" type="stmt"/>
-        <line num="4" count="27" type="stmt"/>
-        <line num="5" count="27" type="stmt"/>
-        <line num="6" count="27" type="stmt"/>
-        <line num="7" count="27" type="stmt"/>
-        <line num="9" count="27" type="stmt"/>
+        <line num="2" count="17" type="stmt"/>
+        <line num="3" count="17" type="stmt"/>
+        <line num="4" count="17" type="stmt"/>
+        <line num="5" count="17" type="stmt"/>
+        <line num="6" count="17" type="stmt"/>
+        <line num="7" count="17" type="stmt"/>
+        <line num="9" count="17" type="stmt"/>
         <line num="11" count="0" type="stmt"/>
         <line num="12" count="0" type="stmt"/>
         <line num="13" count="0" type="stmt"/>
@@ -656,69 +656,69 @@
       <metrics statements="29" coveredstatements="25" conditionals="1" coveredconditionals="0" methods="3" coveredmethods="2"/>
       <file name="IngredientModel.ts" path="/Users/lottej/Documents/GitHub/IntelliDish/backend/models/IngredientModel.ts">
         <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="27" type="stmt"/>
-        <line num="10" count="27" type="stmt"/>
-        <line num="25" count="27" type="stmt"/>
+        <line num="1" count="17" type="stmt"/>
+        <line num="10" count="17" type="stmt"/>
+        <line num="25" count="17" type="stmt"/>
         <line num="26" count="2" type="stmt"/>
         <line num="28" count="2" type="stmt"/>
         <line num="33" count="2" type="stmt"/>
-        <line num="36" count="27" type="stmt"/>
-        <line num="38" count="27" type="stmt"/>
+        <line num="36" count="17" type="stmt"/>
+        <line num="38" count="17" type="stmt"/>
       </file>
       <file name="PotluckModel.ts" path="/Users/lottej/Documents/GitHub/IntelliDish/backend/models/PotluckModel.ts">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="27" type="stmt"/>
-        <line num="12" count="27" type="stmt"/>
-        <line num="29" count="27" type="stmt"/>
-        <line num="31" count="27" type="stmt"/>
+        <line num="1" count="17" type="stmt"/>
+        <line num="12" count="17" type="stmt"/>
+        <line num="29" count="17" type="stmt"/>
+        <line num="31" count="17" type="stmt"/>
       </file>
       <file name="RecipeModel.ts" path="/Users/lottej/Documents/GitHub/IntelliDish/backend/models/RecipeModel.ts">
         <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="27" type="stmt"/>
-        <line num="17" count="27" type="stmt"/>
-        <line num="46" count="27" type="stmt"/>
+        <line num="1" count="17" type="stmt"/>
+        <line num="17" count="17" type="stmt"/>
+        <line num="46" count="17" type="stmt"/>
         <line num="47" count="2" type="stmt"/>
         <line num="49" count="2" type="stmt"/>
         <line num="54" count="2" type="stmt"/>
-        <line num="58" count="27" type="stmt"/>
-        <line num="60" count="27" type="stmt"/>
+        <line num="58" count="17" type="stmt"/>
+        <line num="60" count="17" type="stmt"/>
       </file>
       <file name="UserModel.ts" path="/Users/lottej/Documents/GitHub/IntelliDish/backend/models/UserModel.ts">
         <metrics statements="9" coveredstatements="5" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="1" count="27" type="stmt"/>
-        <line num="12" count="27" type="stmt"/>
-        <line num="22" count="27" type="stmt"/>
+        <line num="1" count="17" type="stmt"/>
+        <line num="12" count="17" type="stmt"/>
+        <line num="22" count="17" type="stmt"/>
         <line num="23" count="0" type="stmt"/>
         <line num="25" count="0" type="cond" truecount="0" falsecount="1"/>
         <line num="26" count="0" type="stmt"/>
         <line num="31" count="0" type="stmt"/>
-        <line num="34" count="27" type="stmt"/>
-        <line num="36" count="27" type="stmt"/>
+        <line num="34" count="17" type="stmt"/>
+        <line num="36" count="17" type="stmt"/>
       </file>
     </package>
     <package name="backend.routes">
       <metrics statements="13" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="IngredientsRoutes.ts" path="/Users/lottej/Documents/GitHub/IntelliDish/backend/routes/IngredientsRoutes.ts">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="27" type="stmt"/>
-        <line num="2" count="27" type="stmt"/>
-        <line num="4" count="27" type="stmt"/>
-        <line num="6" count="27" type="stmt"/>
-        <line num="8" count="27" type="stmt"/>
+        <line num="1" count="17" type="stmt"/>
+        <line num="2" count="17" type="stmt"/>
+        <line num="4" count="17" type="stmt"/>
+        <line num="6" count="17" type="stmt"/>
+        <line num="8" count="17" type="stmt"/>
       </file>
       <file name="RecipesRoutes.ts" path="/Users/lottej/Documents/GitHub/IntelliDish/backend/routes/RecipesRoutes.ts">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="27" type="stmt"/>
-        <line num="2" count="27" type="stmt"/>
-        <line num="5" count="27" type="stmt"/>
-        <line num="8" count="27" type="stmt"/>
+        <line num="1" count="17" type="stmt"/>
+        <line num="2" count="17" type="stmt"/>
+        <line num="5" count="17" type="stmt"/>
+        <line num="8" count="17" type="stmt"/>
       </file>
       <file name="UsersRoutes.ts" path="/Users/lottej/Documents/GitHub/IntelliDish/backend/routes/UsersRoutes.ts">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="27" type="stmt"/>
-        <line num="2" count="27" type="stmt"/>
-        <line num="4" count="27" type="stmt"/>
-        <line num="6" count="27" type="stmt"/>
+        <line num="1" count="17" type="stmt"/>
+        <line num="2" count="17" type="stmt"/>
+        <line num="4" count="17" type="stmt"/>
+        <line num="6" count="17" type="stmt"/>
       </file>
     </package>
   </project>
