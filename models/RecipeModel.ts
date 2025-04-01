@@ -25,7 +25,7 @@ const RecipeSchema = new Schema<IRecipe>({
     },
     recipeComplexity: { 
         type: String, 
-        enum: ["Don't Care", "Very Easy", "Easy", "Medium", "Hard", "Very Hard"], 
+        enum: ["Don't Care", "Very Easy", "Easy", "Moderate", "Hard", "Very Hard"], 
         required: false 
     },
     spiceLevel: { 
