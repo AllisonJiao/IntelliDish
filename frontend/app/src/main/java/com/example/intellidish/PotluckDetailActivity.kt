@@ -271,7 +271,6 @@ class PotluckDetailActivity : AppCompatActivity() {
 
         val jsonBody = JSONObject().apply {
             put("ingredients", JSONArray(ingredientNames))
-            put("allowPartialRecipes", false)
             put("cuisine", btnCuisineType.text.toString())
             put("preferences", JSONObject().apply {
                 put("prepTime", preferencesManager.getSavedPrepTime())

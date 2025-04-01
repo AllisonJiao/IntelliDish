@@ -90,7 +90,7 @@ class GetFullRecipeRecommendationTest {
         // Ensure user is signed in
         testGoogleSignIn()
 
-        // (1) Click “Get Recommendation” on main page
+        // (1) Click "Get Recommendation" on main page
         onView(withId(R.id.btn_get_recommendations))
             .perform(click())
 
@@ -112,8 +112,6 @@ class GetFullRecipeRecommendationTest {
         onView(withId(R.id.btn_toggle_preferences))
             .check(matches(isDisplayed()))
         onView(withId(R.id.btn_reset_all))
-            .check(matches(isDisplayed()))
-        onView(withId(R.id.switch_partial_recipes))
             .check(matches(isDisplayed()))
         onView(withId(R.id.btn_generate))
             .check(matches(isDisplayed()))

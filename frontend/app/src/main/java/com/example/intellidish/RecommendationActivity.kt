@@ -93,8 +93,6 @@ class RecommendationActivity : AppCompatActivity() {
     private var selectedImageUri: Uri? = null
     private lateinit var viewImageButton: Button
     private var isReturningFromRankRecipes = false
-    private lateinit var partialRecipesSwitch: SwitchMaterial
-    private var allowPartialRecipes = false
     private lateinit var cuisineButton: Button
     private lateinit var togglePreferencesButton: Button
 
@@ -118,7 +116,6 @@ class RecommendationActivity : AppCompatActivity() {
         uploadImageButton = binding.btnUploadImage
         recyclerView = binding.recyclerIngredients
         viewImageButton = binding.btnViewImage
-        partialRecipesSwitch = binding.switchPartialRecipes
         cuisineButton = binding.btnCuisineType
         togglePreferencesButton = binding.btnTogglePreferences
 
@@ -133,7 +130,6 @@ class RecommendationActivity : AppCompatActivity() {
         setupImageButtons()
         setupNavigationButtons()
         setupResetButtons()
-        setupSwitches()
         setupDialogButtons()
     }
 
@@ -205,12 +201,6 @@ class RecommendationActivity : AppCompatActivity() {
             binding.btnTogglePreferences.text = "Preferences"
             preferencesManager.resetPreferences()
             showSnackbar("Cuisine type and preferences have been reset")
-        }
-    }
-
-    private fun setupSwitches() {
-        partialRecipesSwitch.setOnCheckedChangeListener { _, isChecked ->
-            allowPartialRecipes = isChecked
         }
     }
 
@@ -421,7 +411,6 @@ class RecommendationActivity : AppCompatActivity() {
     private fun generateRecipe() {
         val jsonBody = JSONObject().apply {
             put("ingredients", JSONArray(getSelectedIngredients()))
-            put("allowPartialRecipes", false)
             put("cuisine", binding.btnCuisineType.text.toString())
             put("preferences", JSONObject().apply {
                 put("prepTime", preferencesManager.getSavedPrepTime())
