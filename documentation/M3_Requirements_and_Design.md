@@ -45,6 +45,9 @@ Mar 19:
 Mar 28:
 - Revised Section 3.3 to align with the current implementation.
 
+Mar 31:
+- Updated Section 3.1 Use Case Diagram to combine full and partial recommendation into a single use case, which is consistent with the implementation of our app for the final M6 release.
+
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
 
