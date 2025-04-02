@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - backend_allison_edward
 
 jobs:
   test:
