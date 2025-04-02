@@ -176,7 +176,7 @@ Any endpoint that could potentially leak sensitive info is tested by performing 
 
 ### 4.2. Tests
 
-- **Use Case: Get Full Recipe Recommendation**
+- **Use Case: Get Recipe Recommendation**
 
   - **Expected Behaviors:**
     | **Scenario Steps** | **Test Case Steps** |
