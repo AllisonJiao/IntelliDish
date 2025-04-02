@@ -4,7 +4,8 @@
 
 | **Change Date**   | **Modified Sections** | **Rationale** |
 | ----------------- | --------------------- | ------------- |
-| 03/23 | Section 2.4 - backend/tests/jest_unmocked | The original tests without mocks are tested with API connected. However, it should not start the server when the test begins. The unmocked tests work parallel with the real App.
+| 03/23 | Section 2.4 - backend/tests/jest_unmocked | The original tests without mocks are tested with API connected. However, it should not start the server when the test begins. The unmocked tests work parallel with the real App. |
+| 04/02 | Section 4.2 | The original scenario steps gets too technical. Modification has been made to focus more on the success scenarios rather than UI elements. |
 
 ---
 
@@ -182,7 +183,7 @@ Any endpoint that could potentially leak sensitive info is tested by performing 
     | **Scenario Steps** | **Test Case Steps** |
     | ------------------ | ------------------- |
     | 1. The user clicks the "Get Recommendation" button on the main page to access the "Get Recipe Recommendation" feature. | Open "Get Recommendation" page |
-    | 2. The app displays the following UI components:<br> - Text Field labeled “Enter ingredients”<br> - Add Ingredient (button)<br> - Upload Image (button)<br> - View Image (button)<br> - Ingredient List Display (large rectangular container for added ingredients)<br> - Clear Ingredients (button)<br> - Cuisine Type (button)<br> - Preferences (button)<br> - Reset Cuisine Type and Preferences (button)<br> - Allow Partial Recipe Recommendations (toggle switch)<br> - Generate Recipes (button) | Check all UI components are present|
+    | 2. The user successfully accesses the "Get Recipe Recommendation" page. | Check all UI components are present|
     | 3a. The user attempts to add an ingredient without entering any text input. | Click "Add Ingredient" |
     | 3a1. Display an error message: “Please enter at least one ingredient!” | Check dialog is opened with text: "Please enter at least one ingredient!” |
     | 3b. The user does not enter any ingredient before clicking "Generate Recipes". | Click "Generate Recipes"|
@@ -302,7 +303,7 @@ Any endpoint that could potentially leak sensitive info is tested by performing 
     | **Scenario Steps** | **Test Case Steps** |
     | ------------------ | ------------------- |
     | 1. The user clicks the "PotLuck" button on the main page to access the "Participate In PotLuck" feature. | Open "PotLuck" page |
-    | 2. The app displays the following UI components:<br> - ALL JOINED POTLUCK (button)<br> - CREATE NEW POTLUCK (button)<br> - Text Field labeled "Search for PotLucks"<br> - JOIN SELECTED POTLUCK (button)<br> - Existing PotLucks Display (large rectangular container for existing potlucks) | Check all UI components are present |
+    | 2. The user successfully accesses the "Participate In PotLuck" page. | Check all UI components are present |
     | 3a. The user clicks "CREATE POTLUCK" without entering a potluck name. | Click "CREATE NEW POTLUCK"<br>Click "CREATE POTLUCK"<br>Check dialog is opened with text: "Please enter a potluck name!”  |
     | 3. The user starts a PotLuck and adds their friends to create a group. | Input "Family potluck" in text field<br>Click "Add Participants" to unroll the section<br>Click on the friend's name to select<br>Click "Add Participant"<br>Check the friend is added<br>Click "Add Participants" to roll up the section<br>Click "CREATE POTLUCK" |
     | 4. Each user independently adds or removes their ingredient contributions and sets cuisine type and preferences within the PotLuck group. Live updates ensure real-time synchronization across all participants. | Click "ALL JOINED POTLUCKS"<br>Click "Family potluck"<br>Input "bacon" in text field<br>Input "egg" in text field<br>Input "tomato" in text field<br>Click "x" beside "Bacon" to delete it<br>Check only "Egg" and "Tomato" are displayed<br>Click "Cuisine Type"<br>Select "French"<br>Click "APPLY"<br>Click "Preferences"<br>Change "Nutritional Value" to "5"<br>Click "APPLY" |
@@ -424,7 +425,7 @@ Any endpoint that could potentially leak sensitive info is tested by performing 
     | **Scenario Steps** | **Test Case Steps** |
     | ------------------ | ------------------- |
     | 1. The user clicks the "Manage Friends" button on the main page to access the "Manage Friends" feature. | Open "Manage Friends" page |
-    | 2. The app displays the following UI components:<br> - Text Field for friend search by email.<br> - Add Friend (button)<br> - Friend List, or text saying there are currently no friends. | Check all UI components are present |
+    | 2. The user successfully accesses the "Manage Friends" page. | Check all UI components are present |
     | 3a. The friend addition fails because the entered username is invalid/ cannot be found. | Input "xxxxx" in text field |
     | 3a1. Display error message for the user to double check that the entered username for friend addition is correct, and prompt the user to try again. Removal of friends do not fail. | Check dialog is opened with text: "Please enter a valid email address” |
     | 3b. The user attempts to add themselves as a friend. | Input current user's email address |
