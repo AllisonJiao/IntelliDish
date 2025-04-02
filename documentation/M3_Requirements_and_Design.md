@@ -121,18 +121,7 @@ For users like busy university students and employees (who often lack the time, 
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
         - **1**. The user clicks the "Get Recommendation" button on the main page to access the "Get Recipe Recommendation" feature.
-        - **2**. The app displays the following UI components:
-          - Text Field labeled “Enter ingredients”
-          - Add Ingredient (button)
-          - Upload Image (button)
-          - View Image (button)
-          - Ingredient List Display (large rectangular container for added ingredients)
-          - Clear Ingredients (button)
-          - Cuisine Type (button)
-          - Preferences (button)
-          - Reset Cuisine Type and Preferences (button)
-          - Allow Partial Recipe Recommendations (toggle switch)
-          - Generate Recipes (button)
+        - **2**. The user successfully accesses the "Get Recipe Recommendation" page.
         - **3**. The user enters a list of available ingredients and selects cuisine preferences.
         - **4**. The app sends a request to the AI API with the provided inputs.
         - **5**. The AI API returns a possible recipe to the user.
@@ -152,12 +141,7 @@ For users like busy university students and employees (who often lack the time, 
     - **Primary actor(s)**: User, AI API.
     - **Main success scenario**:
         - **1**. The user clicks the "PotLuck" button on the main page to access the "Participate In PotLuck" feature.
-        - **2**. The app displays the following UI components:
-            - ALL JOINED POTLUCK (button)
-            - CREATE NEW POTLUCK (button)
-            - Text Field labeled "Search for PotLucks"
-            - JOIN SELECTED POTLUCK (button)
-            - Existing PotLucks Display (large rectangular container for existing potlucks)
+        - **2**. The user successfully accesses the "Participate In PotLuck" page.
         - **3**. The user starts a PotLuck and adds their friends to create a group.
         - **4**. Each user independently adds or removes their ingredient contributions and sets cuisine type and preferences within the PotLuck group. Live updates ensure real-time synchronization across all participants.
         - **5**. A request is sent to the AI API based on the combined user inputs.
