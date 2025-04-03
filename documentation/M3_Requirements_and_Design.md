@@ -50,6 +50,7 @@ Mar 31:
 
 Apr 3:
 - Revised Section 4.4 to delete the use of FCM for live updates to align with current implementation.
+- Revised Section 4.6 to more clearly illustrate the flow of some use cases.
 
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
@@ -459,15 +460,13 @@ These screen mockups illustrate the user interfaces for the Full Recipe Recommen
 ### **4.6. Functional Requirements Sequence Diagram**
 1. [**Authenticate**](#fr1)\
 ![UML_Use_Case_Diagram.png](images/seq_1.png)
-2. [**Get Full Recipe Recommendation**](#fr1)\
+2. [**Get Recipe Recommendation**](#fr1)\
 ![UML_Use_Case_Diagram.png](images/seq_2.png)
-3. [**Get Partial Recipe Recommendation**](#fr1)\
-![UML_Use_Case_Diagram.png](images/seq_3.png)
-4. [**Participate In PotLuck**](#fr1)\
+3. [**Participate In PotLuck**](#fr1)\
 ![UML_Use_Case_Diagram.png](images/seq_4.png)
-5. [**Manage Recipes**](#fr1)\
+4. [**Manage Recipes**](#fr1)\
 ![UML_Use_Case_Diagram.png](images/seq_5.png)
-6. [**Manage Friends**](#fr1)\
+5. [**Manage Friends**](#fr1)\
 ![UML_Use_Case_Diagram.png](images/seq_6.png)
 
 ### **4.7. Non-Functional Requirements Design**
