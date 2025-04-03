@@ -48,7 +48,7 @@ Mar 28:
 Mar 31:
 - Revised Section 3.1 Use Case Diagram to combine full and partial recommendation into a single use case, which is consistent with the implementation of our app for the final M6 release.
 
-Apr 4:
+Apr 3:
 - Revised Section 4.4 to delete the use of FCM for live updates to align with current implementation.
 
 ## 2. Project Description
