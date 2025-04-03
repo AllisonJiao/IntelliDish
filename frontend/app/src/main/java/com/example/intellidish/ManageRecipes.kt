@@ -209,20 +209,28 @@ class ManageRecipes : AppCompatActivity() {
 
     private fun deleteRecipe(recipe: Recipe) {
         lifecycleScope.launch {
+            // Optimistically remove the recipe locally without hiding the RecyclerView
+            val index = recipes.indexOf(recipe)
+            if (index != -1) {
+                recipes.removeAt(index)
+                adapter.notifyItemRemoved(index)
+            }
+
             try {
-                showLoading()
+                // Call the API to delete the recipe
                 NetworkUtils.safeApiCallDirect<Unit> {
                     NetworkClient.apiService.deleteRecipe(recipe._id!!)
                 }.fold(
                     onSuccess = {
                         withContext(Dispatchers.Main) {
                             Snackbar.make(findViewById(android.R.id.content), "Recipe deleted", Snackbar.LENGTH_SHORT).show()
-                            loadRecipes()
+                            // Optionally, perform a silent refresh that doesn't show a loading indicator:
+                            refreshRecipesSilently()
                         }
                     },
                     onFailure = { e ->
                         withContext(Dispatchers.Main) {
-                            //Snackbar.make(findViewById(android.R.id.content), "Failed to delete recipe: ${e.message}", Snackbar.LENGTH_SHORT).show()
+                            loadRecipes()
                         }
                     }
                 )
@@ -230,11 +238,36 @@ class ManageRecipes : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     Snackbar.make(findViewById(android.R.id.content), "Error deleting recipe: ${e.message}", Snackbar.LENGTH_SHORT).show()
                 }
-            } finally {
-                hideLoading()
             }
         }
     }
+
+    private fun refreshRecipesSilently() {
+        lifecycleScope.launch {
+            try {
+                val userId = UserManager.getUserId()
+                if (userId != null) {
+                    NetworkUtils.safeApiCallDirect<RecipesResponse> {
+                        NetworkClient.apiService.getUserRecipes(userId)
+                    }.fold(
+                        onSuccess = { response ->
+                            withContext(Dispatchers.Main) {
+                                recipes.clear()
+                                recipes.addAll(response.recipes)
+                                adapter.updateRecipes(recipes) // Update list without hiding RecyclerView
+                            }
+                        },
+                        onFailure = { e ->
+                            Log.e("ManageRecipes", "Silent refresh error: ${e.message}")
+                        }
+                    )
+                }
+            } catch (e: IOException) {
+                Log.e("ManageRecipes", "Silent refresh error: ${e.message}")
+            }
+        }
+    }
+
 
     private fun showLoading() {
         loadingIndicator.visibility = View.VISIBLE
