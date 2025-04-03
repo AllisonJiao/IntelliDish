@@ -48,6 +48,9 @@ Mar 28:
 Mar 31:
 - Revised Section 3.1 Use Case Diagram to combine full and partial recommendation into a single use case, which is consistent with the implementation of our app for the final M6 release.
 
+Apr 4:
+- Revised Section 4.4 to delete the use of FCM for live updates to align with current implementation.
+
 ## 2. Project Description
 Our app “IntelliDish - AI Powered Recipe Recommendations Taylored for your Stomach and Fridge” aims to solve challenges faced by people with busy schedules and limited access to diverse cooking ingredients. 
 
@@ -447,9 +450,6 @@ These screen mockups illustrate the user interfaces for the Full Recipe Recommen
 3. **Cloud Service: AWS**
    - **Purpose**: Hosts the backend (Node.js).
    - **Reason**: AWS offers robust free-tier options, scalability, and integration flexibility for deploying and managing EC2 instances. It complies with the project constraints and ensures reliability and availability.
-4. **Live Updates: Firebase Cloud Messaging (FCM)**
-   - **Purpose**: Enables real-time notifications and live updates for users, such as recipe status changes and potluck activity updates.
-   - **Reason**: FCM provides a scalable and reliable push notification service that integrates seamlessly with Android and Node.js, enhancing real-time user engagement.
 
 ### **4.5. Dependencies Diagram**
 ![dependency_diagram.png](images/dependency_diagram.png)
